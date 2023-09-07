@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean-extension":"rm -rf $HOME/.local/share/gnome-shell/extensions/example@gjs.guide",
     "sync": "npm run clean-extension && cp -r . $HOME/.local/share/gnome-shell/extensions/example@gjs.guide",
-    "start-wayland":"dbus-run-session -- gnome-shell --nested --wayland",
+    "wayland":"dbus-run-session -- gnome-shell --nested --wayland",
     "gitUpdate":"git add . && git commit -m\"update,\""
   },
   "keywords": [],
