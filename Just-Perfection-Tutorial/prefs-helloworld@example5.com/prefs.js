@@ -1,48 +1,36 @@
-const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
+const { Adw, Gtk, Gdk } = imports.gi;
 
-function init() {}
+const ExtensionUtils = imports.misc.extensionUtils;
+const Me = ExtensionUtils.getCurrentExtension();
 
-function buildPrefsWidget() {
-  let widget = new MyPrefsWidget();
-  widget.show_all();
-  return widget;
+// const generalPage = new GeneralPrefs.GeneralPage(settings);
+const AboutPrefs = Me.imports.preferences.aboutPage;
+
+function init() {
+  log('prefs init');
 }
 
-const MyPrefsWidget = new GObject.Class({
-  Name: 'My.Prefs.Widget',
-  GTypeName: 'MyPrefsWidget',
-  Extends: Gtk.Box,
+function fillPreferencesWindow(window) {
+  log('fillPreferencesWindow init');
+  let iconTheme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default());
+  if (!iconTheme.get_search_path().includes(Me.path + '/media')) {
+    iconTheme.add_search_path(Me.path + '/media');
+  }
 
-  _init: function (params) {
-    this.parent(params);
-    this.margin = 20;
-    this.set_spacing(15);
-    this.set_orientation(Gtk.Orientation.VERTICAL);
+  // const settings = ExtensionUtils.getSettings(
+  //   'org.gnome.shell.extensions.perfs-helloworld',
+  // );
 
-    // On GNOME SHELL +3.36 you don't need to quit on destroy
-    //this.connect('destroy', Gtk.main_quit);
+  // aboutPage
+  const aboutPage = new AboutPrefs.AboutPage();
 
-    let myLabel = new Gtk.Label({
-      label: 'Translated Text',
-    });
+  let prefsWidth = 800;
+  let prefsHeight = 800;
 
-    let spinButton = new Gtk.SpinButton();
-    spinButton.set_sensitive(true);
-    spinButton.set_range(-60, 60);
-    spinButton.set_value(0);
-    spinButton.set_increments(1, 2);
+  window.set_default_size(prefsWidth, prefsHeight);
+  window.set_search_enabled(true);
 
-    spinButton.connect('value-changed', function (w) {
-      log(w.get_value_as_int());
-    });
+  // window.add(generalPage);
+  window.add(aboutPage);
 
-    let hBox = new Gtk.Box();
-    hBox.set_orientation(Gtk.Orientation.HORIZONTAL);
-
-    hBox.pack_start(myLabel, false, false, 0);
-    hBox.pack_end(spinButton, false, false, 0);
-
-    this.add(hBox);
-  },
-});
+}

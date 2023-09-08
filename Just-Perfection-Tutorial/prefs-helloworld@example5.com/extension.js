@@ -1,11 +1,19 @@
+const { Adw, Gtk, Gdk } = imports.gi;
+
+
+
 function init() {
-  log('extensions init');
+  log('prefs-helloworld@example5.com extensions init');
+
+
 }
 
 function enable() {
-  log('extensions enable');
+  log('prefs-helloworld@example5.com extensions enable');
+
+
 }
 
 function disable() {
-  log('extensions disable');
+  log('prefs-helloworld@example5.com extensions disable');
 }
