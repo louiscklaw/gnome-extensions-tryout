@@ -5,10 +5,10 @@
   "main": "extension.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clean-extension": "rm -rf $HOME/.local/share/gnome-shell/extensions/example6@example6.com",
+    "clean-extension": "rm -rf $HOME/.local/share/gnome-shell/extensions/example6exten@example6.com",
     "sync": "npm run clean-extension && cp -r . $HOME/.local/share/gnome-shell/extensions/example6@example6.com",
     "wayland": "dbus-run-session -- gnome-shell --nested --wayland",
-    "gitUpdate": "git add . && git commit -m\"update example-3-example-com,\"",
+    "gitUpdate": "git add . && git commit -m\"update example6-example-com,\"",
     "dev": "nodemon --exec \"npm run sync\"",
     "view-log":"journalctl -f -o cat /usr/bin/gnome-shell"
   },
