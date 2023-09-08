@@ -1,0 +1,6 @@
+{
+  "name": "Example Extension openweather 13321",
+  "description": "An example extension openweather@selftest.com",
+  "uuid": "openweather@selftest.com",
+  "shell-version": ["44"]
+}

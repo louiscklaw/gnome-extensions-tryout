@@ -4,17 +4,10 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 
 function getSettings() {
   let GioSSS = Gio.SettingsSchemaSource;
-  let schemaSource = GioSSS.new_from_directory(
-    Me.dir.get_child("schemas").get_path(),
-    GioSSS.get_default(),
-    false,
-  );
-  let schemaObj = schemaSource.lookup(
-    "org.gnome.shell.extensions.example10",
-    true,
-  );
+  let schemaSource = GioSSS.new_from_directory(Me.dir.get_child('schemas').get_path(), GioSSS.get_default(), false);
+  let schemaObj = schemaSource.lookup('org.gnome.shell.extensions.example10', true);
   if (!schemaObj) {
-    throw new Error("cannot find schemas");
+    throw new Error('cannot find schemas');
   }
   return new Gio.Settings({ settings_schema: schemaObj });
 }
@@ -36,11 +29,11 @@ function enable() {
 
   let settings = getSettings();
 
-  Main.wm.addKeybinding("my-shortcut", settings, flag, mode, () => {
-    log("shortcut is working");
+  Main.wm.addKeybinding('my-shortcut', settings, flag, mode, () => {
+    log('shortcut is working');
   });
 }
 
 function disable() {
-  Main.wm.removeKeybinding("my-shortcut");
+  Main.wm.removeKeybinding('my-shortcut');
 }

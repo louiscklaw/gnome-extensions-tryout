@@ -7,7 +7,7 @@ function init() {
   let pMonitor = Main.layoutManager.primaryMonitor;
 
   button = new St.Bin({
-    style_class: "bg-color",
+    style_class: 'bg-color',
     reactive: true,
     can_focus: true,
     track_hover: true,
@@ -17,16 +17,16 @@ function init() {
 
   button.set_position(0, pMonitor.height - 30);
 
-  button.connect("enter-event", () => {
-    log("entered");
+  button.connect('enter-event', () => {
+    log('entered');
   });
 
-  button.connect("leave-event", () => {
-    log("left");
+  button.connect('leave-event', () => {
+    log('left');
   });
 
-  button.connect("button-press-event", () => {
-    log("clicked");
+  button.connect('button-press-event', () => {
+    log('clicked');
     //Main.notify('Message Title', 'Message Body');
     if (Main.overview.visible) {
       Main.overview.hide();

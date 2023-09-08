@@ -8,7 +8,7 @@ const MyContainer1 = GObject.registerClass(
   class MyContainer1 extends St.Bin {
     _init() {
       super._init({
-        style: "background-color : gold",
+        style: 'background-color : gold',
         reactive: true,
         can_focus: true,
         track_hover: true,
@@ -27,22 +27,22 @@ const MyContainer1 = GObject.registerClass(
         //dragActorOpacity : 200,
       });
 
-      this._draggable.connect("drag-begin", () => {
-        log("DRAG BEGIN");
+      this._draggable.connect('drag-begin', () => {
+        log('DRAG BEGIN');
         this._setDragMonitor(true);
       });
 
-      this._draggable.connect("drag-end", () => {
-        log("DRAG END");
+      this._draggable.connect('drag-end', () => {
+        log('DRAG END');
         this._setDragMonitor(false);
       });
 
-      this._draggable.connect("drag-cancelled", () => {
-        log("DRAG CANCELLED");
+      this._draggable.connect('drag-cancelled', () => {
+        log('DRAG CANCELLED');
         this._setDragMonitor(false);
       });
 
-      this.connect("destroy", () => {
+      this.connect('destroy', () => {
         this._setDragMonitor(false);
       });
     }
@@ -84,7 +84,7 @@ const MyContainer2 = GObject.registerClass(
   class MyContainer2 extends St.Bin {
     _init() {
       super._init({
-        style: "background-color : lime",
+        style: 'background-color : lime',
         reactive: true,
         can_focus: true,
         track_hover: true,
@@ -105,7 +105,7 @@ const MyContainer2 = GObject.registerClass(
       source.get_parent().remove_child(source);
       this.set_child(source);
 
-      log("Drop has been accepted");
+      log('Drop has been accepted');
 
       return true;
     }

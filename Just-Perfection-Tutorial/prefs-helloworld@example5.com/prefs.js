@@ -10,8 +10,8 @@ function buildPrefsWidget() {
 }
 
 const MyPrefsWidget = new GObject.Class({
-  Name: "My.Prefs.Widget",
-  GTypeName: "MyPrefsWidget",
+  Name: 'My.Prefs.Widget',
+  GTypeName: 'MyPrefsWidget',
   Extends: Gtk.Box,
 
   _init: function (params) {
@@ -24,7 +24,7 @@ const MyPrefsWidget = new GObject.Class({
     //this.connect('destroy', Gtk.main_quit);
 
     let myLabel = new Gtk.Label({
-      label: "Translated Text",
+      label: 'Translated Text',
     });
 
     let spinButton = new Gtk.SpinButton();
@@ -33,7 +33,7 @@ const MyPrefsWidget = new GObject.Class({
     spinButton.set_value(0);
     spinButton.set_increments(1, 2);
 
-    spinButton.connect("value-changed", function (w) {
+    spinButton.connect('value-changed', function (w) {
       log(w.get_value_as_int());
     });
 

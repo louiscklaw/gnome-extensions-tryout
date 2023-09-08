@@ -9,7 +9,7 @@ function init() {
   let size = 100;
 
   container = new St.Bin({
-    style: "background-color: gold",
+    style: 'background-color: gold',
     reactive: true,
     can_focus: true,
     track_hover: true,
@@ -19,7 +19,7 @@ function init() {
 
   container.set_position(monitor.width - size, monitor.height - size);
 
-  container.connect("button-press-event", () => {
+  container.connect('button-press-event', () => {
     let [xPos, yPos] = container.get_position();
     let newX = xPos === 0 ? monitor.width - size : 0;
 
@@ -30,7 +30,7 @@ function init() {
       duration: 2000,
       mode: Clutter.AnimationMode.EASE_OUT_BOUNCE,
       onComplete: () => {
-        log("Animation is finished");
+        log('Animation is finished');
       },
     });
   });

@@ -8,21 +8,19 @@ function setButtonText() {
   var arr = [];
 
   // date
-  var [ok, out, err, exit] = GLib.spawn_command_line_sync("date");
-  arr.push(out.toString().replace("\n", ""));
+  var [ok, out, err, exit] = GLib.spawn_command_line_sync('date');
+  arr.push(out.toString().replace('\n', ''));
 
   // GEDIT
-  var [ok, out, err, exit] = GLib.spawn_command_line_sync("pgrep gedit");
+  var [ok, out, err, exit] = GLib.spawn_command_line_sync('pgrep gedit');
   if (out.length > 0) {
-    arr.push("GEDIT");
+    arr.push('GEDIT');
   }
 
   // Private
-  var [ok, out, err, exit] = GLib.spawn_command_line_sync(
-    '/bin/bash -c "ifconfig -a | grep wlp2s0"',
-  );
+  var [ok, out, err, exit] = GLib.spawn_command_line_sync('/bin/bash -c "ifconfig -a | grep wlp2s0"');
   if (out.length > 0) {
-    arr.push("Really ? 111");
+    arr.push('Really ? 111');
   }
 
   // // date by JavaScript
@@ -34,18 +32,18 @@ function setButtonText() {
   // var str = now.format("%Y-%m-%d %H-%M-%S");
   // arr.push(str);
 
-  panelButtonText.set_text(arr.join(" "));
+  panelButtonText.set_text(arr.join(' '));
 
   return true;
 }
 
 function init() {
   panelButton = new St.Bin({
-    style_class: "panel-button",
+    style_class: 'panel-button',
   });
   panelButtonText = new St.Label({
-    style_class: "examplePanelText",
-    text: "Starting ...",
+    style_class: 'examplePanelText',
+    text: 'Starting ...',
     y_align: Clutter.ActorAlign.CENTER,
   });
   panelButton.set_child(panelButtonText);

@@ -5,13 +5,13 @@ let panelButton, panelButtonText;
 
 function init() {
   panelButton = new St.Bin({
-    style_class: "panel-button",
+    style_class: 'panel-button',
   });
 
   panelButtonText = new St.Label({
-    style_class: "examplePanelText",
+    style_class: 'examplePanelText',
 
-    text: "Starting 開始中...",
+    text: 'Starting 開始中...',
   });
 
   panelButton.set_child(panelButtonText);

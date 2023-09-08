@@ -11,16 +11,16 @@ function buildPrefsWidget() {
 }
 
 const MyPrefsWidget = new GObject.Class({
-  Name: "My.Prefs.Widget",
-  GTypeName: "MyPrefsWidget",
+  Name: 'My.Prefs.Widget',
+  GTypeName: 'MyPrefsWidget',
   Extends: Gtk.ScrolledWindow,
 
   _init: function (params) {
     this.parent(params);
 
     let builder = new Gtk.Builder();
-    builder.set_translation_domain("example6");
-    builder.add_from_file(Me.path + "/prefs.ui");
+    builder.set_translation_domain('example6');
+    builder.add_from_file(Me.path + '/prefs.ui');
 
     // On GNOME SHELL +3.36 you don't need to quit on destroy
     //this.connect("destroy", Gtk.main_quit);
@@ -43,6 +43,6 @@ const MyPrefsWidget = new GObject.Class({
       object.connect(signal, SignalHandler[handler].bind(this));
     });
 
-    this.add(builder.get_object("main_prefs"));
+    this.add(builder.get_object('main_prefs'));
   },
 });
