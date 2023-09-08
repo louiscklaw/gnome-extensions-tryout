@@ -1,0 +1,16 @@
+{
+  "name": "helloworld-example-gjs-guide",
+  "version": "1.0.0",
+  "description": "",
+  "main": "extension.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean-extension":"rm -rf $HOME/.local/share/gnome-shell/extensions/helloworld@gnome-extensions-tryout.com",
+    "sync": "npm run clean-extension && cp -r . $HOME/.local/share/gnome-shell/extensions/helloworld@gnome-extensions-tryout.com",
+    "wayland":"dbus-run-session -- gnome-shell --nested --wayland",
+    "gitUpdate":"git add . && git commit -m\"update,\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

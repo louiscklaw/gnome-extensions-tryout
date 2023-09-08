@@ -1,0 +1,8 @@
+{
+  "name": "Example Name",
+  "description": "helloworld@gnome-extensions-tryout.com",
+  "uuid": "helloworld@gnome-extensions-tryout.com",
+  "shell-version": [
+    "44"
+  ]
+}
