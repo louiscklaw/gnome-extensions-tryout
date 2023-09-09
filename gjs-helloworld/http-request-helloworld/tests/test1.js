@@ -3,11 +3,19 @@ imports.gi.versions.Soup = '2.4';
 imports.gi.versions.Gtk = '3.0';
 
 imports.searchPath.push('.');
+imports.searchPath.push('./tests');
+imports.searchPath.push('./utils');
+// imports.searchPath.push('..');
 
 const sampleFunc = imports.sampleFunc;
 const util1 = imports.utils.util1;
 
 const localWeatherForecast = imports.utils.localWeatherForecast;
+const nineDayWeatherForecast = imports.utils.nineDayWeatherForecast;
+const currentWeatherReport = imports.utils.currentWeatherReport;
+const weatherWarningSummary = imports.utils.weatherWarningSummary;
+const weatherWarningInformation = imports.utils.weatherWarningInformation;
+const specialWeatherTips = imports.utils.specialWeatherTips;
 
 function main() {
   log('main start is that me ?');
@@ -16,7 +24,7 @@ function main() {
   // util1.helloworld();
 
   // console.log(localWeatherForecast.get());
-  console.log(nineDayWeatherForecast.get());
+  // console.log(nineDayWeatherForecast.get());
   // console.log(currentWeatherReport.get());
   // console.log(weatherWarningSummary.get());
   // console.log(weatherWarningInformation.get());

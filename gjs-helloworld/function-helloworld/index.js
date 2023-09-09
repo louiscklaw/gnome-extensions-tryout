@@ -15,8 +15,9 @@ const util1 = imports.utils.util1;
 
 function main() {
   log('main start');
-  sampleFunc.helloworld();
-  util1.helloworld();
+  // sampleFunc.helloworld();
+  // util1.helloworld();
+  
 }
 
 main();
