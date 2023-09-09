@@ -6,7 +6,6 @@ const Lang = imports.lang;
 // https://www.hko.gov.hk/en/weatherAPI/doc/files/HKO_Open_Data_API_Documentation.pdf
 // https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=flw&lang=en
 
-
 function get(url) {
   var output = { state: 'start', debug: {}, error: '' };
   try {

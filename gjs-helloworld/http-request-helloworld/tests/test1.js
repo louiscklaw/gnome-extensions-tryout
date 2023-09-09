@@ -23,7 +23,7 @@ function main() {
   // util1.testRequest1();
   // util1.helloworld();
 
-  // console.log(localWeatherForecast.get());
+  console.log(localWeatherForecast.get());
   // console.log(nineDayWeatherForecast.get());
   // console.log(currentWeatherReport.get());
   // console.log(weatherWarningSummary.get());

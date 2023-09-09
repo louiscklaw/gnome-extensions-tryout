@@ -16,7 +16,7 @@ function main() {
   // util1.helloworld();
 
   // console.log(localWeatherForecast.get());
-  console.log(nineDayWeatherForecast.get());
+  // console.log(nineDayWeatherForecast.get());
   // console.log(currentWeatherReport.get());
   // console.log(weatherWarningSummary.get());
   // console.log(weatherWarningInformation.get());
