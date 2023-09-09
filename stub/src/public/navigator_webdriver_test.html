@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>navigator.Webdriver test</title>
+  </head>
+  <body>
+    <h1>navigator.Webdriver test</h1>
+
+    <p id="msg">show user agent, should show undefined</p>
+
+    <script>
+      let element = document.getElementById("msg");
+      element.insertAdjacentHTML("afterend", '<p id="webdriver-result">' + navigator.Webdriver + "</p>");
+    </script>
+  </body>
+</html>
