@@ -1,0 +1,8 @@
+{
+  "description": "api-request@example.com extension description",
+  "name": "api-request@example.com",
+  "shell-version": ["3.34.1"],
+  "url": "",
+  "uuid": "api-request@example.com",
+  "version": 1
+}
