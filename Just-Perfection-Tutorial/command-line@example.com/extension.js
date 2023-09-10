@@ -22,7 +22,7 @@ function setButtonText() {
     '/bin/bash -c "ifconfig -a | grep wlp2s0"',
   );
   if (out.length > 0) {
-    arr.push('Really ? 111');
+    arr.push('Really ? 333');
   }
 
   // // date by JavaScript
