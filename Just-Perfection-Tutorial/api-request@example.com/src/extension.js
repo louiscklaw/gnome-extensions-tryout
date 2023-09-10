@@ -7,33 +7,7 @@ let panelButton, panelButtonText, timeout;
 function setButtonText() {
   var arr = [];
 
-  // date
-  var [ok, out, err, exit] = GLib.spawn_command_line_sync('date');
-  arr.push(out.toString().replace('\n', ''));
-
-  // GEDIT
-  var [ok, out, err, exit] = GLib.spawn_command_line_sync('pgrep gedit');
-  if (out.length > 0) {
-    arr.push('GEDIT');
-  }
-
-  // Private
-  var [ok, out, err, exit] = GLib.spawn_command_line_sync(
-    '/bin/bash -c "ifconfig -a | grep wlp2s0"',
-  );
-  if (out.length > 0) {
-    arr.push('Really ? 111');
-  }
-
-  // // date by JavaScript
-  // var date = new Date();
-  // arr.push(date);
-
-  // // date by GLib
-  // var now = GLib.DateTime.new_now_local();
-  // var str = now.format("%Y-%m-%d %H-%M-%S");
-  // arr.push(str);
-
+  arr.push('api-request@example.com');
   panelButtonText.set_text(arr.join(' '));
 
   return true;
@@ -44,7 +18,7 @@ function init() {
     style_class: 'panel-button',
   });
   panelButtonText = new St.Label({
-    style_class: 'examplePanelText',
+    style_class: 'examplePanelTextBlaBlaBla',
     text: 'Starting ...',
     y_align: Clutter.ActorAlign.CENTER,
   });
