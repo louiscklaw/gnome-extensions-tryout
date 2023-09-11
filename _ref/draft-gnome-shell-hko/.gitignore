@@ -1,0 +1,7 @@
+*.zip
+*.mo
+build
+dist
+*.compiled
+
+*zip

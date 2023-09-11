@@ -1,0 +1,71 @@
+# Turkish translation of gnome-clipboard@b00f.github.io.
+# Copyright (C) 2023 gnome-clipboard@b00f.github.io's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-clipboard@b00f.github.io package.
+#
+# Sabri Ünal <libreajans@gmail.com>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-clipboard@b00f.github.io\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-07-11 01:41+0800\n"
+"PO-Revision-Date: 2023-05-22 16:03+0300\n"
+"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
+"Language-Team: Turkish <takim@gnome.org.tr>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.2.2\n"
+
+msgid "Are you sure you want to remove all items?"
+msgstr ""
+
+msgid "Cancel"
+msgstr "İptal"
+
+msgid "Clear history?"
+msgstr ""
+
+msgid "Clipboard updated"
+msgstr "Pano güncellendi"
+
+msgid "Copy time"
+msgstr "Kopyalanma zamanı"
+
+msgid "Empty"
+msgstr ""
+
+msgid "Enable"
+msgstr "Etkinleştir"
+
+msgid "Gnome Clipboard"
+msgstr "Gnome Pano"
+
+msgid "Maximum size of history:"
+msgstr "Azami geçmiş boyutu:"
+
+msgid "Most usage"
+msgstr "En çok"
+
+msgid "OK"
+msgstr "Tamam"
+
+msgid "Preferences"
+msgstr "Tercihler"
+
+msgid "Recent usage"
+msgstr "Son kullanım"
+
+msgid "Shortcuts"
+msgstr "Kısayollar"
+
+msgid "This operation cannot be undone."
+msgstr ""
+
+msgid "Timer interval (Millisecond):"
+msgstr "Zamanlayıcı aralığı (Milisaniye):"
+
+msgid "Type here to search..."
+msgstr "Arama için buraya yazın..."
