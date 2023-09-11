@@ -1,3 +1,13 @@
+### to develop
+
+
+```bash
+$ ./docker_compile.sh
+
+```
+
+### Original README.md (TBD)
+
 # Gnome Clipboard
 
 A gnome shell extension for managing clipboard content in [Gnome](https://www.gnome.org/).

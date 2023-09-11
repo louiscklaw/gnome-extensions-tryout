@@ -8,9 +8,7 @@ set -e
 rm -rf src/build
 rm -rf dist
 
-echo 'press a key to continue...'
+echo 'press a key to compile...'
 read 
-
-sleep 0.1
 
 make compile_docker

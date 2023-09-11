@@ -20,9 +20,7 @@ rm -rf ~/.local/share/gnome-shell/extensions/draft-gnome-shell-hko@louiscklaw.gi
 
 rm -rf ./draft-gnome-shell-hko@louiscklaw.github.io.shell-extension.zip
 
-sleep 0.1
-
-echo 'press a key to continue...'
+echo 'press a key to install extension...'
 read 
 
 make pack
