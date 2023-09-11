@@ -1,8 +1,0 @@
-{
-  "description": "a weather app showing hong kong weather",
-  "name": "hko weather status",
-  "shell-version": ["44"],
-  "url": "",
-  "uuid": "hko-weather@louislabs",
-  "version": 1
-}
