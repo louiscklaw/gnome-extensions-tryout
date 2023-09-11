@@ -3,7 +3,7 @@ const { Adw, Gtk, Gdk } = imports.gi;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-// const generalPage = new GeneralPrefs.GeneralPage(settings);
+const GeneralPrefs = Me.imports.preferences.generalPage;
 const AboutPrefs = Me.imports.preferences.aboutPage;
 
 function init() {
@@ -21,7 +21,12 @@ function fillPreferencesWindow(window) {
   //   'org.gnome.shell.extensions.perfs-helloworld',
   // );
 
-  // aboutPage
+  // const settings = ExtensionUtils.getSettings(Me.metadata['settings-schema']);
+  const settings = ExtensionUtils.getSettings(Me.metadata['settings-schema']);
+  log(settings.get_int('intHelloworld'));
+
+
+  const generalPage = new GeneralPrefs.GeneralPage(settings);
   const aboutPage = new AboutPrefs.AboutPage();
 
   let prefsWidth = 800;
@@ -30,7 +35,6 @@ function fillPreferencesWindow(window) {
   window.set_default_size(prefsWidth, prefsHeight);
   window.set_search_enabled(true);
 
-  // window.add(generalPage);
+  window.add(generalPage);
   window.add(aboutPage);
-
 }

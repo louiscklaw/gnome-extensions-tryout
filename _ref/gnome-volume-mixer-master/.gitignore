@@ -1,0 +1,6 @@
+node_modules
+@types
+build
+dist
+.vscode
+schemas/gschemas.compiled

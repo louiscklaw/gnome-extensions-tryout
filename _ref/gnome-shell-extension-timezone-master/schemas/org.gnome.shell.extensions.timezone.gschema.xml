@@ -1,0 +1,34 @@
+<schemalist gettext-domain="gnome-shell-extensions">
+	<schema id="org.gnome.shell.extensions.timezone" path="/org/gnome/shell/extensions/timezone/">
+		<key name="path-to-people-json" type="s">
+			<default>""</default>
+			<summary>Path to people.json file</summary>
+			<description>Defaults to ~/people.json. You can put remote files here, like http://domain.com/people.json</description>
+		</key>
+		<key name="panel-position" type="s">
+			<default>"center"</default>
+			<summary>Position in the shell's panel bar</summary>
+			<description>Defaults to "center"</description>
+		</key>
+		<key name="github-token" type="s">
+			<default>""</default>
+			<summary>Token for making HTTP requests to github API</summary>
+			<description>Optional. If not present requests are limited to 60 per hour. Create yours here: https://github.com/settings/tokens</description>
+		</key>
+		<key name="enable-working-hours" type="b">
+			<default>false</default>
+			<summary>Enable working hours</summary>
+			<description>Allow to enable/disable the working hours highlighting</description>
+		</key>
+		<key name="working-hours-start" type="i">
+			<default>9</default>
+			<summary>Start working hour</summary>
+			<description>Standard business hours</description>
+		</key>
+		<key name="working-hours-end" type="i">
+			<default>17</default>
+			<summary>End working hour</summary>
+			<description>Standard business hours</description>
+		</key>
+	</schema>
+</schemalist>

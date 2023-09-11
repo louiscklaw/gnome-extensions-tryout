@@ -1,8 +1,8 @@
 {
-  "description": "refactor@example.com extension description",
   "name": "refactor@example.com",
+  "description": "refactor@example.com extension description",
+  "uuid": "refactor@example.com",
   "shell-version": ["44"],
   "url": "",
-  "uuid": "refactor@example.com",
   "version": 1
 }

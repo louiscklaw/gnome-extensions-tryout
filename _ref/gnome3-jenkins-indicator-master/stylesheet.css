@@ -1,0 +1,34 @@
+.icon-grey {
+	background-image: url("icons/grey.png");
+	width: 16px;
+	height: 16px;
+}
+
+.icon-blue {
+	background-image: url("icons/blue.png");
+	width: 16px;
+	height: 16px;
+}
+
+.icon-yellow {
+	background-image: url("icons/yellow.png");
+	width: 16px;
+	height: 16px;
+}
+
+.icon-red {
+	background-image: url("icons/red.png");
+	width: 16px;
+	height: 16px;
+}
+
+.icon-clock {
+	background-image: url("icons/clock.png");
+	width: 16px;
+	height: 16px;
+}
+
+.error {
+	color: #ff0000;
+	font-weight: bold;
+}

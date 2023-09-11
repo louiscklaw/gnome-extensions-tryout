@@ -1,6 +1,8 @@
 {
   "name": "prefs-helloworld",
   "uuid": "prefs-helloworld@example5.com",
-  "shell-version": ["3.34"],
-  "description": "prefs Example"
+  "shell-version": ["44"],
+  "description": "prefs Example",
+  "gettext-domain": "gnome-shell-extension-perfs",
+  "settings-schema": "org.gnome.shell.extensions.perfs"
 }

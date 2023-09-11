@@ -3,8 +3,15 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 
 function getSettings() {
   let GioSSS = Gio.SettingsSchemaSource;
-  let schemaSource = GioSSS.new_from_directory(Me.dir.get_child('schemas').get_path(), GioSSS.get_default(), false);
-  let schemaObj = schemaSource.lookup('org.gnome.shell.extensions.example3', true);
+  let schemaSource = GioSSS.new_from_directory(
+    Me.dir.get_child('schemas').get_path(),
+    GioSSS.get_default(),
+    false,
+  );
+  let schemaObj = schemaSource.lookup(
+    'org.gnome.shell.extensions.example3',
+    true,
+  );
   if (!schemaObj) {
     throw new Error('cannot find schemas');
   }

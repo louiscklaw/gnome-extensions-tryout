@@ -1,0 +1,34 @@
+v7 (January, 16, 2017)
+  - Support local (filesystem) avatars (In the form "file:///path-to-image" or just "/path-to-image".)
+  - Support GNOME 3.22
+
+v6 (September, 05, 2016)
+  - Allow empties name and github. TZ is the only mandatory field
+  - Check if avatar is a valid URL
+  - Side effect: Both improvements above fix a crash in the extension
+
+v5 (August, 02, 2016)
+  - Provide help for editing people.json file
+  - Fixes on github provider
+  - Speed up the initial rendering
+  - Fixed a bug that showed up messages like this in session log:
+    (gnome-shell:1907): Clutter-CRITICAL **: clutter_text_set_text: assertion 'CLUTTER_IS_TEXT (self)' failed
+
+v4 (April, 29, 2016)
+  - Read people.json asynchronously
+  - Correctly show labels on high DPI
+  - Use the same time format as of the system
+  - Sometimes icon is not shown - Fix that by using our own icon
+  - Split avatars into multiple columns when they are too many
+
+v3 (April, 17, 2016)
+  - Support for github id's.
+  - Support an alternative location for people.json file (even remote locations)
+
+v2 (April, 2, 2016)
+  - Support for GNOME 3.16
+  - Support for gravatar (libravatar.org and gravatar.com)
+
+v1 (March 28, 2016)
+ - Initial version
+

@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schemalist gettext-domain="gnome-shell-extension-perfs-helloworld">
 
-
+<schemalist gettext-domain="gnome-shell-extension-perfs">
     <schema 
-        path="/org/gnome/shell/extensions/perfs-helloworld/" 
-        id="org.gnome.shell.extensions.perfs-helloworld">
-
-
-        <key type="i" name="prefs-default-width">
-            <default>700</default>
+        path="/org/gnome/shell/extensions/perfs/" 
+        id="org.gnome.shell.extensions.perfs"
+        >
+        <key type="i" name="intHelloworld">
+            <default>1</default>
             <summary>Default width for the preferences window</summary>
-        </key>
-        <key type="i" name="prefs-default-height">
-            <default>600</default>
-            <summary>Default height for the preferences window</summary>
         </key>
 
     </schema>

@@ -121,7 +121,7 @@ var AboutPage = GObject.registerClass(
         vexpand: false,
       });
       let maintainerAbout = new Gtk.Label({
-        label: ('Maintained by: %s').format('Jason Oickle'),
+        label: 'Maintained by: %s'.format('Jason Oickle'),
         hexpand: false,
         vexpand: false,
       });
@@ -169,7 +169,7 @@ var AboutPage = GObject.registerClass(
       });
 
       let providerAbout = new Gtk.Label({
-        label: ('Weather data provided by: %s').format(
+        label: 'Weather data provided by: %s'.format(
           '<a href="https://openweathermap.org">OpenWeatherMap</a>',
         ),
         use_markup: true,

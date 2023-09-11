@@ -57,7 +57,10 @@ const MyPopup = GObject.registerClass(
       this.menu.addMenuItem(popupMenuSection);
 
       // image item
-      let popupImageMenuItem = new PopupMenu.PopupImageMenuItem('Menu Item with Icon', 'security-high-symbolic');
+      let popupImageMenuItem = new PopupMenu.PopupImageMenuItem(
+        'Menu Item with Icon',
+        'security-high-symbolic',
+      );
       this.menu.addMenuItem(popupImageMenuItem);
 
       // you can close, open and toggle the menu with

@@ -1,0 +1,20 @@
+{
+  "name": "example10-example-com",
+  "version": "1.0.0",
+  "description": "",
+  "main": "extension.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean-extension": "rm -rf $HOME/.local/share/gnome-shell/extensions/example10@example10.com",
+    "sync": "npm run clean-extension && cp -r . $HOME/.local/share/gnome-shell/extensions/example10@example10.com",
+    "wayland": "dbus-run-session -- gnome-shell --nested --wayland",
+    "gitUpdate": "git add . && git commit -m\"update example10-example-com,\"",
+    "dev": "nodemon --exec \"npm run compile-schema && sleep 0.1 && npm run sync && sleep 0.1 && npm run ext-install\"",
+    "view-log": "journalctl -f -o cat /usr/bin/gnome-shell",
+    "compile-schema":"glib-compile-schemas schemas",
+    "ext-install":"cd $HOME/.local/share/gnome-shell/extensions/example10@example10.com && gnome-extensions install example10@example10.com"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

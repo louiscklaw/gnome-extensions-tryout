@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schemalist gettext-domain="gnome3-jenkins">
+	<schema path="/org/gnome/shell/extensions/jenkins-indicator/" id="org.gnome.shell.extensions.jenkins-indicator">
+		<!-- jenkins connection -->
+		<key type="s" name="settings-json">
+			<default>'
+				{
+					"servers": [
+						{
+							"id": 1,
+							"name": "Default",
+							"jenkins_url": "http://localhost:8080/",
+							"green_balls_plugin": false,
+
+							"autorefresh": true,
+							"autorefresh_interval": 5,
+							
+							"notification_finished_jobs": true,
+							"stack_notifications": false,
+							
+							"show_running_jobs": true,
+							"show_successful_jobs": true,
+							"show_unstable_jobs": true,
+							"show_failed_jobs": true,
+							"show_neverbuilt_jobs": false,
+							"show_disabled_jobs": false,
+							"show_aborted_jobs": false,
+							"jobs_to_show": "all"
+						}
+					]
+				}
+			'</default>
+			<summary>JSON settings</summary>
+			<description>Settings for all Jenkins CI Servers in JSON format.</description>
+		</key>
+	</schema>
+</schemalist>

@@ -1,0 +1,120 @@
+# translations strings for jenkins-indicator gnome shell extension
+
+# plugin translations
+msgid "Auto-refresh"
+msgstr "Rafraîchissement automatique"
+
+msgid "Settings"
+msgstr "Paramètres"
+
+msgid "Error"
+msgstr "Erreur"
+
+msgid "Unknown error"
+msgstr "Erreur inconnue"
+
+msgid "No jobs found"
+msgstr "Aucun job trouvé"
+
+msgid "Invalid Jenkins CI Server web frontend URL"
+msgstr "URL de Jenkins CI Server Web  invalide"
+
+msgid "Invalid Jenkins CI Server web frontend URL (HTTP Error %s)"
+msgstr "URL de Jenkins CI Server Web  invalide (HTTP Error %s)"
+
+msgid "Jenkins jobs"
+msgstr "Jenkins Jobs"
+
+msgid "Job finished building"
+msgstr "Construction du job terminée"
+
+msgid "Your Jenkins job %s just finished building (<b>%s</b>)."
+msgstr "Votre job Jenkins %s vient de terminer (<b>%s</b>)."
+
+msgid "running"
+msgstr "en cours"
+
+msgid "failed"
+msgstr "échoué"
+
+msgid "unstable"
+msgstr "instable"
+
+msgid "successful"
+msgstr "succès"
+
+msgid "never built"
+msgstr "jamais construit"
+
+msgid "aborted"
+msgstr "annulé"
+
+msgid "disabled"
+msgstr "désactivé"
+
+# settings dialog translations
+msgid "Add server"
+msgstr "Ajouter un serveur"
+
+msgid "Jenkins connection"
+msgstr "Jenkins connexion"
+
+msgid "Jenkins CI Server name"
+msgstr "Nom du serveur Web Jenkins CI"
+
+msgid "Jenkins CI Server web frontend URL"
+msgstr "URL du serveur Web Jenkins CI"
+
+msgid "Use authentication"
+msgstr "Utiliser l'authentification"
+
+msgid "Authentication user"
+msgstr "Utilisateur"
+
+msgid "Authentication API token"
+msgstr "Jeton API de l'utilisateur"
+
+msgid "'Green Balls' plugin"
+msgstr "'Green Balls' Plugin"
+
+msgid "Preferences"
+msgstr "préférences"
+
+msgid "Auto-refresh interval (seconds)"
+msgstr "Intervalle du rafraîchissement automatique (en secondes)"
+
+msgid "Notifications"
+msgstr "Notifications"
+
+msgid "Notification for finished jobs"
+msgstr "Notification pour les jobs terminés"
+
+msgid "Stack notifications in message tray"
+msgstr "Pile de notifications dans la zone des messages"
+
+msgid "Job filters"
+msgstr "Filtres de jobs"
+
+msgid "Show running jobs"
+msgstr "Afficher les jobs en cours"
+
+msgid "Show successful jobs"
+msgstr "Afficher les jobs réussis"
+
+msgid "Show unstable jobs"
+msgstr "Afficher les jobs instables"
+
+msgid "Show failed jobs"
+msgstr "Afficher les jobs en erreurs"
+
+msgid "Show never built jobs"
+msgstr "Afficher les jobs jamais construits"
+
+msgid "Show disabled jobs"
+msgstr "Afficher les jobs désactivés"
+
+msgid "Show aborted jobs"
+msgstr "Afficher les jobs annulés"
+
+msgid "Jobs to show"
+msgstr "Jobs affichés"

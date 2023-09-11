@@ -1,0 +1,15 @@
+{
+  "name": "gnome-volume-mixer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -rf dist && mkdir -p dist && glib-compile-schemas schemas && cp -r schemas metadata.json dist && rollup -c ./rollup.config.js && cd dist && zip -r -p volume-mixer * "
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^15.0.0",
+    "rollup": "^2.26.6"
+  }
+}

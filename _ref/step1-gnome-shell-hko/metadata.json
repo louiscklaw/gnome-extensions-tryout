@@ -1,0 +1,15 @@
+{
+  "shell-version": [
+    "40",
+    "41",
+    "42",
+    "43",
+    "44"
+  ],
+  "version": 67,
+  "gettext-domain" : "draft-gnome-shell-hko",
+  "uuid": "draft-gnome-shell-hko@louiscklaw.github.io",
+  "name": "hko gnome shell extension",
+  "description": "A gnome shell extension to show hong kong weather.",
+  "url": "https://github.com/louiscklaw/draft-gnome-shell-hko"
+}
