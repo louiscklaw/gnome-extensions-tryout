@@ -67,6 +67,8 @@ const MyPopup = GObject.registerClass(
 
 
 
+
+
       // current_weather
       this._temperature_forecast_list = new PopupMenu.PopupBaseMenuItem({
         reactive: false,
@@ -74,7 +76,7 @@ const MyPopup = GObject.registerClass(
       });
 
       // current_weather -> temperature
-      let tomorrow_box = new St.BoxLayout({
+      let current_weather_box = new St.BoxLayout({
         x_expand: true,
       });
       let current_weather_temperature = new St.BoxLayout({
@@ -85,27 +87,14 @@ const MyPopup = GObject.registerClass(
 
       current_weather_temperature.add_actor(
         new St.Label({
-          text: '1/Sep',
-          style: 'padding-top: 10px; padding-bottom: 10px;',
-        }),
-      );
-      current_weather_temperature.add_actor(
-        new St.Icon({
-          icon_size: 32,
-          gicon: Gio.icon_new_for_string(
-            Me.dir.get_path() + '/media' + '/icon.svg',
-          ),
-          y_expand: true,
-          y_align: Clutter.ActorAlign.CENTER,
-          x_expand: true,
-          x_align: Clutter.ActorAlign.CENTER,
-          style: 'padding-top: 10px; padding-bottom: 10px;',
+          text: 'Temperature',
+          style: 'font-weight: bold; padding-top: 10px; padding-bottom: 10px;',
         }),
       );
       current_weather_temperature.add_actor(
         new St.Label({
           text: '26°C',
-          style: 'padding-top: 10px; padding-bottom: 10px;',
+          style: 'font-size: 40px; padding-top: 10px; padding-bottom: 10px; color: #ecf0f1',
         }),
       );
       // current_weather -> temperature
@@ -119,38 +108,28 @@ const MyPopup = GObject.registerClass(
 
       current_weather_humidity.add_actor(
         new St.Label({
-          text: '1/Sep',
-          style: 'padding-top: 10px; padding-bottom: 10px;',
+          text: 'Humidity:',
+          style: 'font-weight: bold; padding-top: 10px; padding-bottom: 10px;',
         }),
       );
-      current_weather_humidity.add_actor(
-        new St.Icon({
-          icon_size: 32,
-          gicon: Gio.icon_new_for_string(
-            Me.dir.get_path() + '/media' + '/icon.svg',
-          ),
-          y_expand: true,
-          y_align: Clutter.ActorAlign.CENTER,
-          x_expand: true,
-          x_align: Clutter.ActorAlign.CENTER,
-          style: 'padding-top: 10px; padding-bottom: 10px;',
-        }),
-      );
+
       current_weather_humidity.add_actor(
         new St.Label({
-          text: '26°C',
-          style: 'padding-top: 10px; padding-bottom: 10px;',
+          text: '98%',
+          style: 'font-size: 40px; padding-top: 10px; padding-bottom: 10px; color: #ecf0f1',
         }),
       );
       // current_weather -> humidity
 
-      tomorrow_box.add_actor(current_weather_temperature);
-      tomorrow_box.add_actor(current_weather_humidity);
+      current_weather_box.add_actor(current_weather_temperature);
+      current_weather_box.add_actor(current_weather_humidity);
 
-      this._temperature_forecast_list.actor.add_child(tomorrow_box);
+      this._temperature_forecast_list.actor.add_child(current_weather_box);
 
       this.menu.addMenuItem(this._temperature_forecast_list);
       // current_weather
+
+
 
 
 
