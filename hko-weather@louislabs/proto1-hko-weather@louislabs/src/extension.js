@@ -14,10 +14,12 @@ const MyPopup = GObject.registerClass(
     _init() {
       super._init(0);
 
+      // control status bar icon
+
       this._hkoLogo = new St.Icon({
         //icon_name : 'security-low-symbolic',
         gicon: Gio.icon_new_for_string(
-          Me.dir.get_path() + '/media' + '/icon.svg',
+          Me.dir.get_path() + '/svgs/weather/clear-day.svg',
         ),
         style_class: 'system-status-icon',
       });
@@ -33,28 +35,31 @@ const MyPopup = GObject.registerClass(
       });
 
       let topBox = new St.BoxLayout({
-        style_class: 'panel-status-menu-box',
+        // style_class: 'panel-status-menu-box',
       });
 
       topBox.add_child(this._hkoLogo);
       topBox.add_child(this._weatherIcon);
       topBox.add_child(this._weatherInfo);
-
       this.add_child(topBox);
+
+      // control status bar icon
+
+      // current weather svg
 
       this._currentWeatherIcon = new St.Icon({
         icon_size: 128,
         gicon: Gio.icon_new_for_string(
-          Me.dir.get_path() + '/media' + '/icon.svg',
+          Me.dir.get_path() + '/svgs/weather/clear-day.svg',
         ),
-        style_class: 'test-center',
+        // style_class: 'test-center',
         y_expand: true,
         y_align: Clutter.ActorAlign.CENTER,
         x_expand: true,
         x_align: Clutter.ActorAlign.CENTER,
       });
       this._currentWeather = new PopupMenu.PopupBaseMenuItem({
-        style_class: 'popup-base-menu-item',
+        // style_class: 'popup-base-menu-item',
         reactive: false,
       });
       let box = new St.BoxLayout({
@@ -65,8 +70,7 @@ const MyPopup = GObject.registerClass(
       this._currentWeather.actor.add_child(box);
       this.menu.addMenuItem(this._currentWeather);
 
-
-
+      // current weather svg
 
 
       // current_weather
@@ -130,12 +134,6 @@ const MyPopup = GObject.registerClass(
       // current_weather
 
 
-
-
-
-
-
-
       // weather_forecast
       this._temperature_forecast_list = new PopupMenu.PopupBaseMenuItem({
         reactive: false,
@@ -162,7 +160,7 @@ const MyPopup = GObject.registerClass(
         new St.Icon({
           icon_size: 32,
           gicon: Gio.icon_new_for_string(
-            Me.dir.get_path() + '/media' + '/icon.svg',
+            Me.dir.get_path() + '/svgs/weather/clear-day.svg',
           ),
           y_expand: true,
           y_align: Clutter.ActorAlign.CENTER,
@@ -196,7 +194,7 @@ const MyPopup = GObject.registerClass(
         new St.Icon({
           icon_size: 32,
           gicon: Gio.icon_new_for_string(
-            Me.dir.get_path() + '/media' + '/icon.svg',
+            Me.dir.get_path() + '/svgs/weather/clear-day.svg',
           ),
           y_expand: true,
           y_align: Clutter.ActorAlign.CENTER,
@@ -230,7 +228,7 @@ const MyPopup = GObject.registerClass(
         new St.Icon({
           icon_size: 32,
           gicon: Gio.icon_new_for_string(
-            Me.dir.get_path() + '/media' + '/icon.svg',
+            Me.dir.get_path() + '/svgs/weather/clear-day.svg',
           ),
           y_expand: true,
           y_align: Clutter.ActorAlign.CENTER,
