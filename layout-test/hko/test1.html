@@ -1,94 +1,93 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="./stylesheet.css">
-</head>
-<body style="box-sizing: border-box;">
-    <div class="base-wrapper">
+    <link rel="stylesheet" href="./stylesheet.css" />
+  </head>
+  <body style="box-sizing: border-box">
+    <div class="screen-capture">
+      <div class="base-wrapper">
         <div class="base">
-            <div class="row plate-header">
-                <div>香港天氣</div>
-                <div>
-                    <img src="./svgs/setting_icon.svg" 
-                    width="20px" 
-                    height="20px"
-                    />
-                </div>
+          <div class="row plate-header">
+            <div>香港天氣</div>
+            <div>
+              <img src="./svgs/setting_icon.svg" width="20px" height="20px" />
             </div>
-            <div class="row">
-                <img src="./svgs/weather/a_1_sunny.svg" style="margin: -40%;"/>
+          </div>
+          <div class="row">
+            <img src="./svgs/weather/a_1_sunny.svg" style="margin: -40%" />
+          </div>
+          <div class="row left-right">
+            <div>
+              <div class="temperature-label">温度</div>
+              <div class="temperature-value">29°C</div>
             </div>
-            <div class="row left-right">
-                <div>
-                    <div class="temperature-label">温度</div>
-                    <div class="temperature-value">29°C</div>
-                </div>
-                <div>
-                    <div class="humidity-label">濕度(百份)</div>
-                    <div class="humidity-value">83%</div>
-                </div>
+            <div>
+              <div class="humidity-label">濕度(百份)</div>
+              <div class="humidity-value">83%</div>
             </div>
-            <div class="row three-day-forecast">
-                <div class="forecast-cell">
-                    <div>1/Sep</div>
-                    <div>
-                        <img src="./svgs/weather/b_2_cloudy.svg" 
-                            class="forecast-weather-svg"
-                        />
-                    </div>
-                    <div>
-                        <div class="forecast-temperature-value">29°C</div>
-                    </div>
-                </div>
-                <div class="forecast-cell">
-                    <div>2/Sep</div>
-                    <div>
-                        <img src="./svgs/weather/c_2_heavy_rain.svg"
-                            class="forecast-weather-svg"
-                        />
-                    </div>
-                    <div>
-                        <div class="forecast-temperature-value">29°C</div>
-                    </div>
-                </div>
-                <div class="forecast-cell">
-                    <div>3/Sep</div>
-                    <div>
-                        <img src="./svgs/weather/e_1_temperature.svg"
-                            class="forecast-weather-svg"
-                        />
-                    </div>
-                    <div>
-                        <div class="forecast-temperature-value">29°C</div>
-                    </div>
-                </div>
+          </div>
+          <div class="row three-day-forecast">
+            <div class="forecast-cell">
+              <div>1/Sep</div>
+              <div>
+                <img
+                  src="./svgs/weather/b_2_cloudy.svg"
+                  class="forecast-weather-svg"
+                />
+              </div>
+              <div>
+                <div class="forecast-temperature-value">29°C</div>
+              </div>
             </div>
-            <div class="weather-notice-plate">
-                <div class="weather-notice-label">特別天氣提示</div>
-                <div class="weather-notice-value">
-                    雷雨區正影響香港東部地區，預料西貢及大埔區雨勢較大。市民應提高警惕。 (12-09-2023 14:10)
-                </div>
+            <div class="forecast-cell">
+              <div>2/Sep</div>
+              <div>
+                <img
+                  src="./svgs/weather/c_2_heavy_rain.svg"
+                  class="forecast-weather-svg"
+                />
+              </div>
+              <div>
+                <div class="forecast-temperature-value">29°C</div>
+              </div>
             </div>
-            <div class="bottom-plate">
-                <div class="bottom-label">
-                    內容由香港天文台提供
-                </div>
-                <div class="source-label">
-                    source
-                </div>
+            <div class="forecast-cell">
+              <div>3/Sep</div>
+              <div>
+                <img
+                  src="./svgs/weather/e_1_temperature.svg"
+                  class="forecast-weather-svg"
+                />
+              </div>
+              <div>
+                <div class="forecast-temperature-value">29°C</div>
+              </div>
             </div>
+          </div>
+          <div class="weather-notice-plate">
+            <div class="weather-notice-label">特別天氣提示</div>
+            <div class="weather-notice-value">
+              雷雨區正影響香港東部地區，預料西貢及大埔區雨勢較大。市民應提高警惕。
+              (12-09-2023 14:10)
+            </div>
+          </div>
+          <div class="bottom-plate">
+            <div class="bottom-label"> 內容由香港天文台提供 </div>
+            <div class="source-label"> source </div>
+          </div>
         </div>
-
+      </div>
     </div>
 
-    
-
+    <a href="./loading.html">loading screen</a>
+    <a href="./plate1.html">plate1 screen</a>
+    <a href="./test1.html">test1 screen</a>
     <div>
-        <div>icon source</div>
-        <div>https://github.com/philanri/weather-icons</div>
+      <div>icon source</div>
+      <div>https://github.com/philanri/weather-icons</div>
     </div>
-</body>
+  </body>
 </html>

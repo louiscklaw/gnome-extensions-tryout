@@ -1,88 +1,97 @@
-   * {
-            font-family: Arial, Helvetica, sans-serif;
-        }
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
 
-  a {
-    color: #ecf0f1;
-  }
-        .plate-header {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            font-weight: bold;
-            font-size : 20px;
-        }
-        .base-wrapper {
-            background-color: rgb(53, 53, 53);
-            color: #ecf0f1;
-            border-radius: 1rem;
-            width: 300px;
-        }
-        .base {
-            padding: 10px 30px;
-        }
+.source-label a {
+  color: #ecf0f1;
+}
 
-        .temperature-label {
-            font-weight: bold;
-        }
-        .temperature-value {
-            font-size: 3rem;
-        }
-        .humidity-label {
-            font-weight: bold;
-        }
-        .humidity-value {
-            font-size: 3rem;
-        }
+.screen-capture {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 
-        .weather-notice-plate {
-            padding: 10px 0px;
-        }
-        .weather-notice-label {
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-        .weather-notice-value {
-            padding: 10px 0px ;
-            font-size: 0.9rem;
-        }
-        .left-right {
-            display: flex;
-            flex-direction: row;
-            justify-content:space-between;
-        }
+  margin: 100px 0px;
+  width: 100%;
+}
 
-        .row {
-            padding-top: 20px;
-        }
+.plate-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 20px;
+}
+.base-wrapper {
+  background-color: rgb(53, 53, 53);
+  color: #ecf0f1;
+  border-radius: 1rem;
+  width: 300px;
+}
+.base {
+  padding: 10px 30px;
+}
 
-        .three-day-forecast {
-            display: flex;
-            flex-direction: row;
-            justify-content:space-between;
-        }
+.temperature-label {
+  font-weight: bold;
+}
+.temperature-value {
+  font-size: 3rem;
+}
+.humidity-label {
+  font-weight: bold;
+}
+.humidity-value {
+  font-size: 3rem;
+}
 
-        .forecast-cell {
-            margin: 10px;
-        }
+.weather-notice-plate {
+  padding: 10px 0px;
+}
+.weather-notice-label {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+.weather-notice-value {
+  padding: 10px 0px;
+  font-size: 0.9rem;
+}
+.left-right {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
-        .forecast-weather-svg {
-            margin: -10%;
+.row {
+  padding-top: 20px;
+}
 
-        }
-        
-        .bottom-plate {
-            width: 100%;
-            padding: 10px 0px;
-        }
+.three-day-forecast {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
-        .bottom-label {
-            text-align: center;
-            font-size:0.8rem;
-        }
+.forecast-cell {
+  margin: 10px;
+}
 
-        .source-label {
-            margin-top:5px;
-            text-align: center;
-            font-size: 0.6rem;
-        }
+.forecast-weather-svg {
+  margin: -10%;
+}
+
+.bottom-plate {
+  width: 100%;
+  padding: 10px 0px;
+}
+
+.bottom-label {
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.source-label {
+  margin-top: 5px;
+  text-align: center;
+  font-size: 0.6rem;
+}
