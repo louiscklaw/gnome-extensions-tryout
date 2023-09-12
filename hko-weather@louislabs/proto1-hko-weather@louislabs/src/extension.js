@@ -101,98 +101,188 @@ const MyPopup = GObject.registerClass(
 
 
 
-      // 最低温度
-      this._temperature_list = new PopupMenu.PopupBaseMenuItem({
+      // weather_forecast
+      this._temperature_forecast_list = new PopupMenu.PopupBaseMenuItem({
         reactive: false,
-        style_class: 'temperature-list',
-      });
-      let pred_temp_low_box = new St.BoxLayout({
-        x_expand: true
-        // style_class: 'openweather-current-iconbox',
+        style_class: 'temperature-list'        
       });
 
- 
-      let temp_start = new St.BoxLayout({
+      // weather_forecast -> day 1
+      let tomorrow_box = new St.BoxLayout({
         x_expand: true,
-        x_align: Clutter.ActorAlign.START
       });
-      temp_start.add_actor(
+      let weather_forecast_day1 = new St.BoxLayout({ 
+          vertical: true,
+          x_expand: true,
+          x_align: Clutter.ActorAlign.START
+        });
+
+      weather_forecast_day1.add_actor(
         new St.Label({
-          text: '最低 26°C',
+          text: '1/Sep',
+          style:"padding-top: 10px; padding-bottom: 10px;"
         }),
       );
+      weather_forecast_day1.add_actor(
+        new St.Icon({
+          icon_size: 32,
+          gicon: Gio.icon_new_for_string(
+            Me.dir.get_path() + '/media' + '/icon.svg',
+          ),
+          y_expand: true,
+          y_align: Clutter.ActorAlign.CENTER,
+          x_expand: true,
+          x_align: Clutter.ActorAlign.CENTER,
+          style:"padding-top: 10px; padding-bottom: 10px;"
+        })
+      );
+      weather_forecast_day1.add_actor(
+        new St.Label({
+          text: '26°C',
+          style:"padding-top: 10px; padding-bottom: 10px;"
+        }),
+      );
+      // weather_forecast -> day 1
 
-      let temp_center = new St.BoxLayout({
+
+      // weather_forecast -> day 2
+      let weather_forecast_day2 = new St.BoxLayout({ 
+        vertical: true,
         x_expand: true,
         x_align: Clutter.ActorAlign.CENTER
       });
-      temp_center.add_actor(
+
+      weather_forecast_day2.add_actor(
         new St.Label({
-          text: '最低 27°C',
+          text: '1/Sep',
+          style:"padding-top: 10px; padding-bottom: 10px;"
         }),
       );
+      weather_forecast_day2.add_actor(
+        new St.Icon({
+          icon_size: 32,
+          gicon: Gio.icon_new_for_string(
+            Me.dir.get_path() + '/media' + '/icon.svg',
+          ),
+          y_expand: true,
+          y_align: Clutter.ActorAlign.CENTER,
+          x_expand: true,
+          x_align: Clutter.ActorAlign.CENTER,
+          style:"padding-top: 10px; padding-bottom: 10px;"
+        })
+      );
+      weather_forecast_day2.add_actor(
+        new St.Label({
+          text: '26°C',
+          style:"padding-top: 10px; padding-bottom: 10px;"
+        }),
+      );
+      // weather_forecast -> day 2
 
-      let temp_right = new St.BoxLayout({
+
+      // weather_forecast -> day 3
+      let weather_forecast_day3 = new St.BoxLayout({ 
+        vertical: true,
         x_expand: true,
         x_align: Clutter.ActorAlign.END
       });
-      temp_right.add_actor(
+
+      weather_forecast_day3.add_actor(
         new St.Label({
-          text: '最低 28°C',
+          text: '1/Sep',
+          style:"padding-top: 10px; padding-bottom: 10px;"
         }),
       );
-
-      pred_temp_low_box.add_actor(temp_start);
-      pred_temp_low_box.add_actor(temp_center);
-      pred_temp_low_box.add_actor(temp_right);
-
-      this._temperature_list.actor.add_child(pred_temp_low_box);
-      this.menu.addMenuItem(this._temperature_list);
-
-      // 濕度
-      this._humidity = new PopupMenu.PopupBaseMenuItem({
-        reactive: false,
-      });
-      let humidity_box = new St.BoxLayout({
-        x_expand: true,
-        style_class: 'humidity-box',
-      });
-      humidity_box.add_actor(
+      weather_forecast_day3.add_actor(
+        new St.Icon({
+          icon_size: 32,
+          gicon: Gio.icon_new_for_string(
+            Me.dir.get_path() + '/media' + '/icon.svg',
+          ),
+          y_expand: true,
+          y_align: Clutter.ActorAlign.CENTER,
+          x_expand: true,
+          x_align: Clutter.ActorAlign.CENTER,
+          style:"padding-top: 10px; padding-bottom: 10px;"
+        })
+      );
+      weather_forecast_day3.add_actor(
         new St.Label({
-          text: '濕度 92%',
-          style_class: 'humidity-body',
+          text: '26°C',
+          style:"padding-top: 10px; padding-bottom: 10px;"
         }),
       );
-      this._humidity.actor.add_child(humidity_box);
-      this.menu.addMenuItem(this._humidity);
+      // weather_forecast -> day 3
+
+
+
+      tomorrow_box.add_actor(weather_forecast_day1);
+      tomorrow_box.add_actor(weather_forecast_day2);
+      tomorrow_box.add_actor(weather_forecast_day3);
+
+      this._temperature_forecast_list.actor.add_child(tomorrow_box);
+
+      this.menu.addMenuItem(this._temperature_forecast_list);
+
+
+      // weather_forecast
+      
+            
+
+
+// 最低温度
+this._temperature_list = new PopupMenu.PopupBaseMenuItem({
+  reactive: false,
+  style_class: 'temperature-list',
+});
+let pred_temp_low_box = new St.BoxLayout({
+  x_expand: true
+  // style_class: 'openweather-current-iconbox',
+});
+
+
+let temp_start = new St.BoxLayout({
+  x_expand: true,
+  x_align: Clutter.ActorAlign.START
+});
+temp_start.add_actor(
+  new St.Label({
+    text: '最低 26°C',
+  }),
+);
+
+let temp_center = new St.BoxLayout({
+  x_expand: true,
+  x_align: Clutter.ActorAlign.CENTER
+});
+temp_center.add_actor(
+  new St.Label({
+    text: '最低 27°C',
+  }),
+);
+
+let temp_right = new St.BoxLayout({
+  x_expand: true,
+  x_align: Clutter.ActorAlign.END
+});
+temp_right.add_actor(
+  new St.Label({
+    text: '最低 28°C',
+  }),
+);
+
+pred_temp_low_box.add_actor(temp_start);
+pred_temp_low_box.add_actor(temp_center);
+pred_temp_low_box.add_actor(temp_right);
+
+this._temperature_list.actor.add_child(pred_temp_low_box);
+this.menu.addMenuItem(this._temperature_list);
+
+
 
       // 特別天氣提示
-      this._weatherNotice = new PopupMenu.PopupBaseMenuItem({
-        reactive: false,
-      });
-      let weather_notice_box = new St.BoxLayout({
-        // x_expand: true,
-        style_class: 'weather-notice-box',
-      });
-      weather_notice_box.add_actor(
-        new St.Label({
-          text: '特別天氣提示',
-          style_class: 'weather-notice-box-title',
-        }),
-      );
-      weather_notice_box.add_actor(
-        new St.Label({
-          text: '受低壓槽',
-          // text: '受低壓槽影響，廣東沿岸海域及南海北部持續有雷雨發展，預料本港今日（9月12日）局部地區雨勢有時較大及有雷暴。 (12-09-2023 00:00)',
-          style_class: 'weather-notice-box-body',
-        }),
-      );
-      this._weatherNotice.actor.add_child(weather_notice_box);
-      this.menu.addMenuItem(this._weatherNotice);
-
-
-
-
+      // placeholder
+      // 特別天氣提示
 
       // version
       this._versionRow = new PopupMenu.PopupBaseMenuItem({
