@@ -1,3 +1,49 @@
 .examplePanelTextBlaBlaBla {
   color: tomato;
 }
+
+.weather-notice-box {
+  background-color: gold;
+  color: white;
+  font-size: 20px;
+}
+
+.weather-notice-box-title {
+  background-color: cyan;
+  color: white;
+  font-size: 20px;
+}
+
+.weather-notice-box-body {
+  background-color: green;
+  color: white;
+  font-size: 20px;
+}
+
+.humidity-box {
+  background-color: tomato;
+  color: white;
+}
+
+.humidity-body {
+  background-color: yellow;
+  text-align: center;
+}
+
+.popup-base-menu-item {
+  background-color: lightgray;
+  width: 300px;
+  
+}
+
+.test-center {
+  background-color: red;
+}
+
+.temperature-list {
+  background-color: blue;
+}
+
+.popup-style {
+  background-color: cyan;
+}
