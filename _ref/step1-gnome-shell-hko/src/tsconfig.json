@@ -2,17 +2,23 @@
   "version": "1.0.0",
   "compileOnSave": true,
   "compilerOptions": {
-    "target": "es2015",
+    "lib": ["ES2017"],
+    "target": "ES2017",
     "strict": true,
     "outDir": "build",
+    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "downlevelIteration": true,
-    "lib": ["es2015"],
     "pretty": true,
     "removeComments": true,
     "incremental": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "paths": {
+      "@imports/*": ["./@types/*"]
+    }
   },
   "include": ["*.ts"]
 }

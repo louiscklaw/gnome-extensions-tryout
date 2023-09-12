@@ -1,5 +1,5 @@
 #!/usr/bin/gjs
-imports.gi.versions.Soup = '2.4';
+imports.gi.versions.Soup = '3.4.2';
 imports.gi.versions.Gtk = '3.0';
 
 imports.searchPath.push('.');

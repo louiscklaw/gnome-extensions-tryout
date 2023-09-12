@@ -1,7 +1,9 @@
 #!/bin/sh
 
+clear
+
 # Uncommetn this if you want to see the commands
-# set -ex
+set -e
 
 pwd=$(pwd)
 
@@ -19,6 +21,7 @@ rm -rf dist src/build
 mkdir -p dist/
 
 # Transpile to JavaScript
+npm i -D
 tsc --p ./src &
 
 wait

@@ -1,0 +1,15 @@
+{
+  "name": "step1-gnome-shell-hko",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".prettierrc.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@gi-types/soup3": "^3.0.1"
+  }
+}

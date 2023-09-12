@@ -10,7 +10,6 @@ function init() {
 
   panelButtonText = new St.Label({
     style_class: 'examplePanelText',
-
     text: 'Starting 開始中...',
   });
 

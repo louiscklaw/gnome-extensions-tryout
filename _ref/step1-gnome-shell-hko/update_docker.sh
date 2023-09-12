@@ -8,7 +8,7 @@ set -e
 rm -rf src/build
 rm -rf dist
 
-echo 'press a key to compile...'
-read 
+# echo 'press a key to compile...'
+# read 
 
 make compile_docker

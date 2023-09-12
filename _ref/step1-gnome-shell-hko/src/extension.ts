@@ -1,9 +1,9 @@
 // @ts-ignore
 const Me = imports.misc.extensionUtils.getCurrentExtension();
+// const ExtensionUtils = imports.misc.extensionUtils;
 
-import * as log from 'log';
-import * as HTTP from 'HTTP';
-// import * as helloworld from 'helloworld';
+const log = Me.imports.log;
+const HTTP = Me.imports.HTTP;
 
 export class GnomeExtension {
   constructor() {}
@@ -11,7 +11,6 @@ export class GnomeExtension {
   enable() {
     log.info(`enabling...`);
     HTTP.helloworld();
-    // helloworld.say();
   }
 
   disable() {

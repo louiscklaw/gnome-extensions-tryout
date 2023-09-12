@@ -1,4 +1,4 @@
-imports.gi.versions.Soup = '2.4';
+imports.gi.versions.Soup = '3.4.2';
 
 const Soup = imports.gi.Soup;
 const Lang = imports.lang;
