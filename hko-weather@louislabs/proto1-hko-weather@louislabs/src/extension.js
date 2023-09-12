@@ -31,7 +31,7 @@ const MyPopup = GObject.registerClass(
         y_align: Clutter.ActorAlign.CENTER,
         y_expand: true,
       });
-  
+
       let topBox = new St.BoxLayout({
         style_class: 'panel-status-menu-box',
       });
@@ -65,62 +65,118 @@ const MyPopup = GObject.registerClass(
       this._currentWeather.actor.add_child(box);
       this.menu.addMenuItem(this._currentWeather);
 
-      // 天氣報告
-      this._currentWeatherLabel = new PopupMenu.PopupBaseMenuItem({
-        reactive: false,
-      });
-      let weather_label_box = new St.BoxLayout({
-        x_expand: true,
-        // style_class: 'openweather-current-iconbox',
-      });
-      weather_label_box.add_actor(
-        new St.Label({
-          text: '天氣報告',
-          // style_class: 'openweather-current-summary',
-        }),
-      );
-      this._currentWeatherLabel.actor.add_child(weather_label_box);
-      this.menu.addMenuItem(this._currentWeatherLabel);
 
-      // 更新時間
-      this._lastUpdateTime = new PopupMenu.PopupBaseMenuItem({
+
+      // current_weather
+      this._temperature_forecast_list = new PopupMenu.PopupBaseMenuItem({
         reactive: false,
+        style_class: 'temperature-list',
       });
-      let last_update_time_box = new St.BoxLayout({
+
+      // current_weather -> temperature
+      let tomorrow_box = new St.BoxLayout({
         x_expand: true,
-        // style_class: 'openweather-current-iconbox',
       });
-      last_update_time_box.add_actor(
+      let current_weather_temperature = new St.BoxLayout({
+        vertical: true,
+        x_expand: true,
+        x_align: Clutter.ActorAlign.START,
+      });
+
+      current_weather_temperature.add_actor(
         new St.Label({
-          text: '03:00 更新',
-          // style_class: 'openweather-current-summary',
+          text: '1/Sep',
+          style: 'padding-top: 10px; padding-bottom: 10px;',
         }),
       );
-      this._lastUpdateTime.actor.add_child(last_update_time_box);
-      this.menu.addMenuItem(this._lastUpdateTime);
+      current_weather_temperature.add_actor(
+        new St.Icon({
+          icon_size: 32,
+          gicon: Gio.icon_new_for_string(
+            Me.dir.get_path() + '/media' + '/icon.svg',
+          ),
+          y_expand: true,
+          y_align: Clutter.ActorAlign.CENTER,
+          x_expand: true,
+          x_align: Clutter.ActorAlign.CENTER,
+          style: 'padding-top: 10px; padding-bottom: 10px;',
+        }),
+      );
+      current_weather_temperature.add_actor(
+        new St.Label({
+          text: '26°C',
+          style: 'padding-top: 10px; padding-bottom: 10px;',
+        }),
+      );
+      // current_weather -> temperature
+
+      // current_weather -> humidity
+      let current_weather_humidity = new St.BoxLayout({
+        vertical: true,
+        x_expand: true,
+        x_align: Clutter.ActorAlign.END,
+      });
+
+      current_weather_humidity.add_actor(
+        new St.Label({
+          text: '1/Sep',
+          style: 'padding-top: 10px; padding-bottom: 10px;',
+        }),
+      );
+      current_weather_humidity.add_actor(
+        new St.Icon({
+          icon_size: 32,
+          gicon: Gio.icon_new_for_string(
+            Me.dir.get_path() + '/media' + '/icon.svg',
+          ),
+          y_expand: true,
+          y_align: Clutter.ActorAlign.CENTER,
+          x_expand: true,
+          x_align: Clutter.ActorAlign.CENTER,
+          style: 'padding-top: 10px; padding-bottom: 10px;',
+        }),
+      );
+      current_weather_humidity.add_actor(
+        new St.Label({
+          text: '26°C',
+          style: 'padding-top: 10px; padding-bottom: 10px;',
+        }),
+      );
+      // current_weather -> humidity
+
+      tomorrow_box.add_actor(current_weather_temperature);
+      tomorrow_box.add_actor(current_weather_humidity);
+
+      this._temperature_forecast_list.actor.add_child(tomorrow_box);
+
+      this.menu.addMenuItem(this._temperature_forecast_list);
+      // current_weather
+
+
+
 
 
 
       // weather_forecast
       this._temperature_forecast_list = new PopupMenu.PopupBaseMenuItem({
         reactive: false,
-        style_class: 'temperature-list'        
+        style_class: 'temperature-list',
       });
 
       // weather_forecast -> day 1
       let tomorrow_box = new St.BoxLayout({
         x_expand: true,
       });
-      let weather_forecast_day1 = new St.BoxLayout({ 
-          vertical: true,
-          x_expand: true,
-          x_align: Clutter.ActorAlign.START
-        });
+      let weather_forecast_day1 = new St.BoxLayout({
+        vertical: true,
+        x_expand: true,
+        x_align: Clutter.ActorAlign.START,
+      });
 
       weather_forecast_day1.add_actor(
         new St.Label({
           text: '1/Sep',
-          style:"padding-top: 10px; padding-bottom: 10px;"
+          style: 'padding-top: 10px; padding-bottom: 10px;',
         }),
       );
       weather_forecast_day1.add_actor(
@@ -133,29 +189,28 @@ const MyPopup = GObject.registerClass(
           y_align: Clutter.ActorAlign.CENTER,
           x_expand: true,
           x_align: Clutter.ActorAlign.CENTER,
-          style:"padding-top: 10px; padding-bottom: 10px;"
-        })
+          style: 'padding-top: 10px; padding-bottom: 10px;',
+        }),
       );
       weather_forecast_day1.add_actor(
         new St.Label({
           text: '26°C',
-          style:"padding-top: 10px; padding-bottom: 10px;"
+          style: 'padding-top: 10px; padding-bottom: 10px;',
         }),
       );
       // weather_forecast -> day 1
 
-
       // weather_forecast -> day 2
-      let weather_forecast_day2 = new St.BoxLayout({ 
+      let weather_forecast_day2 = new St.BoxLayout({
         vertical: true,
         x_expand: true,
-        x_align: Clutter.ActorAlign.CENTER
+        x_align: Clutter.ActorAlign.CENTER,
       });
 
       weather_forecast_day2.add_actor(
         new St.Label({
           text: '1/Sep',
-          style:"padding-top: 10px; padding-bottom: 10px;"
+          style: 'padding-top: 10px; padding-bottom: 10px;',
         }),
       );
       weather_forecast_day2.add_actor(
@@ -168,29 +223,28 @@ const MyPopup = GObject.registerClass(
           y_align: Clutter.ActorAlign.CENTER,
           x_expand: true,
           x_align: Clutter.ActorAlign.CENTER,
-          style:"padding-top: 10px; padding-bottom: 10px;"
-        })
+          style: 'padding-top: 10px; padding-bottom: 10px;',
+        }),
       );
       weather_forecast_day2.add_actor(
         new St.Label({
           text: '26°C',
-          style:"padding-top: 10px; padding-bottom: 10px;"
+          style: 'padding-top: 10px; padding-bottom: 10px;',
         }),
       );
       // weather_forecast -> day 2
 
-
       // weather_forecast -> day 3
-      let weather_forecast_day3 = new St.BoxLayout({ 
+      let weather_forecast_day3 = new St.BoxLayout({
         vertical: true,
         x_expand: true,
-        x_align: Clutter.ActorAlign.END
+        x_align: Clutter.ActorAlign.END,
       });
 
       weather_forecast_day3.add_actor(
         new St.Label({
           text: '1/Sep',
-          style:"padding-top: 10px; padding-bottom: 10px;"
+          style: 'padding-top: 10px; padding-bottom: 10px;',
         }),
       );
       weather_forecast_day3.add_actor(
@@ -203,18 +257,16 @@ const MyPopup = GObject.registerClass(
           y_align: Clutter.ActorAlign.CENTER,
           x_expand: true,
           x_align: Clutter.ActorAlign.CENTER,
-          style:"padding-top: 10px; padding-bottom: 10px;"
-        })
+          style: 'padding-top: 10px; padding-bottom: 10px;',
+        }),
       );
       weather_forecast_day3.add_actor(
         new St.Label({
           text: '26°C',
-          style:"padding-top: 10px; padding-bottom: 10px;"
+          style: 'padding-top: 10px; padding-bottom: 10px;',
         }),
       );
       // weather_forecast -> day 3
-
-
 
       tomorrow_box.add_actor(weather_forecast_day1);
       tomorrow_box.add_actor(weather_forecast_day2);
@@ -223,62 +275,54 @@ const MyPopup = GObject.registerClass(
       this._temperature_forecast_list.actor.add_child(tomorrow_box);
 
       this.menu.addMenuItem(this._temperature_forecast_list);
-
-
       // weather_forecast
-      
-            
 
+      // 最低温度
+      this._temperature_list = new PopupMenu.PopupBaseMenuItem({
+        reactive: false,
+        style_class: 'temperature-list',
+      });
+      let pred_temp_low_box = new St.BoxLayout({
+        x_expand: true,
+        // style_class: 'openweather-current-iconbox',
+      });
 
-// 最低温度
-this._temperature_list = new PopupMenu.PopupBaseMenuItem({
-  reactive: false,
-  style_class: 'temperature-list',
-});
-let pred_temp_low_box = new St.BoxLayout({
-  x_expand: true
-  // style_class: 'openweather-current-iconbox',
-});
+      let temp_start = new St.BoxLayout({
+        x_expand: true,
+        x_align: Clutter.ActorAlign.START,
+      });
+      temp_start.add_actor(
+        new St.Label({
+          text: '最低 26°C',
+        }),
+      );
 
+      let temp_center = new St.BoxLayout({
+        x_expand: true,
+        x_align: Clutter.ActorAlign.CENTER,
+      });
+      temp_center.add_actor(
+        new St.Label({
+          text: '最低 27°C',
+        }),
+      );
 
-let temp_start = new St.BoxLayout({
-  x_expand: true,
-  x_align: Clutter.ActorAlign.START
-});
-temp_start.add_actor(
-  new St.Label({
-    text: '最低 26°C',
-  }),
-);
+      let temp_right = new St.BoxLayout({
+        x_expand: true,
+        x_align: Clutter.ActorAlign.END,
+      });
+      temp_right.add_actor(
+        new St.Label({
+          text: '最低 28°C',
+        }),
+      );
 
-let temp_center = new St.BoxLayout({
-  x_expand: true,
-  x_align: Clutter.ActorAlign.CENTER
-});
-temp_center.add_actor(
-  new St.Label({
-    text: '最低 27°C',
-  }),
-);
+      pred_temp_low_box.add_actor(temp_start);
+      pred_temp_low_box.add_actor(temp_center);
+      pred_temp_low_box.add_actor(temp_right);
 
-let temp_right = new St.BoxLayout({
-  x_expand: true,
-  x_align: Clutter.ActorAlign.END
-});
-temp_right.add_actor(
-  new St.Label({
-    text: '最低 28°C',
-  }),
-);
-
-pred_temp_low_box.add_actor(temp_start);
-pred_temp_low_box.add_actor(temp_center);
-pred_temp_low_box.add_actor(temp_right);
-
-this._temperature_list.actor.add_child(pred_temp_low_box);
-this.menu.addMenuItem(this._temperature_list);
-
-
+      this._temperature_list.actor.add_child(pred_temp_low_box);
+      this.menu.addMenuItem(this._temperature_list);
 
       // 特別天氣提示
       // placeholder
@@ -303,8 +347,6 @@ this.menu.addMenuItem(this._temperature_list);
 
       this._versionRow.actor.add_child(version_box);
       this.menu.addMenuItem(this._versionRow);
-
-
 
       // let pmItem = new PopupMenu.PopupMenuItem('Normal Menu Item');
       // pmItem.add_child(new St.Label({ text: 'Label added to the end' }));
@@ -361,7 +403,6 @@ this.menu.addMenuItem(this._temperature_list);
         }
       });
     }
-    
   },
 );
 
