@@ -324,6 +324,7 @@ const MyPopup = GObject.registerClass(
 
       this._versionRow.actor.add_child(version_box);
       this.menu.addMenuItem(this._versionRow);
+      // this.menu.addMenuRow(this._versionRow);
 
       // let pmItem = new PopupMenu.PopupMenuItem('Normal Menu Item');
       // pmItem.add_child(new St.Label({ text: 'Label added to the end' }));
