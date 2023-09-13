@@ -46,7 +46,7 @@ const MyPopup = GObject.registerClass(
       this.add_child(topBox);
       // control status bar icon
 
-      // weather-svg-widget
+      // weather_svg_widget
       this._weather_icon_svg = new St.Icon({
         //icon_name : 'security-low-symbolic',
         gicon: Gio.icon_new_for_string(
@@ -54,32 +54,59 @@ const MyPopup = GObject.registerClass(
         ),
         style_class: 'system-status-icon',
       });
-      let weather_svg_widget = new St.Widget({ 
-        style:"" ,
+      let weather_svg_widget = new St.Widget({
+        style: '',
         x_align: Clutter.ActorAlign.CENTER,
       });
-      weather_svg_widget.add_actor(this._weather_icon_svg,
-      );
+      weather_svg_widget.add_actor(this._weather_icon_svg);
       this.menu.box.add_child(weather_svg_widget);
-      // weather-svg-widget
+      // weather_svg_widget
+
+      // weather_report_label_widget
+      let weather_report_label_box = new St.BoxLayout({
+        x_expand: true,
+        x_align: Clutter.ActorAlign.CENTER,
+      });
+      weather_report_label_box.add_actor(
+        new St.Label({
+          text: '天氣報告',
+        }),
+      );
+      this.menu.box.add_child(weather_report_label_box);
+      // weather_report_label_widget
+
+      // last_update_label_widget
+      let last_update_label_box = new St.BoxLayout({
+        x_expand: true,
+        x_align: Clutter.ActorAlign.CENTER,
+        // style_class: 'openweather-current-iconbox',
+      });
+      last_update_label_box.add_actor(
+        new St.Label({
+          text: '03:00 更新',
+          // style_class: 'openweather-current-summary',
+        }),
+      );
+      this.menu.box.add_child(last_update_label_box);
+      // last_update_label_widget
 
       
+
+
+
       // widget-footer
-      let bin = new St.Widget({ 
-        style:"" ,
+      let bin = new St.Widget({
+        style: '',
         x_align: Clutter.ActorAlign.CENTER,
       });
       bin.add_actor(
         new St.Label({
           text: ' 資料內容由香港天文台提供 ',
           x_expand: true,
-          
         }),
       );
       this.menu.box.add_child(bin);
       // widget-footer
-
-
 
       this.menu.connect('open-state-changed', (menu, open) => {
         if (open) {
@@ -88,7 +115,6 @@ const MyPopup = GObject.registerClass(
           log('closed');
         }
       });
-
     }
   },
 );
