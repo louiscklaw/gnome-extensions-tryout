@@ -12,7 +12,7 @@ let myPopup;
 const MyPopup = GObject.registerClass(
   class MyPopup extends PanelMenu.Button {
     _init() {
-      super._init(0);
+      super._init(0.5, "hko-weather");
 
       // control status bar icon
 
