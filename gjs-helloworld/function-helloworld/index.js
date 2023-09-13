@@ -17,7 +17,6 @@ function main() {
   log('main start');
   // sampleFunc.helloworld();
   // util1.helloworld();
-  
 }
 
 main();

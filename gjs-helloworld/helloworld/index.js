@@ -9,4 +9,4 @@ const Gtk = imports.gi.Gtk;
 // win.show_all();
 // Gtk.main();
 
-log('helloworld')
+log('helloworld');

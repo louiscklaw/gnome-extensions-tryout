@@ -21,7 +21,6 @@ function main() {
   // console.log(weatherWarningSummary.get());
   // console.log(weatherWarningInformation.get());
   // console.log(specialWeatherTips.get());
-
 }
 
 main();

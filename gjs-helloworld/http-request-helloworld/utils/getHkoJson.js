@@ -30,20 +30,18 @@ const Gio = imports.gi.Gio;
 // }
 
 async function get(url) {
-  log(
-    Soup.MAJOR_VERSION + '.' + Soup.MINOR_VERSION + '.' + Soup.MICRO_VERSION,
-  );
+  log(Soup.MAJOR_VERSION + '.' + Soup.MINOR_VERSION + '.' + Soup.MICRO_VERSION);
 
   let _httpSession = new Soup.Session();
 
   let message = Soup.Message.new('GET', url);
   _httpSession.send_and_read_async(
-    message, 
-    GLib.PRIORITY_DEFAULT, 
-    null, 
+    message,
+    GLib.PRIORITY_DEFAULT,
+    null,
     (_httpSession, _message) => {
       log(_message);
-    }
+    },
   );
 
   return 'helloworld';

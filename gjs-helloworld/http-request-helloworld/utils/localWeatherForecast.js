@@ -15,9 +15,13 @@ function get() {
 
   var output = { state: 'start', debug: {}, error: '' };
   output = getHkoJson.get(test_url_en);
-  output = {...output, debug:{
-    test_url_en, test_url_tc,
-  }}
+  output = {
+    ...output,
+    debug: {
+      test_url_en,
+      test_url_tc,
+    },
+  };
 
   return output;
 }

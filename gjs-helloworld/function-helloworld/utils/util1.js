@@ -1,3 +1,3 @@
-function helloworld(){
-    log('utilTest1 helloworld')
+function helloworld() {
+  log('utilTest1 helloworld');
 }

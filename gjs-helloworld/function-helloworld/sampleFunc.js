@@ -1,3 +1,3 @@
-function helloworld(){
-    log('refactor-helloworld');
+function helloworld() {
+  log('refactor-helloworld');
 }
