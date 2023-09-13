@@ -18,7 +18,7 @@ const MyPopup = GObject.registerClass(
       super._init(0.5);
 
       // control status bar icon
-      this._hkoLogo = new St.Icon({
+      this._weather_icon_svg = new St.Icon({
         //icon_name : 'security-low-symbolic',
         gicon: Gio.icon_new_for_string(
           Me.dir.get_path() + '/svgs/weather/clear-day.svg',
@@ -40,36 +40,33 @@ const MyPopup = GObject.registerClass(
         // style_class: 'panel-status-menu-box',
       });
 
-      topBox.add_child(this._hkoLogo);
+      topBox.add_child(this._weather_icon_svg);
       topBox.add_child(this._weatherIcon);
       topBox.add_child(this._weatherInfo);
       this.add_child(topBox);
       // control status bar icon
 
-      // version
-      // this._versionRow = new PopupMenu.PopupBaseMenuItem({
-      //   reactive: false,
-      // });
-      // let version_box = new St.BoxLayout({
-      //   x_expand: true,
-      //   style_class: 'version-box',
-      // });
-      // version_box.add_actor(
-      //   new St.Label({
-      //     text: ' 資料內容由香港天文台提供 ',
-      //     style_class: 'version-box-title',
-      //     x_expand: true,
-      //     x_align: Clutter.ActorAlign.CENTER,
-      //   }),
-      // );
+      // weather-svg-widget
+      this._weather_icon_svg = new St.Icon({
+        //icon_name : 'security-low-symbolic',
+        gicon: Gio.icon_new_for_string(
+          Me.dir.get_path() + '/svgs/weather/clear-day.svg',
+        ),
+        style_class: 'system-status-icon',
+      });
+      let weather_svg_widget = new St.Widget({ 
+        style:"" ,
+        x_align: Clutter.ActorAlign.CENTER,
+      });
+      weather_svg_widget.add_actor(this._weather_icon_svg,
+      );
+      this.menu.box.add_child(weather_svg_widget);
+      // weather-svg-widget
 
-      // this._versionRow.actor.add_child(version_box);
-      // this.menu.addMenuItem(this._versionRow);
-      // version
-
-      let layout = new Clutter.BinLayout();
+      
+      // widget-footer
       let bin = new St.Widget({ 
-        style:"background-color: red;" ,
+        style:"" ,
         x_align: Clutter.ActorAlign.CENTER,
       });
       bin.add_actor(
@@ -80,6 +77,9 @@ const MyPopup = GObject.registerClass(
         }),
       );
       this.menu.box.add_child(bin);
+      // widget-footer
+
+
 
       this.menu.connect('open-state-changed', (menu, open) => {
         if (open) {
