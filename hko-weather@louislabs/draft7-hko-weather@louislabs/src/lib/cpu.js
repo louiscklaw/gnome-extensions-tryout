@@ -135,13 +135,6 @@ var CpuMonitor = GObject.registerClass(
       });
       this.add_child(this.icon);
 
-      this.usage = new St.Label({
-        text: '',
-        style_class: 'tophat-panel-usage',
-        y_align: Clutter.ActorAlign.CENTER,
-      });
-      this.add_child(this.usage);
-
       configHandler.settings.bind(
         'show-cpu',
         this,
@@ -294,13 +287,6 @@ var CpuMonitor = GObject.registerClass(
       });
       this.addMenuRow(weather_svg, 0, 12, 1);
 
-      // act like a spacer
-      label = new St.Label({
-        text: '',
-        style_class: 'menu-header',
-      });
-      this.addMenuRow(label, 0, 12, 1);
-
       let temperature_box = new St.BoxLayout({
         x_expand: true,
         y_expand: true,
@@ -349,13 +335,6 @@ var CpuMonitor = GObject.registerClass(
 
       this.addMenuRow(humidity_box, 6, 6, 1);
 
-      // act like a spacer
-      label = new St.Label({
-        text: '',
-        style_class: 'menu-header',
-      });
-      this.addMenuRow(label, 0, 12, 1);
-
       let forecast_box1 = new St.BoxLayout({
         x_expand: true,
         y_expand: true,
@@ -379,7 +358,6 @@ var CpuMonitor = GObject.registerClass(
       });
       forecast_box1.add(sample_svg);
 
-
       let forecast_day_1_value = new St.Label({
         text: _('26'),
         style_class: 'menu-label menu-section-end',
@@ -397,16 +375,12 @@ var CpuMonitor = GObject.registerClass(
         vertical: true,
       });
 
-
-
-
       let forecast_day_2_title = new St.Label({
         text: _('30/Sep'),
         style_class: 'menu-label menu-section-end',
         style: 'font-weight: bold; text-align: center;',
       });
       forecast_box2.add(forecast_day_2_title);
-
 
       let forecast_day_2_svg = new St.Icon({
         gicon: Gio.icon_new_for_string(
@@ -440,7 +414,6 @@ var CpuMonitor = GObject.registerClass(
       });
       forecast_box3.add(forecast_day_3_title);
 
-
       let forecast_day_3_svg = new St.Icon({
         gicon: Gio.icon_new_for_string(
           Me.dir.get_path() + '/svgs/weather/clear-day.svg',
@@ -448,8 +421,6 @@ var CpuMonitor = GObject.registerClass(
         style: 'width: 60px; height: 60px;',
       });
       forecast_box3.add(forecast_day_3_svg);
-
-
 
       let forecast_day_3_value = new St.Label({
         text: _('26'),
@@ -459,13 +430,6 @@ var CpuMonitor = GObject.registerClass(
       forecast_box3.add(forecast_day_3_value);
 
       this.addMenuRow(forecast_box3, 8, 4, 1);
-
-      // act like a spacer
-      label = new St.Label({
-        text: '',
-        style_class: 'menu-header',
-      });
-      this.addMenuRow(label, 0, 12, 1);
 
       label = new St.Label({
         text: _('特別天氣提示'),
@@ -501,12 +465,6 @@ var CpuMonitor = GObject.registerClass(
         style: 'text-align: center',
       });
       this.addMenuRow(label, 0, 12, 1);
-
-      this.menuUptime = new St.Label({
-        text: '',
-        style_class: 'menu-uptime menu-section-end',
-      });
-      this.addMenuRow(this.menuUptime, 0, 12, 1);
 
       // this.buildMenuButtons();
     }

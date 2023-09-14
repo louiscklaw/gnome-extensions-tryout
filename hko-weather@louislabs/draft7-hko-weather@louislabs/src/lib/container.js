@@ -29,20 +29,14 @@ const _ = Config.Domain.gettext;
 var TopHatContainer = GObject.registerClass(
   class TopHatContainer extends PanelMenu.Button {
     _init(menuAlignment, nameText, dontCreateMenu) {
-      super._init({
-        menuAlignment,
-        nameText,
-        dontCreateMenu,
-      });
-      this.monitors = [];
+      super._init();
       this.box = new St.BoxLayout();
       this.add_child(this.box);
-      this.remove_style_class_name('panel-button');
     }
 
     addMonitor(monitor) {
       // log(`TopHat addMonitor(${monitor.name})`);
-      this.monitors.push(monitor);
+      // this.monitors.push(monitor);
       this.box.add_child(monitor);
     }
 

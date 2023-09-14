@@ -67,41 +67,37 @@ class TopHat {
     this.cpu = new Cpu.CpuMonitor(this.configHandler);
     this.container.addMonitor(this.cpu);
 
-    this.configHandler.connect_void('position-in-panel', () => {
-      this.moveWithinPanel();
-    });
+    // this.configHandler.connect_void(
+    //   'position-in-panel', () => {
+    //   // this.moveWithinPanel();
+    // });
   }
 
   addToPanel() {
-    let pref = this._getPreferredPanelBoxAndPosition();
-    Main.panel.addToStatusArea(
-      'TopHat',
-      this.container,
-      pref.position,
-      pref.box,
-    );
-    this.container.monitors.forEach(monitor => {
-      // log(`Adding menu to manager for ${monitor.name}`);
-      Main.panel.menuManager.addMenu(monitor.menu);
-      monitor.refresh();
-    });
+    // let pref = this._getPreferredPanelBoxAndPosition();
+    Main.panel.addToStatusArea('TopHat', this.container);
+    // this.container.monitors.forEach(monitor => {
+    // log(`Adding menu to manager for ${monitor.name}`);
+    // Main.panel.menuManager.addMenu(monitor.menu);
+    // monitor.refresh();
+    // });
   }
 
-  moveWithinPanel() {
-    let pref = this._getPreferredPanelBoxAndPosition();
-    let boxes = {
-      left: Main.panel._leftBox,
-      center: Main.panel._centerBox,
-      right: Main.panel._rightBox,
-    };
-    let boxContainer = boxes[pref.box] || this._rightBox;
-    Main.panel._addToPanelBox(
-      'TopHat',
-      this.container,
-      pref.position,
-      boxContainer,
-    );
-  }
+  // moveWithinPanel() {
+  //   let pref = this._getPreferredPanelBoxAndPosition();
+  //   let boxes = {
+  //     left: Main.panel._leftBox,
+  //     center: Main.panel._centerBox,
+  //     right: Main.panel._rightBox,
+  //   };
+  //   let boxContainer = boxes[pref.box] || this._rightBox;
+  //   Main.panel._addToPanelBox(
+  //     'TopHat',
+  //     this.container,
+  //     pref.position,
+  //     boxContainer,
+  //   );
+  // }
 
   _getPreferredPanelBoxAndPosition() {
     let box = 'right';
@@ -144,26 +140,29 @@ function init() {
 function enable() {
   // log(`[${Me.metadata.name}] enabling version ${Me.metadata.version}`);
 
-  if (depFailures.length > 0) {
-    log(
-      `[${Me.metadata.name}] missing dependencies, showing problem reporter instead`,
-    );
-    const Problem = Me.imports.lib.problem;
-    tophat = new Problem.TopHatProblemReporter();
+  tophat = new TopHat();
+  tophat.addToPanel();
 
-    let msg = _(
-      `It looks like your computer is missing GIRepository (gir) bindings for the following libraries: ${missingLibs.join(
-        ', ',
-      )}\n\nAfter installing them, you'll need to restart your computer.`,
-    );
-    tophat.setMessage(msg);
-    tophat.setDetails(depFailures.join('\n'));
+  // if (depFailures.length > 0) {
+  //   log(
+  //     `[${Me.metadata.name}] missing dependencies, showing problem reporter instead`,
+  //   );
+  //   const Problem = Me.imports.lib.problem;
+  //   tophat = new Problem.TopHatProblemReporter();
 
-    Main.panel.addToStatusArea(`${Me.metadata.name} Problem Reporter`, tophat);
-  } else {
-    tophat = new TopHat();
-    tophat.addToPanel();
-  }
+  //   let msg = _(
+  //     `It looks like your computer is missing GIRepository (gir) bindings for the following libraries: ${missingLibs.join(
+  //       ', ',
+  //     )}\n\nAfter installing them, you'll need to restart your computer.`,
+  //   );
+  //   tophat.setMessage(msg);
+  //   tophat.setDetails(depFailures.join('\n'));
+
+  //   Main.panel.addToStatusArea(`${Me.metadata.name} Problem Reporter`, tophat);
+  // } else {
+  //   tophat = new TopHat();
+  //   tophat.addToPanel();
+  // }
 
   // log(`[${Me.metadata.name}] enabled`);
 }
