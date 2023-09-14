@@ -1,0 +1,166 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: #e8e8e8;
+  padding: 0px;
+  margin: 0px;
+  box-sizing: bordbox;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.measurement-value {
+  padding-top: 5px;
+  text-align: center;
+}
+
+.temperature-label {
+  font-weight: bold;
+}
+
+.temperature-value {
+  font-size: 3rem;
+}
+
+.plate-header {
+  font-weight: bold;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.plate-content {
+}
+
+.base-wrapper {
+  background-color: rgb(53, 53, 53);
+  color: #ecf0f1;
+  border-radius: 1rem;
+  width: 300px;
+
+  box-shadow:
+    rgba(0, 0, 0, 0.25) 0px 14px 28px,
+    rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
+.container {
+  padding: calc((300px - 260px) / 2);
+  display: grid;
+  grid-template-columns: repeat(12, calc(260px / 12));
+}
+
+.humidity-label {
+  font-weight: bold;
+}
+
+.humidity-value {
+  font-size: 3rem;
+}
+
+.plate-data-provider {
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.plate-data-source {
+  font-size: 0.6rem;
+  text-align: center;
+}
+
+.padding-divider-full {
+  padding-top: 20px;
+}
+
+.padding-divider-half {
+  padding-top: 5px;
+}
+
+.forecast-cell {
+  text-align: center;
+}
+
+.forecast-cell-title {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+.forecast-weather-svg {
+}
+
+.forecast-temperature-value {
+  font-weight: bold;
+}
+
+.center {
+  text-align: center;
+}
+
+.panel-button {
+  background-color: #ecf0f1;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.item {
+  text-align: center;
+}
+
+.item-divide-12-1 {
+  grid-column-start: 1;
+  grid-column-end: 13;
+}
+
+.item-divide-4-1 {
+  grid-column-start: 1;
+  grid-column-end: 4;
+}
+
+.item-divide-4-2 {
+  grid-column-start: 4;
+  grid-column-end: 7;
+}
+
+.item-divide-4-3 {
+  grid-column-start: 7;
+  grid-column-end: 10;
+}
+
+.item-divide-4-4 {
+  grid-column-start: 10;
+  grid-column-end: 13;
+}
+
+.item-divide-3-1 {
+  grid-column-start: 1;
+  grid-column-end: 5;
+}
+
+.item-divide-3-2 {
+  grid-column-start: 5;
+  grid-column-end: 9;
+}
+
+.item-divide-3-3 {
+  grid-column-start: 9;
+  grid-column-end: 13;
+}
+
+.item-divide-2-1 {
+  grid-column-start: 1;
+  grid-column-end: 7;
+}
+
+.item-divide-2-2 {
+  grid-column-start: 7;
+  grid-column-end: 13;
+}

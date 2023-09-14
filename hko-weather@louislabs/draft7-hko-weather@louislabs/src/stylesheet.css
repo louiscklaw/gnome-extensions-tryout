@@ -100,7 +100,8 @@
 }
 
 .menu-label {
-  font-size: 1em;
+  font-family: Monaco;
+  font-size: 3em;
   padding: 0.25em 0.5em;
   text-align: left;
 }

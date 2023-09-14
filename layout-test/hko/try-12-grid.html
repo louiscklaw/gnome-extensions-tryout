@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      body {
+        background: #e8e8e8;
+      }
+
+      .container {
+        padding: 0.5rem;
+        display: grid;
+        background: #fff;
+        grid-template-columns: repeat(12, calc(300px / 12));
+        text-align: center;
+      }
+
+      .item {
+        text-align: center;
+      }
+
+      .item-divide-4-1 {
+        grid-column-start: 1;
+        grid-column-end: 4;
+      }
+
+      .item-divide-4-2 {
+        grid-column-start: 4;
+        grid-column-end: 7;
+      }
+
+      .item-divide-4-3 {
+        grid-column-start: 7;
+        grid-column-end: 10;
+      }
+
+      .item-divide-4-4 {
+        grid-column-start: 10;
+        grid-column-end: 13;
+      }
+
+      .item-divide-3-1 {
+        grid-column-start: 1;
+        grid-column-end: 5;
+      }
+
+      .item-divide-3-2 {
+        grid-column-start: 5;
+        grid-column-end: 9;
+      }
+
+      .item-divide-3-3 {
+        grid-column-start: 9;
+        grid-column-end: 13;
+      }
+
+      .item-divide-2-1 {
+        grid-column-start: 1;
+        grid-column-end: 7;
+      }
+
+      .item-divide-2-2 {
+        grid-column-start: 7;
+        grid-column-end: 13;
+      }
+    </style>
+  </head>
+  <body class="container">
+    <div class="item"><p>/12</p></div>
+    <div class="item"><p>/12</p></div>
+    <div class="item"><p>/12</p></div>
+    <div class="item"><p>/12</p></div>
+    <div class="item"><p>/12</p></div>
+    <div class="item"><p>/12</p></div>
+    <div class="item"><p>/12</p></div>
+    <div class="item"><p>/12</p></div>
+    <div class="item"><p>/12</p></div>
+    <div class="item"><p>/12</p></div>
+    <div class="item"><p>/12</p></div>
+    <div class="item"><p>/12</p></div>
+
+    <div class="item-divide-4-1"><p>/4</p></div>
+    <div class="item-divide-4-2"><p>/4</p></div>
+    <div class="item-divide-4-3"><p>/4</p></div>
+    <div class="item-divide-4-4"><p>/4</p></div>
+
+    <div class="item-divide-3-1"><p>/3</p></div>
+    <div class="item-divide-3-2"><p>/3</p></div>
+    <div class="item-divide-3-3"><p>/3</p></div>
+
+    <div class="item-divide-2-1"><p>/2</p></div>
+    <div class="item-divide-2-2"><p>/2</p></div>
+  </body>
+</html>

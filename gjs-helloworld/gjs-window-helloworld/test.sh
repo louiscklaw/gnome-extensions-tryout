@@ -2,4 +2,4 @@
 
 set -ex
 
-gjs ./index.js
+npx nodemon --exec "gjs ./index.js"

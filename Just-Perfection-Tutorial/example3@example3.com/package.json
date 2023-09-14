@@ -10,7 +10,8 @@
     "wayland": "dbus-run-session -- gnome-shell --nested --wayland",
     "gitUpdate": "git add . && git commit -m\"update example3-example-com,\"",
     "dev": "nodemon --exec \"npm run sync\"",
-    "view-log": "journalctl -f -o cat /usr/bin/gnome-shell"
+    "view-log": "journalctl -f -o cat /usr/bin/gnome-shell",
+    "compile-schemas":"glib-compile-schemas schemas/"
   },
   "keywords": [],
   "author": "",

@@ -92,18 +92,18 @@ const MyPopup = GObject.registerClass(
 
       // current_weather_widget
       let current_weather_widget = new St.Widget({
-        style: '',
-        x_align: Clutter.ActorAlign.CENTER,
+        x_expand: true,
       });
 
       // current_weather -> temperature
       let current_weather_box = new St.BoxLayout({
         x_expand: true,
+        style: 'background-color: tomato; width: 300px; display: flex; flex-direction: row; justify-content: space-between;',
       });
 
+      // https://www.roojs.org/seed/gir-1.2-gtk-3.0/seed/St.BoxLayout.html
       let current_weather_temperature = new St.BoxLayout({
         vertical: true,
-        x_expand: true,
         x_align: Clutter.ActorAlign.START,
       });
 
@@ -127,8 +127,7 @@ const MyPopup = GObject.registerClass(
       // current_weather -> humidity
       let current_weather_humidity = new St.BoxLayout({
         vertical: true,
-        x_expand: true,
-        x_align: Clutter.ActorAlign.END,
+        style: 'background-color: gold;',
       });
 
       current_weather_humidity.add_actor(
@@ -142,14 +141,23 @@ const MyPopup = GObject.registerClass(
         new St.Label({
           text: '98%',
           style:
-            'font-size: 40px; padding-top: 10px; padding-bottom: 10px; color: #ecf0f1',
+            'font-size: 40px; padding-left: 100px; padding-top: 10px; padding-bottom: 10px; color: #ecf0f1',
         }),
       );
+
+      let current_weather_humidity_wrapper = new St.BoxLayout({
+        style: 'background-color: cyan;',
+      });
+
+      current_weather_humidity_wrapper.add_actor(current_weather_humidity);
+
+
+
       // current_weather -> humidity
+      current_weather_box.add_actor(current_weather_humidity_wrapper);
 
       current_weather_widget.add_actor(current_weather_box);
 
-      current_weather_box.add_actor(current_weather_humidity);
 
       this.menu.box.add_child(current_weather_widget);
       // current_weather_widget

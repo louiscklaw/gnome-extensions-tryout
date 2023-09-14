@@ -22,14 +22,24 @@
   font-weight: bold;
   font-size: 20px;
 }
+
 .base-wrapper {
   background-color: rgb(53, 53, 53);
   color: #ecf0f1;
   border-radius: 1rem;
   width: 300px;
+
+  box-shadow:
+    rgba(0, 0, 0, 0.25) 0px 14px 28px,
+    rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
+
 .base {
   padding: 10px 30px;
+}
+
+.measurement-value {
+  padding-top: 5px;
 }
 
 .temperature-label {

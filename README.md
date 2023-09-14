@@ -10,3 +10,4 @@ https://wiki.gnome.org/Projects/GnomeShell/Extensions
 
 ### St documentation
 https://gjs-docs.gnome.org/
+https://developer-old.gnome.org/st/stable/
