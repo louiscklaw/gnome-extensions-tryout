@@ -1,25 +1,5 @@
 'use strict';
 
-// TopHat: An elegant system resource monitor for the GNOME shell
-// Copyright (C) 2020 Todd Kulesza <todd@dropline.net>
-
-// This file is part of TopHat.
-
-// TopHat is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-
-// TopHat is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-
-// You should have received a copy of the GNU General Public License
-// along with TopHat. If not, see <https://www.gnu.org/licenses/>.
-
-/* exported init, enable, disable */
-
 let depFailures = [];
 let missingLibs = [];
 
@@ -67,37 +47,12 @@ class TopHat {
     this.cpu = new Cpu.CpuMonitor(this.configHandler);
     this.container.addMonitor(this.cpu);
 
-    // this.configHandler.connect_void(
-    //   'position-in-panel', () => {
-    //   // this.moveWithinPanel();
-    // });
   }
 
   addToPanel() {
-    // let pref = this._getPreferredPanelBoxAndPosition();
     Main.panel.addToStatusArea('TopHat', this.container);
-    // this.container.monitors.forEach(monitor => {
-    // log(`Adding menu to manager for ${monitor.name}`);
-    // Main.panel.menuManager.addMenu(monitor.menu);
-    // monitor.refresh();
-    // });
+   
   }
-
-  // moveWithinPanel() {
-  //   let pref = this._getPreferredPanelBoxAndPosition();
-  //   let boxes = {
-  //     left: Main.panel._leftBox,
-  //     center: Main.panel._centerBox,
-  //     right: Main.panel._rightBox,
-  //   };
-  //   let boxContainer = boxes[pref.box] || this._rightBox;
-  //   Main.panel._addToPanelBox(
-  //     'TopHat',
-  //     this.container,
-  //     pref.position,
-  //     boxContainer,
-  //   );
-  // }
 
   _getPreferredPanelBoxAndPosition() {
     let box = 'right';
@@ -138,33 +93,9 @@ function init() {
 }
 
 function enable() {
-  // log(`[${Me.metadata.name}] enabling version ${Me.metadata.version}`);
-
   tophat = new TopHat();
   tophat.addToPanel();
 
-  // if (depFailures.length > 0) {
-  //   log(
-  //     `[${Me.metadata.name}] missing dependencies, showing problem reporter instead`,
-  //   );
-  //   const Problem = Me.imports.lib.problem;
-  //   tophat = new Problem.TopHatProblemReporter();
-
-  //   let msg = _(
-  //     `It looks like your computer is missing GIRepository (gir) bindings for the following libraries: ${missingLibs.join(
-  //       ', ',
-  //     )}\n\nAfter installing them, you'll need to restart your computer.`,
-  //   );
-  //   tophat.setMessage(msg);
-  //   tophat.setDetails(depFailures.join('\n'));
-
-  //   Main.panel.addToStatusArea(`${Me.metadata.name} Problem Reporter`, tophat);
-  // } else {
-  //   tophat = new TopHat();
-  //   tophat.addToPanel();
-  // }
-
-  // log(`[${Me.metadata.name}] enabled`);
 }
 
 function disable() {
