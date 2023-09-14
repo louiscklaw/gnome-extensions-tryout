@@ -450,57 +450,6 @@ var CpuMonitor = GObject.registerClass(
       // this.buildMenuButtons();
     }
 
-    _findTempMonitors() {
-      return new Promise((resolve, reject) => {
-        const basePath = '/sys/class/hwmon/';
-        this.cpuTempMonitors = new Map();
-
-        new FileModule.File(basePath)
-          .list()
-          .then(files => {
-            for (let file of files) {
-              const path = `${basePath}${file}/name`;
-              const name = new FileModule.File(path).readSync();
-              // CPU should be named 'coretemp' for Intel CPUs or "k10temp" for AMD CPUs
-              if (name === 'coretemp') {
-                // determine which processor (socket) we are dealing with
-                const prefix = new FileModule.File(
-                  `${basePath}${file}/temp1_label`,
-                ).readSync();
-                let values = '',
-                  id = 0;
-                if (
-                  prefix !== null &&
-                  (values = prefix.match(/Package id\s*(\d+)/))
-                ) {
-                  id = parseInt(values[1]);
-                }
-                const inputPath = `${basePath}${file}/temp1_input`;
-                if (new FileModule.File(inputPath).exists()) {
-                  this.cpuTempMonitors.set(id, inputPath);
-                }
-              } else if (name === 'k10temp') {
-                // AMD Processors (temp2 is Tdie, temp1 is Tctl)
-                let inputPath = `${basePath}${file}/temp2_input`;
-                const f = new FileModule.File(inputPath);
-                if (!f.exists()) {
-                  inputPath = `${basePath}${file}/temp1_input`;
-                }
-                // FIXME: Instead of key=0 here, try to figure out which physical CPU
-                // this monitor represents
-                this.cpuTempMonitors.set(0, inputPath);
-              }
-            }
-            resolve(this.cpuTempMonitors.size > 0);
-          })
-          .catch(err => {
-            log(
-              `[${Me.metadata.name}] Error listing files in ${basePath}: ${err}`,
-            );
-            reject(err);
-          });
-      });
-    }
 
     refresh() {
       this._refreshCharts();
@@ -721,34 +670,6 @@ var CpuMonitor = GObject.registerClass(
       }
       parts.push(ngettext('%d minute', '%d minutes', mins).format(mins));
       this.menuUptime.text = parts.join(' ');
-    }
-
-    _repaintHistory() {
-      let [width, height] = this.historyChart.get_surface_size();
-      let pointSpacing = width / (this.historyLimit - 1);
-      let xStart = (this.historyLimit - this.history.length) * pointSpacing;
-      let ctx = this.historyChart.get_context();
-      var fg, bg;
-      [, fg] = Clutter.Color.from_string(this.meter_fg_color);
-      [, bg] = Clutter.Color.from_string(Config.METER_BG_COLOR);
-
-      Clutter.cairo_set_source_color(ctx, bg);
-      ctx.rectangle(0, 0, width, height);
-      ctx.fill();
-
-      Clutter.cairo_set_source_color(ctx, fg);
-      ctx.moveTo(xStart, height);
-      for (let i = 0; i < this.history.length; i++) {
-        let pointHeight = Math.ceil((this.history[i].total() / 100.0) * height);
-        let x = xStart + pointSpacing * i;
-        let y = height - pointHeight;
-        ctx.lineTo(x, y);
-      }
-      ctx.lineTo(xStart + (this.history.length - 1) * pointSpacing, height);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.$dispose();
     }
 
     destroy() {
