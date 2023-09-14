@@ -1,109 +1,180 @@
-const { Atk, Clutter, GLib, GObject, Shell, St } = imports.gi;
+'use strict';
+
+// TopHat: An elegant system resource monitor for the GNOME shell
+// Copyright (C) 2020 Todd Kulesza <todd@dropline.net>
+
+// This file is part of TopHat.
+
+// TopHat is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// TopHat is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with TopHat. If not, see <https://www.gnu.org/licenses/>.
+
+/* exported init, enable, disable */
+
+let depFailures = [];
+let missingLibs = [];
+
 const Main = imports.ui.main;
-
-const Gio = imports.gi.Gio;
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
-
-// const Me = imports.misc.extensionUtils.getCurrentExtension();
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
-const Monitor = Me.imports.lib.monitor;
+let GTop = null;
+let Cpu = null;
+let Mem = null;
+let Net = null;
+let FS = null;
+try {
+  // eslint-disable-next-line no-unused-vars
+  GTop = imports.gi.GTop;
+  Cpu = Me.imports.lib.cpu;
+  Mem = Me.imports.lib.mem;
+  Net = Me.imports.lib.net;
+  FS = Me.imports.lib.fs;
+} catch (err) {
+  log(`[${Me.metadata.name}] Error loading dependencies: ${err}`);
+  depFailures.push(err);
+  missingLibs.push('GTop');
+}
+const Config = Me.imports.lib.config;
+const Container = Me.imports.lib.container;
+const _ = Config.Domain.gettext;
 
-const MENU_COLUMNS = 2;
-const ANIMATION_DURATION = 500;
+const MenuPosition = {
+  LEFT_EDGE: 0,
+  LEFT: 1,
+  CENTER: 2,
+  RIGHT: 3,
+  RIGHT_EDGE: 4,
+};
 
-let hkoWeatherDisplay;
+// Declare `tophat` in the scope of the whole script so it can
+// be accessed in both `enable()` and `disable()`
+let tophat = null;
 
-const HkoWeatherDisplay = GObject.registerClass(
-  class HkoWeatherDisplay extends PanelMenu.Button {
-    _init() {
-      super._init(0.5);
+class TopHat {
+  constructor() {
+    this.configHandler = new Config.ConfigHandler();
+    this.container = new Container.TopHatContainer();
+    this.cpu = new Cpu.CpuMonitor(this.configHandler);
+    this.mem = new Mem.MemMonitor(this.configHandler);
+    this.net = new Net.NetMonitor(this.configHandler);
+    this.fs = new FS.FileSystemMonitor(this.configHandler);
+    this.container.addMonitor(this.cpu);
+    this.container.addMonitor(this.mem);
+    this.container.addMonitor(this.fs);
+    this.container.addMonitor(this.net);
+    this.configHandler.connect_void('position-in-panel', () => {
+      this.moveWithinPanel();
+    });
+  }
 
-      // control_status_bar_icon
-      this._hkoLogo = new St.Icon({
-        //icon_name : 'security-low-symbolic',
-        gicon: Gio.icon_new_for_string(
-          Me.dir.get_path() + '/svgs/weather/clear-day.svg',
-        ),
-        style_class: 'system-status-icon',
-      });
-      this._weatherIcon = new St.Icon({
-        icon_name: 'view-refresh-symbolic',
-        style_class: 'system-status-icon openweather-icon',
-      });
-      this._weatherInfo = new St.Label({
-        style_class: 'openweather-label',
-        text: 'Loading',
-        y_align: Clutter.ActorAlign.CENTER,
-        y_expand: true,
-      });
+  addToPanel() {
+    let pref = this._getPreferredPanelBoxAndPosition();
+    Main.panel.addToStatusArea(
+      'TopHat',
+      this.container,
+      pref.position,
+      pref.box,
+    );
+    this.container.monitors.forEach(monitor => {
+      // log(`Adding menu to manager for ${monitor.name}`);
+      Main.panel.menuManager.addMenu(monitor.menu);
+      monitor.refresh();
+    });
+  }
 
-      let topBox = new St.BoxLayout({
-        // style_class: 'panel-status-menu-box',
-      });
+  moveWithinPanel() {
+    let pref = this._getPreferredPanelBoxAndPosition();
+    let boxes = {
+      left: Main.panel._leftBox,
+      center: Main.panel._centerBox,
+      right: Main.panel._rightBox,
+    };
+    let boxContainer = boxes[pref.box] || this._rightBox;
+    Main.panel._addToPanelBox(
+      'TopHat',
+      this.container,
+      pref.position,
+      boxContainer,
+    );
+  }
 
-      topBox.add_child(this._hkoLogo);
-      topBox.add_child(this._weatherIcon);
-      topBox.add_child(this._weatherInfo);
-      this.add_child(topBox);
-      // control_status_bar_icon
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      let layout = new Clutter.BinLayout();
-      let bin = new St.Widget({ 
-        // style:"background-color: red;" ,
-        x_align: Clutter.ActorAlign.CENTER,
-      });
-      bin.add_actor(
-        new St.Label({
-          text: ' 資料內容由香港天文台提供@draft7',
-          x_expand: true,
-          
-        }),
-      );
-      this.menu.box.add_child(bin);
-
-      this.menu.connect('open-state-changed', (menu, open) => {
-        if (open) {
-          log('opened');
-        } else {
-          log('closed');
-        }
-      });
-
+  _getPreferredPanelBoxAndPosition() {
+    let box = 'right';
+    let position = 0;
+    switch (this.configHandler.positionInPanel) {
+      case MenuPosition.LEFT_EDGE:
+        box = 'left';
+        position = 0;
+        break;
+      case MenuPosition.LEFT:
+        box = 'left';
+        position = -1;
+        break;
+      case MenuPosition.CENTER:
+        box = 'center';
+        position = 1;
+        break;
+      case MenuPosition.RIGHT:
+        box = 'right';
+        position = 0;
+        break;
+      case MenuPosition.RIGHT_EDGE:
+        box = 'right';
+        position = -1;
+        break;
     }
-  },
-);
+    return { box, position };
+  }
 
-function init() {}
+  destroy() {
+    this.container.destroy();
+    this.configHandler.destroy();
+  }
+}
+
+function init() {
+  ExtensionUtils.initTranslations();
+}
 
 function enable() {
-  hko_weather_display = new HkoWeatherDisplay();
-  Main.panel.addToStatusArea('hkoWeatherDisplay', hko_weather_display);
+  // log(`[${Me.metadata.name}] enabling version ${Me.metadata.version}`);
+
+  if (depFailures.length > 0) {
+    log(
+      `[${Me.metadata.name}] missing dependencies, showing problem reporter instead`,
+    );
+    const Problem = Me.imports.lib.problem;
+    tophat = new Problem.TopHatProblemReporter();
+
+    let msg = _(
+      `It looks like your computer is missing GIRepository (gir) bindings for the following libraries: ${missingLibs.join(
+        ', ',
+      )}\n\nAfter installing them, you'll need to restart your computer.`,
+    );
+    tophat.setMessage(msg);
+    tophat.setDetails(depFailures.join('\n'));
+
+    Main.panel.addToStatusArea(`${Me.metadata.name} Problem Reporter`, tophat);
+  } else {
+    tophat = new TopHat();
+    tophat.addToPanel();
+  }
+
+  // log(`[${Me.metadata.name}] enabled`);
 }
 
 function disable() {
-  hkoWeatherDisplay.destroy();
+  if (tophat !== null) {
+    tophat.destroy();
+    tophat = null;
+  }
 }

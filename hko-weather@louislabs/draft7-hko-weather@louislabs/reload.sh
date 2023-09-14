@@ -11,6 +11,7 @@ set -e
 mkdir -p  ~/.local/share/gnome-shell/extensions/hko-weather@louislabs
 
 pushd src
+    glib-compile-schemas schemas/
     cp -r . ~/.local/share/gnome-shell/extensions/hko-weather@louislabs/
 popd
 
