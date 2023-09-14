@@ -6,23 +6,26 @@ let missingLibs = [];
 const Main = imports.ui.main;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
+
 let GTop = null;
 let Cpu = null;
 let Mem = null;
 let Net = null;
 let FS = null;
+
 try {
   // eslint-disable-next-line no-unused-vars
   GTop = imports.gi.GTop;
   Cpu = Me.imports.lib.cpu;
-  Mem = Me.imports.lib.mem;
-  Net = Me.imports.lib.net;
-  FS = Me.imports.lib.fs;
+  // Mem = Me.imports.lib.mem;
+  // Net = Me.imports.lib.net;
+  // FS = Me.imports.lib.fs;
 } catch (err) {
   log(`[${Me.metadata.name}] Error loading dependencies: ${err}`);
   depFailures.push(err);
   missingLibs.push('GTop');
 }
+
 const Config = Me.imports.lib.config;
 const Container = Me.imports.lib.container;
 const _ = Config.Domain.gettext;

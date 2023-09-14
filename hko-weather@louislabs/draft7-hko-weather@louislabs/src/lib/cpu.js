@@ -1,24 +1,5 @@
 'use strict';
 
-// Copyright (C) 2020 Todd Kulesza <todd@dropline.net>
-
-// This file is part of TopHat.
-
-// TopHat is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-
-// TopHat is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-
-// You should have received a copy of the GNU General Public License
-// along with TopHat. If not, see <https://www.gnu.org/licenses/>.
-
-/* exported CpuMonitor */
-
 const { Gio, GLib, Clutter, GObject, St, GTop } = imports.gi;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
@@ -467,89 +448,6 @@ var CpuMonitor = GObject.registerClass(
       this.addMenuRow(label, 0, 12, 1);
 
       // this.buildMenuButtons();
-    }
-
-    _buildCPUDetailRows() {
-      let grid = new St.Widget({
-        layout_manager: new Clutter.GridLayout({
-          orientation: Clutter.Orientation.VERTICAL,
-        }),
-      });
-      this.menuCpuDetails = grid.layout_manager;
-      this.addMenuRow(grid, 0, 2, 1);
-
-      this._findTempMonitors()
-        .then(hasTemp => {
-          new FileModule.File('/proc/cpuinfo')
-            .read()
-            .then(lines => {
-              const cpus = new Set();
-              const blocks = lines.split('\n\n');
-              for (const block of blocks) {
-                let values = '';
-                if ((values = block.match(/physical id\s*:\s*(\d+)/))) {
-                  let id = parseInt(values[1]);
-                  cpus.add(id);
-                }
-              }
-              this.menuCpuModels = [];
-              this.menuCpuFreqs = [];
-              this.menuCpuTemps = [];
-              const nRows = 3;
-
-              // If we don't have temp data, consolidate CPU details into one section
-              // since they'll all be the same
-              let cpuSections = hasTemp ? cpus.size : 1;
-              for (let i = 0; i < cpuSections; i++) {
-                // Model
-                let label = new St.Label({
-                  text: _('model n/a'),
-                  style_class: 'menu-label menu-details',
-                  x_expand: true,
-                });
-                this.menuCpuDetails.attach(label, 0, i * nRows, 2, 1);
-                this.menuCpuModels.push(label);
-
-                // Frequency
-                label = new St.Label({
-                  text: _('Frequency:'),
-                  style_class: 'menu-label menu-details',
-                });
-                this.menuCpuDetails.attach(label, 0, i * nRows + 1, 1, 1);
-
-                label = new St.Label({
-                  text: _('n/a'),
-                  style_class: 'menu-value menu-details',
-                });
-                this.menuCpuDetails.attach(label, 1, i * nRows + 1, 1, 1);
-                this.menuCpuFreqs.push(label);
-
-                // Temperature
-                label = new St.Label({
-                  text: _('Temperature:'),
-                  style_class: 'menu-label menu-details menu-section-end',
-                });
-                this.menuCpuDetails.attach(label, 0, i * nRows + 2, 1, 1);
-
-                label = new St.Label({
-                  text: _('n/a'),
-                  style_class: 'menu-value menu-details menu-section-end',
-                });
-                this.menuCpuDetails.attach(label, 1, i * nRows + 2, 1, 1);
-                this.menuCpuTemps.push(label);
-              }
-            })
-            .catch(err => {
-              log(`[${Me.metadata.name}] Error reading /proc/cpuinfo: ${err}`);
-              this.hasProc = false;
-            });
-        })
-        .catch(err => {
-          log(
-            `[${Me.metadata.name}] Error finding temperature monitors: ${err}`,
-          );
-          this.hasTemp = false;
-        });
     }
 
     _findTempMonitors() {
