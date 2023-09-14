@@ -1,11 +1,11 @@
-const { Atk, Clutter, GLib, GObject, Shell, St } = imports.gi;
-const Main = imports.ui.main;
+const { Atk, Clutter, GLib, GObject, Shell, St, Gio } = imports.gi;
 
-const Gio = imports.gi.Gio;
+const Main = imports.ui.main;
+const ExtensionUtils = imports.misc.extensionUtils;
+const Me = ExtensionUtils.getCurrentExtension();
+
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
-
-const Me = imports.misc.extensionUtils.getCurrentExtension();
 
 const MENU_COLUMNS = 2;
 const ANIMATION_DURATION = 500;
