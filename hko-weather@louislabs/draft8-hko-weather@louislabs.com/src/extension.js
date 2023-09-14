@@ -31,7 +31,7 @@ const MyPopup = GObject.registerClass(
       });
       this._weatherInfo = new St.Label({
         style_class: 'openweather-label',
-        text: '晴天'+ '  ' + Math.round(Math.random()*100),
+        text: '晴天',
         y_align: Clutter.ActorAlign.CENTER,
         y_expand: true,
       });
@@ -51,7 +51,7 @@ const MyPopup = GObject.registerClass(
       });
       bin.add_actor(
         new St.Label({
-          text: ' 資料內容由 香港天文台 提供 ',
+          text: ' 資料內容由香港天文台提供 ',
           x_expand: true,
           
         }),
