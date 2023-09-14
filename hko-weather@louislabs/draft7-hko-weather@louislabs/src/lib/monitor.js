@@ -29,7 +29,7 @@ const Util = imports.misc.util;
 const Me = ExtensionUtils.getCurrentExtension();
 const Config = Me.imports.lib.config;
 const _ = Config.Domain.gettext;
-const MENU_COLUMNS = 2;
+const MENU_COLUMNS = 12;
 const ANIMATION_DURATION = 500;
 
 // Re-implement GNOME Shell's PanelMenuButton class, with minor changes to

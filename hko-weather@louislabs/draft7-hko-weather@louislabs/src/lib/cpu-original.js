@@ -1,4 +1,3 @@
-
 label = new St.Label({
   text: '100%',
   y_align: Clutter.ActorAlign.START,

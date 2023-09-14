@@ -65,10 +65,7 @@ class TopHat {
     this.container = new Container.TopHatContainer();
 
     this.cpu = new Cpu.CpuMonitor(this.configHandler);
-    this.mem = new Mem.MemMonitor(this.configHandler);
-
     this.container.addMonitor(this.cpu);
-    this.container.addMonitor(this.mem);
 
     this.configHandler.connect_void('position-in-panel', () => {
       this.moveWithinPanel();

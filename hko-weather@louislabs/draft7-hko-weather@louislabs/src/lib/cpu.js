@@ -270,105 +270,245 @@ var CpuMonitor = GObject.registerClass(
     }
 
     _buildMenu() {
-      let label = new St.Label({
-        text: _('Processor usage'),
-        style_class: 'menu-header',
-      });
-      this.addMenuRow(label, 0, 2, 1);
-
-      label = new St.Label({
-        text: _('Processor utilization:'),
-        style_class: 'menu-label menu-section-end',
-      });
-      this.addMenuRow(label, 0, 1, 1);
-      this.menuCpuUsage = new St.Label({
-        text: '0%',
-        style_class: 'menu-value menu-section-end',
-      });
-      this.addMenuRow(this.menuCpuUsage, 1, 1, 1);
-
-      if (this.hasProc) {
-        this._buildCPUDetailRows();
-      }
-
       // Create a grid layout for the history chart
-      let grid = new St.Widget({
-        layout_manager: new Clutter.GridLayout({
-          orientation: Clutter.Orientation.VERTICAL,
-        }),
-      });
-      // this.historyGrid = grid.layout_manager;
-      // this.addMenuRow(grid, 0, 2, 1);
+      // let grid = new St.Widget({
+      //   layout_manager: new Clutter.GridLayout({
+      //     orientation: Clutter.Orientation.VERTICAL,
+      //   }),
+      // });
 
       this.historyChart = new St.DrawingArea();
-      // this.historyChart.connect('repaint', () => this._repaintHistory());
-      // this.historyGrid.attach(this.historyChart, 0, 0, 2, 3);
 
-      // label = new St.Label({
-      //   text: '100%',
-      //   y_align: Clutter.ActorAlign.START,
-      //   style_class: 'chart-label',
-      // });
-      // this.historyGrid.attach(label, 2, 0, 1, 1);
-      // label = new St.Label({
-      //   text: '50%',
-      //   y_align: Clutter.ActorAlign.CENTER,
-      //   style_class: 'chart-label',
-      // });
-      // this.historyGrid.attach(label, 2, 1, 1, 1);
-      // label = new St.Label({
-      //   text: '0',
-      //   y_align: Clutter.ActorAlign.END,
-      //   style_class: 'chart-label',
-      // });
-      // this.historyGrid.attach(label, 2, 2, 1, 1);
+      let label = new St.Label({
+        text: _('香港天氣'),
+        style_class: 'menu-header',
+        style: 'font-weight: bold;',
+      });
+      this.addMenuRow(label, 0, 12, 1);
 
-      // let limitInMins = Config.HISTORY_MAX_SIZE / 60;
-      // let startLabel = ngettext(
-      //   '%d min ago',
-      //   '%d mins ago',
-      //   limitInMins,
-      // ).format(limitInMins);
-      // label = new St.Label({
-      //   text: startLabel,
-      //   style_class: 'chart-label-then',
-      // });
-      // this.historyGrid.attach(label, 0, 3, 1, 1);
-      // label = new St.Label({ text: _('now'), style_class: 'chart-label-now' });
-      // this.historyGrid.attach(label, 1, 3, 1, 1);
+      let weather_svg = new St.Icon({
+        gicon: Gio.icon_new_for_string(
+          Me.dir.get_path() + '/svgs/weather/clear-day.svg',
+        ),
+        style: 'width: 60px; height: 60px;',
+      });
+      this.addMenuRow(weather_svg, 0, 12, 1);
 
+      // act like a spacer
       label = new St.Label({
-        text: _('Top processes'),
+        text: '',
         style_class: 'menu-header',
       });
-      this.addMenuRow(label, 0, 2, 1);
+      this.addMenuRow(label, 0, 12, 1);
 
-      this.topProcesses = [];
-      for (let i = 0; i < Config.N_TOP_PROCESSES; i++) {
-        let cmd = new St.Label({ text: '', style_class: 'menu-cmd-name' });
-        this.addMenuRow(cmd, 0, 1, 1);
-        let style = 'menu-cmd-usage';
-        if (i === Config.N_TOP_PROCESSES - 1) {
-          style = 'menu-cmd-usage menu-section-end';
-        }
-        let usage = new St.Label({ text: '', style_class: style });
-        this.addMenuRow(usage, 1, 1, 1);
-        let p = new Shared.TopProcess(cmd, usage);
-        this.topProcesses.push(p);
-      }
+      let temperature_box = new St.BoxLayout({
+        x_expand: true,
+        y_expand: true,
+        x_align: Clutter.ActorAlign.CENTER,
+        y_align: Clutter.ActorAlign.CENTER,
+        vertical: true,
+      });
 
+      let temperature_title = new St.Label({
+        text: _('温度'),
+        style_class: 'menu-label menu-section-end',
+        style: 'font-weight: bold; text-align: center;',
+      });
+      temperature_box.add(temperature_title);
+
+      let temperature_value = new St.Label({
+        text: _('29°'),
+        style_class: 'menu-label menu-section-end',
+        style: 'font-size: 50px;',
+      });
+      temperature_box.add(temperature_value);
+
+      this.addMenuRow(temperature_box, 0, 6, 1);
+
+      let humidity_box = new St.BoxLayout({
+        x_expand: true,
+        y_expand: true,
+        x_align: Clutter.ActorAlign.CENTER,
+        y_align: Clutter.ActorAlign.CENTER,
+        vertical: true,
+      });
+
+      let humidity_title = new St.Label({
+        text: _('濕度'),
+        style_class: 'menu-label menu-section-end',
+        style: 'font-weight: bold; text-align: center;',
+      });
+      humidity_box.add(humidity_title);
+
+      let humidity_value = new St.Label({
+        text: _('98'),
+        style_class: 'menu-label menu-section-end',
+        style: 'font-size: 50px;',
+      });
+      humidity_box.add(humidity_value);
+
+      this.addMenuRow(humidity_box, 6, 6, 1);
+
+      // act like a spacer
       label = new St.Label({
-        text: _('System uptime'),
+        text: '',
         style_class: 'menu-header',
       });
-      this.addMenuRow(label, 0, 2, 1);
+      this.addMenuRow(label, 0, 12, 1);
+
+      let forecast_box1 = new St.BoxLayout({
+        x_expand: true,
+        y_expand: true,
+        x_align: Clutter.ActorAlign.CENTER,
+        y_align: Clutter.ActorAlign.CENTER,
+        vertical: true,
+      });
+
+      let forecast_day_1_title = new St.Label({
+        text: _('29/Sep'),
+        style_class: 'menu-label menu-section-end forecast-row',
+        style: 'font-weight: bold; text-align: center;',
+      });
+      forecast_box1.add(forecast_day_1_title);
+
+      let sample_svg = new St.Icon({
+        gicon: Gio.icon_new_for_string(
+          Me.dir.get_path() + '/svgs/weather/clear-day.svg',
+        ),
+        style: 'width: 60px; height: 60px;',
+      });
+      forecast_box1.add(sample_svg);
+
+
+      let forecast_day_1_value = new St.Label({
+        text: _('26'),
+        style_class: 'menu-label menu-section-end',
+        style: 'font-weight: bold; text-align: center;',
+      });
+      forecast_box1.add(forecast_day_1_value);
+
+      this.addMenuRow(forecast_box1, 0, 4, 1);
+
+      let forecast_box2 = new St.BoxLayout({
+        x_expand: true,
+        y_expand: true,
+        x_align: Clutter.ActorAlign.CENTER,
+        y_align: Clutter.ActorAlign.CENTER,
+        vertical: true,
+      });
+
+
+
+
+      let forecast_day_2_title = new St.Label({
+        text: _('30/Sep'),
+        style_class: 'menu-label menu-section-end',
+        style: 'font-weight: bold; text-align: center;',
+      });
+      forecast_box2.add(forecast_day_2_title);
+
+
+      let forecast_day_2_svg = new St.Icon({
+        gicon: Gio.icon_new_for_string(
+          Me.dir.get_path() + '/svgs/weather/clear-day.svg',
+        ),
+        style: 'width: 60px; height: 60px;',
+      });
+      forecast_box2.add(forecast_day_2_svg);
+
+      let forecast_day_2_value = new St.Label({
+        text: _('26'),
+        style_class: 'menu-label menu-section-end',
+        style: 'font-weight: bold; text-align: center;',
+      });
+      forecast_box2.add(forecast_day_2_value);
+
+      this.addMenuRow(forecast_box2, 4, 4, 1);
+
+      let forecast_box3 = new St.BoxLayout({
+        x_expand: true,
+        y_expand: true,
+        x_align: Clutter.ActorAlign.CENTER,
+        y_align: Clutter.ActorAlign.CENTER,
+        vertical: true,
+      });
+
+      let forecast_day_3_title = new St.Label({
+        text: _('31/Sep'),
+        style_class: 'menu-label menu-section-end',
+        style: 'font-weight: bold; text-align: center;',
+      });
+      forecast_box3.add(forecast_day_3_title);
+
+
+      let forecast_day_3_svg = new St.Icon({
+        gicon: Gio.icon_new_for_string(
+          Me.dir.get_path() + '/svgs/weather/clear-day.svg',
+        ),
+        style: 'width: 60px; height: 60px;',
+      });
+      forecast_box3.add(forecast_day_3_svg);
+
+
+
+      let forecast_day_3_value = new St.Label({
+        text: _('26'),
+        style_class: 'menu-label menu-section-end',
+        style: 'font-weight: bold; text-align: center;',
+      });
+      forecast_box3.add(forecast_day_3_value);
+
+      this.addMenuRow(forecast_box3, 8, 4, 1);
+
+      // act like a spacer
+      label = new St.Label({
+        text: '',
+        style_class: 'menu-header',
+      });
+      this.addMenuRow(label, 0, 12, 1);
+
+      label = new St.Label({
+        text: _('特別天氣提示'),
+        style_class: 'menu-header',
+        style: 'text-align: center; font-weight: bold;',
+      });
+      this.addMenuRow(label, 0, 12, 1);
+
+      label = new St.Label({
+        text: _(
+          '雷雨區正影響香港東部地區，\n預料西貢及大埔區雨勢較大。\n市民應提高警惕。\n(12-09-2023 14:10) ',
+        ),
+        style_class: 'menu-header',
+        style: 'max-width: 260px; line-break: anywhere; height: 100px',
+      });
+      this.addMenuRow(label, 0, 12, 1);
+
+      label = new St.Label({
+        text: _('內容由香港天文台提供'),
+        style_class: 'menu-header',
+        style: 'text-align: center',
+      });
+      this.addMenuRow(label, 0, 12, 1);
       this.menuUptime = new St.Label({
         text: '',
         style_class: 'menu-uptime menu-section-end',
       });
-      this.addMenuRow(this.menuUptime, 0, 2, 1);
+      this.addMenuRow(this.menuUptime, 0, 12, 1);
 
-      this.buildMenuButtons();
+      label = new St.Label({
+        text: _('source'),
+        style_class: 'menu-header',
+        style: 'text-align: center',
+      });
+      this.addMenuRow(label, 0, 12, 1);
+
+      this.menuUptime = new St.Label({
+        text: '',
+        style_class: 'menu-uptime menu-section-end',
+      });
+      this.addMenuRow(this.menuUptime, 0, 12, 1);
+
+      // this.buildMenuButtons();
     }
 
     _buildCPUDetailRows() {
