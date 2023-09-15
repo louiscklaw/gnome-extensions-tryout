@@ -1,49 +1,54 @@
-.examplePanelTextBlaBlaBla {
-  color: tomato;
-}
-
-.weather-notice-box {
-  background-color: gold;
-  color: white;
-  font-size: 20px;
-}
-
-.weather-notice-box-title {
-  background-color: cyan;
-  color: white;
-  font-size: 20px;
-}
-
-.weather-notice-box-body {
-  background-color: green;
-  color: white;
-  font-size: 20px;
-}
-
-.humidity-box {
-  background-color: tomato;
-  color: white;
-}
-
-.humidity-body {
-  background-color: yellow;
+.current-weather-title {
+  font-weight: bold;
   text-align: center;
 }
 
-.popup-base-menu-item {
-  background-color: lightgray;
-  width: 300px;
-  
+.current-weather-value {
+  font-size: 50px;
 }
 
-.test-center {
-  background-color: red;
+.forecast-row {
+  padding-top: 15px;
 }
 
-.temperature-list {
-  /* background-color: blue; */
+.forecast-title {
+  font-weight: bold;
+  text-align: center;
 }
 
-.popup-style {
-  background-color: cyan;
+.forecast-svg {
+  width: 60px;
+  height: 60px;
+}
+
+.forecast-value {
+  font-weight: bold;
+  text-align: center;
+}
+
+.row-padding {
+  padding-top: 15px;
+}
+
+.content-padding {
+  padding-top: 5px;
+}
+
+.menu-header {
+  font-weight: bold;
+}
+
+.special-weather-note {
+  max-width: 260px;
+  line-break: anywhere;
+  height: 100px;
+}
+
+.hko-text {
+  font-size: 10px;
+  text-align: center;
+}
+.source-text {
+  font-size: 10px;
+  text-align: center;
 }
