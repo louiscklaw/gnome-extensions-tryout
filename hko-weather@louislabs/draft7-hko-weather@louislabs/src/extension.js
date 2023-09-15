@@ -574,7 +574,7 @@ class TopHat {
   }
 
   addToPanel() {
-    Main.panel.addToStatusArea('TopHat', this.container);
+    Main.panel.addToStatusArea('HkoWeatherPanel', this.container);
   }
 
 
