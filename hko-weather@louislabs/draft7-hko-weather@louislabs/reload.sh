@@ -2,17 +2,17 @@
 
 set -x
 
-gnome-extensions disable hko-weather@louislabs
-gnome-extensions uninstall hko-weather@louislabs
-rm -rf ~/.local/share/gnome-shell/extensions/hko-weather@louislabs
+gnome-extensions disable hko-weather@louislabs.com
+gnome-extensions uninstall hko-weather@louislabs.com
+rm -rf ~/.local/share/gnome-shell/extensions/hko-weather@louislabs.com
 
 set -e
 
-mkdir -p  ~/.local/share/gnome-shell/extensions/hko-weather@louislabs
+mkdir -p  ~/.local/share/gnome-shell/extensions/hko-weather@louislabs.com
 
 pushd src
     glib-compile-schemas schemas/
-    cp -r . ~/.local/share/gnome-shell/extensions/hko-weather@louislabs/
+    cp -r . ~/.local/share/gnome-shell/extensions/hko-weather@louislabs.com/
 popd
 
 # echo 
@@ -21,4 +21,4 @@ popd
 # echo 
 killall -SIGQUIT gnome-shell
 
-gnome-extensions enable hko-weather@louislabs
+gnome-extensions enable hko-weather@louislabs.com

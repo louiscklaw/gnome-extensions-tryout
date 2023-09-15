@@ -12,14 +12,15 @@ let Cpu = null;
 let Mem = null;
 let Net = null;
 let FS = null;
+let Container = null;
+
 
 try {
-  // eslint-disable-next-line no-unused-vars
   GTop = imports.gi.GTop;
+
+  Container = Me.imports.lib.container;
   Cpu = Me.imports.lib.cpu;
-  // Mem = Me.imports.lib.mem;
-  // Net = Me.imports.lib.net;
-  // FS = Me.imports.lib.fs;
+  
 } catch (err) {
   log(`[${Me.metadata.name}] Error loading dependencies: ${err}`);
   depFailures.push(err);
@@ -27,7 +28,7 @@ try {
 }
 
 const Config = Me.imports.lib.config;
-const Container = Me.imports.lib.container;
+
 const _ = Config.Domain.gettext;
 
 const MenuPosition = {
@@ -38,23 +39,28 @@ const MenuPosition = {
   RIGHT_EDGE: 4,
 };
 
+
+
+
+
+
+
+
+
 // Declare `tophat` in the scope of the whole script so it can
 // be accessed in both `enable()` and `disable()`
 let tophat = null;
 
 class TopHat {
   constructor() {
-    this.configHandler = new Config.ConfigHandler();
     this.container = new Container.TopHatContainer();
 
-    this.cpu = new Cpu.CpuMonitor(this.configHandler);
+    this.cpu = new Cpu.CpuMonitor();
     this.container.addMonitor(this.cpu);
-
   }
 
   addToPanel() {
     Main.panel.addToStatusArea('TopHat', this.container);
-   
   }
 
   _getPreferredPanelBoxAndPosition() {
@@ -98,7 +104,6 @@ function init() {
 function enable() {
   tophat = new TopHat();
   tophat.addToPanel();
-
 }
 
 function disable() {

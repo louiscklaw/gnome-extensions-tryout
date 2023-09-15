@@ -1,111 +1,366 @@
 'use strict';
 
-const { Gio, GLib, Clutter, GObject, St, GTop } = imports.gi;
+const { Atk,Gio, GLib, Clutter, GObject, St, GTop, Shell } = imports.gi;
+
+const PopupMenu = imports.ui.popupMenu;
+
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
+
 const Config = Me.imports.lib.config;
-const Shared = Me.imports.lib.shared;
-const Monitor = Me.imports.lib.monitor;
-const FileModule = Me.imports.lib.file;
+
 const _ = Config.Domain.gettext;
-const ngettext = Config.Domain.ngettext;
 
-class CPUUse {
-  constructor(user = 0, sys = 0) {
-    this.user = user;
-    this.sys = sys;
-  }
+const Main = imports.ui.main;
+const ShellConfig = imports.misc.config;
+const Util = imports.misc.util;
 
-  computeFromIdle(userUsage, idleUsage) {
-    this.user = userUsage;
-    this.sys = 100 - userUsage - idleUsage;
-  }
+const MENU_COLUMNS = 12;
+const ANIMATION_DURATION = 500;
 
-  total() {
-    return this.user + this.sys;
-  }
-
-  copy() {
-    return new CPUUse(this.user, this.sys);
-  }
-}
-
-class ProcessCPUUse {
-  constructor(pid = 0) {
-    this.pid = pid;
-    this.cmd = '';
-    this.cpuTimeNow = 0;
-    this.cpuTimePrev = 0;
-  }
-
-  updateTime(time) {
-    this.cpuTimePrev = this.cpuTimeNow;
-    this.cpuTimeNow = time.rtime;
-    this.freq = time.frequency;
-  }
-
-  cpuTime() {
-    return this.cpuTimeNow - this.cpuTimePrev;
-  }
-
-  cpuUsage() {
-    if (this.freq === 0) {
-      return 0;
-    }
-    return (
-      ((this.cpuTime() / this.freq) * Shared.SECOND_AS_MILLISECONDS) /
-      Config.UPDATE_INTERVAL_PROCLIST
-    );
-  }
-
-  toString() {
-    return `use: ${this.cpuUsage()} cmd: ${this.cmd} pid: ${this.pid}`;
-  }
-}
-
-var CpuMonitor = GObject.registerClass(
+var TopHatMonitor = GObject.registerClass(
   {
     Properties: {
-      'show-cores': GObject.ParamSpec.boolean(
-        'show-cores',
-        'Show cores',
-        'True if each CPU core should have its own bar',
+      'meter-bar-width': GObject.ParamSpec.double(
+        'meter-bar-width',
+        'Meter bar width',
+        "The width for each meter bar in 'em's",
         GObject.ParamFlags.READWRITE,
-        true,
+        0,
+        10,
+        1,
+      ),
+      'meter-fg-color': GObject.ParamSpec.string(
+        'meter-fg-color',
+        'Meter foreground color',
+        'A hex value representing the color to use to draw the meter bars',
+        GObject.ParamFlags.READWRITE,
+        '#ffffff',
+      ),
+      'refresh-rate': GObject.ParamSpec.string(
+        'refresh-rate',
+        'How frequently the monitor will refresh system resource usage',
+        'How frequently the monitor will refresh system resource usage. One of "slow", "medium", or "fast".',
+        GObject.ParamFlags.READWRITE,
+        '',
+      ),
+      'show-animation': GObject.ParamSpec.boolean(
+        'show-animation',
+        'Show animation',
+        'True if the meter should animate',
+        GObject.ParamFlags.READWRITE,
+        false,
+      ),
+      visualization: GObject.ParamSpec.string(
+        'visualization',
+        'How to visualize the monitor',
+        'How to visualize the monitor. One of "chart", "numeric", or "both".',
+        GObject.ParamFlags.READWRITE,
+        '',
       ),
     },
+    Signals: { 'menu-set': {} },
   },
-  class TopHatCpuMonitor extends Monitor.TopHatMonitor {
-    _init(configHandler) {
-      super._init(`${Me.metadata.name} CPU Monitor`);
+  class TopHatMonitorBase extends St.Widget {
+    _init(name) {
+      super._init({
+        reactive: true,
+        can_focus: true,
+        track_hover: true,
+        style_class: 'tophat-monitor panel-button',
+        accessible_name: name,
+        accessible_role: Atk.Role.MENU,
+        x_expand: true,
+        y_expand: true,
+      });
+      this.name = name;
+      this._delegate = this;
+      this._signals = [];
 
-      // Initialize libgtop values
-      this.cpuCores = GTop.glibtop_get_sysinfo().ncpu;
-      this.cpu = new GTop.glibtop_cpu();
-      GTop.glibtop_get_cpu(this.cpu);
-      this.cpuUsage = new CPUUse();
-      this.cpuCoreUsage = new Array(this.cpuCores);
-      this.cpuPrev = {
-        user: this.cpu.user,
-        idle: this.cpu.idle,
-        total: this.cpu.total,
-        xcpu_user: new Array(this.cpuCores),
-        xcpu_idle: new Array(this.cpuCores),
-        xcpu_total: new Array(this.cpuCores),
-      };
-      for (let i = 0; i < this.cpuCores; i++) {
-        this.cpuPrev.xcpu_user[i] = this.cpu.xcpu_user[i];
-        this.cpuPrev.xcpu_idle[i] = this.cpu.xcpu_idle[i];
-        this.cpuPrev.xcpu_total[i] = this.cpu.xcpu_total[i];
-        this.cpuCoreUsage[i] = new CPUUse();
+      let hbox = new St.BoxLayout();
+      this.add_child(hbox);
+      this.box = hbox;
+      this.meter = null;
+      this.usage = null;
+      this.activityBox = null;
+
+      this.connect('style-changed', this._onStyleChanged.bind(this));
+      this.connect('destroy', this._onDestroy.bind(this));
+
+      this._minHPadding = this._natHPadding = 0.0;
+
+      this.setMenu(new PopupMenu.PopupMenu(this, 0.5, St.Side.TOP, 0));
+      this.buildMenuBase();
+    }
+
+
+
+
+
+
+    refresh() {
+      // Override this in child classes to refresh resource consumption/activity
+    }
+
+
+    setMenu(menu) {
+      if (this.menu) {
+        this.menu.destroy();
       }
-      this.history = new Array(0);
-      this.processes = new Map();
-      let f = new FileModule.File('/proc/cpuinfo');
-      this.hasProc = f.exists();
-      this.hasTemp = true; // will change to false if we can't read hwmon temperatures
-      this.refreshChartsTimer = 0;
-      this.refreshProcessesTimer = 0;
+
+      this.menu = menu;
+      if (this.menu) {
+        this.menu.actor.add_style_class_name('panel-menu');
+        this.menu.connect(
+          'open-state-changed',
+          this._onOpenStateChanged.bind(this),
+        );
+        this.menu.actor.connect(
+          'key-press-event',
+          this._onMenuKeyPress.bind(this),
+        );
+
+        Main.uiGroup.add_actor(this.menu.actor);
+        this.menu.actor.hide();
+      }
+      this.emit('menu-set');
+    }
+
+    buildMenuBase() {
+      if (!this.menu) {
+        return;
+      }
+
+      let statusMenu = new PopupMenu.PopupMenuSection();
+      let grid = new St.Widget({
+        style_class: 'menu-grid',
+        layout_manager: new Clutter.GridLayout({
+          orientation: Clutter.Orientation.VERTICAL,
+        }),
+      });
+      this.lm = grid.layout_manager;
+      this.menuRow = 0;
+      this.menuCol = 0;
+      this.numMenuCols = MENU_COLUMNS;
+      statusMenu.box.add_child(grid);
+      this.menu.addMenuItem(statusMenu);
+    }
+
+    buildMenuButtons() {
+      if (!this.menu) {
+        return;
+      }
+
+      let box = new St.BoxLayout({
+        style_class: 'tophat-menu-button-box',
+        x_align: Clutter.ActorAlign.CENTER,
+        reactive: true,
+        x_expand: true,
+      });
+
+      // System Monitor
+      let appSys = Shell.AppSystem.get_default();
+      let app = appSys.lookup_app('gnome-system-monitor.desktop');
+      if (app) {
+        let button = new St.Button({ style_class: 'button' });
+        button.child = new St.Icon({
+          icon_name: 'utilities-system-monitor-symbolic',
+          fallback_icon_name: 'org.gnome.SystemMonitor-symbolic',
+        });
+
+        button.connect('clicked', () => {
+          this.menu.close(true);
+          app.activate();
+        });
+        box.add_child(button);
+      }
+
+      // TopHat preferences
+      let button = new St.Button({ style_class: 'button' });
+      button.child = new St.Icon({
+        icon_name: 'preferences-system-symbolic',
+      });
+      button.connect('clicked', () => {
+        this.menu.close(true);
+        try {
+          if (ExtensionUtils && ExtensionUtils.openPrefs) {
+            ExtensionUtils.openPrefs();
+          } else {
+            Util.spawn(['gnome-shell-extension-prefs', Me.metadata.uuid]);
+          }
+        } catch (err) {
+          log(`[${Me.metadata.name}] Error opening settings: ${err}`);
+        }
+      });
+      box.add_child(button);
+
+      this.addMenuRow(box, 0, this.numMenuCols, 1);
+    }
+
+    addMenuRow(widget, col, colSpan, rowSpan) {
+      this.lm.attach(widget, col, this.menuRow, colSpan, rowSpan);
+      this.menuCol += colSpan;
+      if (this.menuCol >= this.numMenuCols) {
+        this.menuRow++;
+        this.menuCol = 0;
+      }
+    }
+
+    add_child(child) {
+      if (this.box) {
+        this.box.add_child(child);
+      } else {
+        super.add_child(child);
+      }
+    }
+
+    vfunc_event(event) {
+      if (
+        this.menu &&
+        (event.type() === Clutter.EventType.TOUCH_BEGIN ||
+          event.type() === Clutter.EventType.BUTTON_PRESS)
+      ) {
+        this.menu.toggle();
+      }
+
+      return Clutter.EVENT_PROPAGATE;
+    }
+
+    vfunc_hide() {
+      super.vfunc_hide();
+
+      if (this.menu) {
+        this.menu.close();
+      }
+    }
+
+    _onMenuKeyPress(actor, event) {
+      if (global.focus_manager.navigate_from_event(event)) {
+        return Clutter.EVENT_STOP;
+      }
+
+      let symbol = event.get_key_symbol();
+      if (symbol === Clutter.KEY_Left || symbol === Clutter.KEY_Right) {
+        let group = global.focus_manager.get_group(this);
+        if (group) {
+          let direction =
+            symbol === Clutter.KEY_Left
+              ? St.DirectionType.LEFT
+              : St.DirectionType.RIGHT;
+          group.navigate_focus(this, direction, false);
+          return Clutter.EVENT_STOP;
+        }
+      }
+      return Clutter.EVENT_PROPAGATE;
+    }
+
+    _onOpenStateChanged(menu, open) {
+      if (open) {
+        this.add_style_pseudo_class('active');
+      } else {
+        this.remove_style_pseudo_class('active');
+      }
+
+      // Setting the max-height won't do any good if the minimum height of the
+      // menu is higher then the screen; it's useful if part of the menu is
+      // scrollable so the minimum height is smaller than the natural height
+      let workArea = Main.layoutManager.getWorkAreaForMonitor(
+        Main.layoutManager.primaryIndex,
+      );
+      let scaleFactor = St.ThemeContext.get_for_stage(
+        global.stage,
+      ).scale_factor;
+      let verticalMargins =
+        this.menu.actor.margin_top + this.menu.actor.margin_bottom;
+
+      // The workarea and margin dimensions are in physical pixels, but CSS
+      // measures are in logical pixels, so make sure to consider the scale
+      // factor when computing max-height
+      let maxHeight = Math.round(
+        (workArea.height - verticalMargins) / scaleFactor,
+      );
+      this.menu.actor.style = `max-height: ${maxHeight}px;`;
+    }
+
+    _onStyleChanged(actor) {
+      let themeNode = actor.get_theme_node();
+
+      this._minHPadding = themeNode.get_length('-minimum-hpadding');
+      this._natHPadding = themeNode.get_length('-natural-hpadding');
+    }
+
+    vfunc_get_preferred_width(_forHeight) {
+      let child = this.get_first_child();
+      let minimumSize, naturalSize;
+
+      if (child) {
+        [minimumSize, naturalSize] = child.get_preferred_width(-1);
+      } else {
+        minimumSize = naturalSize = 0;
+      }
+
+      minimumSize += 2 * this._minHPadding;
+      naturalSize += 2 * this._natHPadding;
+
+      return [minimumSize, naturalSize];
+    }
+
+    vfunc_get_preferred_height(_forWidth) {
+      let child = this.get_first_child();
+
+      if (child) {
+        return child.get_preferred_height(-1);
+      }
+
+      return [0, 0];
+    }
+
+    vfunc_allocate(box) {
+      this.set_allocation(box);
+
+      let child = this.get_first_child();
+      if (!child) {
+        return;
+      }
+
+      let [, natWidth] = child.get_preferred_width(-1);
+
+      let availWidth = box.x2 - box.x1;
+      let availHeight = box.y2 - box.y1;
+
+      let childBox = new Clutter.ActorBox();
+      if (natWidth + 2 * this._natHPadding <= availWidth) {
+        childBox.x1 = this._natHPadding;
+        childBox.x2 = availWidth - this._natHPadding;
+      } else {
+        childBox.x1 = this._minHPadding;
+        childBox.x2 = availWidth - this._minHPadding;
+      }
+
+      childBox.y1 = 0;
+      childBox.y2 = availHeight;
+
+      child.allocate(childBox);
+    }
+
+    _onDestroy() {
+      if (this.menu) {
+        this.menu.destroy();
+      }
+      if (this.meter) {
+        this.meter.destroy();
+      }
+      this._signals.forEach(id => this.disconnect(id));
+      this._signals = [];
+    }
+  },
+);
+
+var CpuMonitor = GObject.registerClass(
+  {},
+  class TopHatCpuMonitor extends TopHatMonitor {
+    _init() {
+      super._init(`${Me.metadata.name} CPU Monitor`);
 
       let gicon = Gio.icon_new_for_string(
         `${Me.path}/icons/cpu-icon-symbolic.svg`,
@@ -116,141 +371,10 @@ var CpuMonitor = GObject.registerClass(
       });
       this.add_child(this.icon);
 
-      configHandler.settings.bind(
-        'show-cpu',
-        this,
-        'visible',
-        Gio.SettingsBindFlags.GET,
-      );
-      configHandler.settings.bind(
-        'refresh-rate',
-        this,
-        'refresh-rate',
-        Gio.SettingsBindFlags.GET,
-      );
-      configHandler.settings.bind(
-        'show-icons',
-        this.icon,
-        'visible',
-        Gio.SettingsBindFlags.GET,
-      );
-      configHandler.settings.bind(
-        'meter-bar-width',
-        this,
-        'meter-bar-width',
-        Gio.SettingsBindFlags.GET,
-      );
-      configHandler.settings.bind(
-        'meter-fg-color',
-        this,
-        'meter-fg-color',
-        Gio.SettingsBindFlags.GET,
-      );
-      configHandler.settings.bind(
-        'cpu-show-cores',
-        this,
-        'show-cores',
-        Gio.SettingsBindFlags.GET,
-      );
-      configHandler.settings.bind(
-        'show-animations',
-        this,
-        'show-animation',
-        Gio.SettingsBindFlags.GET,
-      );
-      configHandler.settings.bind(
-        'cpu-display',
-        this,
-        'visualization',
-        Gio.SettingsBindFlags.GET,
-      );
-
-      let id = this.connect('notify::visible', () => {
-        if (this.visible) {
-          this._startTimers();
-        } else {
-          this._stopTimers();
-        }
-      });
-      this._signals.push(id);
-      id = this.connect('notify::refresh-rate', () => {
-        this._stopTimers();
-        this._startTimers();
-      });
-      this._signals.push(id);
-
-      this._buildMeter();
       this._buildMenu();
-      this._startTimers();
-    }
-
-    get show_cores() {
-      if (this._show_cores === undefined) {
-        this._show_cores = true;
-      }
-      return this._show_cores;
-    }
-
-    set show_cores(value) {
-      if (this._show_cores === value) {
-        return;
-      }
-      this._show_cores = value;
-      this._buildMeter();
-      this.notify('show-cores');
-    }
-
-    _startTimers() {
-      // Clear the history chart and configure it for the current refresh rate
-      this.history = [];
-      let updateInterval = this.computeSummaryUpdateInterval(
-        Config.UPDATE_INTERVAL_CPU,
-      );
-      this.historyLimit = (Config.HISTORY_MAX_SIZE * 1000) / updateInterval;
-
-      if (this.refreshChartsTimer === 0) {
-        this.refreshChartsTimer = GLib.timeout_add(
-          GLib.PRIORITY_DEFAULT,
-          updateInterval,
-          () => this._refreshCharts(),
-        );
-      }
-      if (this.refreshProcessesTimer === 0) {
-        this.refreshProcessesTimer = GLib.timeout_add(
-          GLib.PRIORITY_DEFAULT,
-          this.computeDetailsUpdateInterval(Config.UPDATE_INTERVAL_PROCLIST),
-          () => this._refreshProcesses(),
-        );
-      }
-    }
-
-    _stopTimers() {
-      if (this.refreshChartsTimer !== 0) {
-        GLib.source_remove(this.refreshChartsTimer);
-        this.refreshChartsTimer = 0;
-      }
-      if (this.refreshProcessesTimer !== 0) {
-        GLib.source_remove(this.refreshProcessesTimer);
-        this.refreshProcessesTimer = 0;
-      }
-    }
-
-    _buildMeter() {
-      let numBars = 1;
-      if (this.show_cores) {
-        numBars = this.cpuCores;
-      }
-      this.setMeter(new Monitor.Meter(numBars, this.meter_bar_width));
     }
 
     _buildMenu() {
-      // Create a grid layout for the history chart
-      // let grid = new St.Widget({
-      //   layout_manager: new Clutter.GridLayout({
-      //     orientation: Clutter.Orientation.VERTICAL,
-      //   }),
-      // });
-
       this.historyChart = new St.DrawingArea();
 
       let label = new St.Label({
@@ -450,238 +574,7 @@ var CpuMonitor = GObject.registerClass(
       // this.buildMenuButtons();
     }
 
-
-    refresh() {
-      this._refreshCharts();
-      this._refreshProcesses();
-    }
-
-    _refreshCharts() {
-      GTop.glibtop_get_cpu(this.cpu);
-
-      // Total CPU usage
-      let userDelta = this.cpu.user - this.cpuPrev.user;
-      let idleDelta = this.cpu.idle - this.cpuPrev.idle;
-      let totalDelta = this.cpu.total - this.cpuPrev.total;
-      let idleUsage = Math.round((100 * idleDelta) / totalDelta);
-      let userUsage = Math.round((100 * userDelta) / totalDelta);
-      this.cpuUsage.computeFromIdle(userUsage, idleUsage);
-
-      // Per-core CPU usage
-      for (let i = 0; i < this.cpuCores; i++) {
-        userDelta = this.cpu.xcpu_user[i] - this.cpuPrev.xcpu_user[i];
-        idleDelta = this.cpu.xcpu_idle[i] - this.cpuPrev.xcpu_idle[i];
-        totalDelta = this.cpu.xcpu_total[i] - this.cpuPrev.xcpu_total[i];
-        let coreIdleUsage = Math.round((100 * idleDelta) / totalDelta);
-        let coreUserUsage = Math.round((100 * userDelta) / totalDelta);
-        this.cpuCoreUsage[i].computeFromIdle(coreUserUsage, coreIdleUsage);
-      }
-
-      // Save values
-      this.cpuPrev.user = this.cpu.user;
-      this.cpuPrev.idle = this.cpu.idle;
-      this.cpuPrev.total = this.cpu.total;
-      for (let i = 0; i < this.cpuCores; i++) {
-        this.cpuPrev.xcpu_user[i] = this.cpu.xcpu_user[i];
-        this.cpuPrev.xcpu_idle[i] = this.cpu.xcpu_idle[i];
-        this.cpuPrev.xcpu_total[i] = this.cpu.xcpu_total[i];
-      }
-      while (this.history.length >= this.historyLimit) {
-        this.history.shift();
-      }
-      this.history.push(this.cpuUsage.copy());
-
-      // Update UI
-      // log(`[TopHat] CPU: ${this.cpuUsage}% on ${this.cpuCores} cores (${this.cpuCoreUsage.join()})`);
-      let cpuTotal = this.cpuUsage.total();
-      this.usage.text = `${cpuTotal}%`;
-
-      if (cpuTotal < 1) {
-        cpuTotal = '< 1';
-      }
-      this.menuCpuUsage.text = `${cpuTotal}%`;
-      this.historyChart.queue_repaint();
-
-      // Update panel meter
-      let usage = [];
-      if (this.show_cores) {
-        usage = new Array(this.cpuCores);
-        for (let i = 0; i < this.cpuCores; i++) {
-          usage[i] = this.cpuCoreUsage[i].total();
-        }
-      } else {
-        usage = [this.cpuUsage.total()];
-      }
-      this.meter.setUsage(usage);
-
-      if (this.hasProc) {
-        this._readCPUInfo();
-      }
-
-      return true;
-    }
-
-    _readCPUInfo() {
-      new FileModule.File('/proc/cpuinfo')
-        .read()
-        .then(lines => {
-          let values = '';
-          let cpuInfo = new Map();
-          let blocks = lines.split('\n\n');
-          for (const block of blocks) {
-            let id,
-              freq = 0,
-              model = '';
-            if ((values = block.match(/physical id\s*:\s*(\d+)/))) {
-              id = parseInt(values[1]);
-            }
-            let info = cpuInfo.get(id);
-            if (info === undefined) {
-              info = { id, freq: 0, cores: 0, model: '' };
-            }
-            info.cores += 1;
-
-            if ((values = block.match(/cpu MHz\s*:\s*(\d+)/))) {
-              freq = parseInt(values[1]);
-              info.freq += freq;
-            }
-            if ((values = block.match(/model name\s*:\s*(.+)\n/))) {
-              model = values[1];
-              info.model = model;
-            }
-
-            cpuInfo.set(id, info);
-          }
-          if (this.menuCpuFreqs && this.menuCpuModels) {
-            cpuInfo.forEach(info => {
-              if (this.menuCpuModels[info.id] !== undefined) {
-                this.menuCpuModels[info.id].text = info.model;
-              }
-              if (this.menuCpuFreqs[info.id] !== undefined) {
-                this.menuCpuFreqs[info.id].text = `${(
-                  info.freq /
-                  info.cores /
-                  1000
-                ).toFixed(1)} GHz`;
-              }
-            });
-          }
-        })
-        .catch(err => {
-          log(`[${Me.metadata.name}] Error reading /proc/cpuinfo: ${err}`);
-          this.hasProc = false;
-        });
-    }
-
-    _readCPUTemps() {
-      this.cpuTempMonitors.forEach((path, id) => {
-        new FileModule.File(path)
-          .read()
-          .then(temp => {
-            temp = parseInt(temp);
-            this.menuCpuTemps[id].text = `${(temp / 1000).toFixed(0)} °C`;
-          })
-          .catch(err => {
-            log(`[${Me.metadata.name}] Error reading ${path}: ${err}`);
-            this.hasTemp = false;
-          });
-      });
-    }
-
-    _refreshProcesses() {
-      // Build list of N most CPU-intensive processes
-      let processes = Shared.getProcessList();
-
-      let updatedProcesses = new Map();
-      processes.forEach(pid => {
-        let procInfo = this.processes.get(pid);
-        if (procInfo === undefined) {
-          procInfo = new ProcessCPUUse(pid);
-          procInfo.cmd = Shared.getProcessName(pid);
-        }
-
-        if (procInfo.cmd) {
-          let time = new GTop.glibtop_proc_time();
-          GTop.glibtop_get_proc_time(time, pid);
-          procInfo.updateTime(time);
-          updatedProcesses.set(pid, procInfo);
-        }
-      });
-      this.processes = updatedProcesses;
-
-      // Get the top processes by CPU usage
-      let procList = new Array(0);
-      this.processes.forEach(e => {
-        if (e.cpuTime() > 0) {
-          procList.push(e);
-        }
-      });
-      procList.sort((a, b) => {
-        return b.cpuTime() - a.cpuTime();
-      });
-      procList = procList.slice(0, Config.N_TOP_PROCESSES);
-      while (procList.length < Config.N_TOP_PROCESSES) {
-        // If we don't have at least N_TOP_PROCESSES active, fill out
-        // the array with empty ones
-        procList.push(new ProcessCPUUse());
-      }
-      for (let i = 0; i < Config.N_TOP_PROCESSES; i++) {
-        this.topProcesses[i].cmd.text = procList[i].cmd;
-        let cpuUse = '';
-        if (procList[i].cmd) {
-          cpuUse = (procList[i].cpuUsage() * 100) / this.cpuCores;
-          if (cpuUse < 1) {
-            cpuUse = '< 1';
-            // cpuUse = cpuUse.toFixed(2);
-          } else {
-            cpuUse = Math.round(cpuUse);
-          }
-          cpuUse += '%';
-        }
-        this.topProcesses[i].usage.text = cpuUse;
-      }
-
-      // Also fetch latest CPU temperature
-      if (this.hasTemp && this.cpuTempMonitors.size > 0) {
-        this._readCPUTemps();
-      }
-
-      // Also get the system's uptime
-      this._readSystemUptime();
-
-      return true;
-    }
-
-    _readSystemUptime() {
-      let uptime = new GTop.glibtop_uptime();
-      GTop.glibtop_get_uptime(uptime);
-      let days = 0,
-        hours = 0,
-        mins = 0;
-      mins = Math.floor((uptime.uptime % 3600) / 60);
-      hours = Math.floor((uptime.uptime % 86400) / 3600);
-      days = Math.floor(uptime.uptime / 86400);
-      let parts = [];
-      if (days > 0) {
-        parts.push(ngettext('%d day', '%d days', days).format(days));
-      }
-      if (days > 0 || hours > 0) {
-        parts.push(ngettext('%d hour', '%d hours', hours).format(hours));
-      }
-      parts.push(ngettext('%d minute', '%d minutes', mins).format(mins));
-      this.menuUptime.text = parts.join(' ');
-    }
-
     destroy() {
-      this._stopTimers();
-      Gio.Settings.unbind(this, 'visible');
-      Gio.Settings.unbind(this, 'refresh-rate');
-      Gio.Settings.unbind(this.icon, 'visible');
-      Gio.Settings.unbind(this, 'meter-fg-color');
-      Gio.Settings.unbind(this, 'meter-bar-width');
-      Gio.Settings.unbind(this, 'show-cores');
-      Gio.Settings.unbind(this, 'show-animation');
-      Gio.Settings.unbind(this, 'visualization');
       super.destroy();
     }
   },

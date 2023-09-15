@@ -1,5 +1,5 @@
 {
-  "uuid": "hko-weather@louislabs",
+  "uuid": "hko-weather@louislabs.com",
   "name": "hko weather status",
   "description": "a weather app showing hong kong weather",
   "version": 11,
@@ -15,6 +15,6 @@
     "44"
   ],
   "url": "https://www.google.com",
-  "gettext-domain": "hko-weather@louislabs",
+  "gettext-domain": "hko-weather@louislabs.com",
   "settings-schema": "org.gnome.shell.extensions.hko_weather"
 }
