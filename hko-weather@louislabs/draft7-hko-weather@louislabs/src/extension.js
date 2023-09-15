@@ -14,8 +14,8 @@ const PanelMenu = imports.ui.panelMenu;
 
 const ShellConfig = imports.misc.config;
 const Util = imports.misc.util;
-const Config = Me.imports.lib.config;
-const _ = Config.Domain.gettext;
+// const Config = Me.imports.lib.config;
+// const _ = Config.Domain.gettext;
 
 
 let Cpu = null;
@@ -36,27 +36,6 @@ const MenuPosition = {
   RIGHT_EDGE: 4,
 };
 
-
-var TopHatContainer = GObject.registerClass(
-  class TopHatContainer extends PanelMenu.Button {
-    _init() {
-      super._init();
-      this.box = new St.BoxLayout();
-      this.add_child(this.box);
-    }
-
-    addMonitor(monitor) {
-      this.box.add_child(monitor);
-    }
-
-    _onDestroy() {
-      this.monitors.forEach(monitor => {
-        monitor.destroy();
-      });
-      super._onDestroy();
-    }
-  },
-);
 
 var TopHatMonitor = GObject.registerClass(
   {
@@ -620,6 +599,26 @@ var CpuMonitor = GObject.registerClass(
   },
 );
 
+var TopHatContainer = GObject.registerClass(
+  class TopHatContainer extends PanelMenu.Button {
+    _init() {
+      super._init();
+      this.box = new St.BoxLayout();
+      this.add_child(this.box);
+    }
+
+    addMonitor(monitor) {
+      this.box.add_child(monitor);
+    }
+
+    _onDestroy() {
+      this.monitors.forEach(monitor => {
+        monitor.destroy();
+      });
+      super._onDestroy();
+    }
+  },
+);
 
 // Declare `tophat` in the scope of the whole script so it can
 // be accessed in both `enable()` and `disable()`
