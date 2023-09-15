@@ -1,6 +1,6 @@
 'use strict';
 
-const { Atk,Gio, GLib, Clutter, GObject, St, GTop, Shell } = imports.gi;
+const { Atk, Gio, GLib, Clutter, GObject, St, GTop, Shell } = imports.gi;
 
 const Main = imports.ui.main;
 const ExtensionUtils = imports.misc.extensionUtils;
@@ -18,7 +18,6 @@ const MENU_COLUMNS = 12;
 
 var TopHatMonitor = GObject.registerClass(
   {
-    
     Signals: { 'menu-set': {} },
   },
   class TopHatMonitorBase extends St.Widget {
@@ -53,15 +52,9 @@ var TopHatMonitor = GObject.registerClass(
       this.buildMenuBase();
     }
 
-
-
-
-
-
     refresh() {
       // Override this in child classes to refresh resource consumption/activity
     }
-
 
     setMenu(menu) {
       if (this.menu) {
@@ -576,7 +569,6 @@ class TopHat {
   addToPanel() {
     Main.panel.addToStatusArea('HkoWeatherPanel', this.container);
   }
-
 
   destroy() {
     this.container.destroy();
