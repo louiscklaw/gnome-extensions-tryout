@@ -12,21 +12,13 @@ const Me = ExtensionUtils.getCurrentExtension();
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 
-const ShellConfig = imports.misc.config;
 const Util = imports.misc.util;
-// const Config = Me.imports.lib.config;
-// const _ = Config.Domain.gettext;
-
 
 let Cpu = null;
-let Mem = null;
-let Net = null;
-let FS = null;
 let Container = null;
 
 const MENU_COLUMNS = 12;
 const ANIMATION_DURATION = 500;
-
 
 const MenuPosition = {
   LEFT_EDGE: 0,
