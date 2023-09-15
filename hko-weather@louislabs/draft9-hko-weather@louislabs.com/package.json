@@ -5,7 +5,7 @@
   "main": "extension.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "gitUpdate": "git add . && git commit -m\"update draft8-hko-weather@louislabs.com,\"",
+    "gitUpdate": "git add . && git commit -m\"update draft9-hko-weather@louislabs.com,\"",
     "view-log": "journalctl -f -o cat /usr/bin/gnome-shell"
   },
   "keywords": [],
