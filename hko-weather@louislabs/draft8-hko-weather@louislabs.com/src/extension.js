@@ -31,7 +31,7 @@ const MyPopup = GObject.registerClass(
       });
       this._weatherInfo = new St.Label({
         style_class: 'openweather-label',
-        text: '晴天',
+        text: '晴天' + Math.round(Math.random()*99999),
         y_align: Clutter.ActorAlign.CENTER,
         y_expand: true,
       });
