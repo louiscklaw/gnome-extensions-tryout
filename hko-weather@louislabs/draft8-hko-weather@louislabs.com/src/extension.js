@@ -10,27 +10,6 @@ const PopupMenu = imports.ui.popupMenu;
 const MENU_COLUMNS = 2;
 const ANIMATION_DURATION = 500;
 
-let GTop = null;
-let Cpu = null;
-let Mem = null;
-let Net = null;
-let FS = null;
-
-
-try {
-  // GTop = imports.gi.GTop;
-  // Cpu = Me.imports.lib.cpu;
-} catch (err) {
-  log(`[${Me.metadata.name}] Error loading dependencies: ${err}`);
-  depFailures.push(err);
-  missingLibs.push('GTop');
-}
-
-// const Config = Me.imports.lib.config;
-// const Container = Me.imports.lib.container;
-const Container = Me.imports.lib.container;
-
-
 let myPopup;
 
 const MyPopup = GObject.registerClass(
@@ -92,7 +71,6 @@ const MyPopup = GObject.registerClass(
 );
 
 function init() {
-  ExtensionUtils.initTranslations();
 }
 
 function enable() {
