@@ -1,8 +1,5 @@
 'use strict';
 
-let depFailures = [];
-let missingLibs = [];
-
 const { Atk,Gio, GLib, Clutter, GObject, St, GTop, Shell } = imports.gi;
 
 const Main = imports.ui.main;
@@ -18,58 +15,10 @@ let Cpu = null;
 let Container = null;
 
 const MENU_COLUMNS = 12;
-const ANIMATION_DURATION = 500;
-
-const MenuPosition = {
-  LEFT_EDGE: 0,
-  LEFT: 1,
-  CENTER: 2,
-  RIGHT: 3,
-  RIGHT_EDGE: 4,
-};
-
 
 var TopHatMonitor = GObject.registerClass(
   {
-    Properties: {
-      'meter-bar-width': GObject.ParamSpec.double(
-        'meter-bar-width',
-        'Meter bar width',
-        "The width for each meter bar in 'em's",
-        GObject.ParamFlags.READWRITE,
-        0,
-        10,
-        1,
-      ),
-      'meter-fg-color': GObject.ParamSpec.string(
-        'meter-fg-color',
-        'Meter foreground color',
-        'A hex value representing the color to use to draw the meter bars',
-        GObject.ParamFlags.READWRITE,
-        '#ffffff',
-      ),
-      'refresh-rate': GObject.ParamSpec.string(
-        'refresh-rate',
-        'How frequently the monitor will refresh system resource usage',
-        'How frequently the monitor will refresh system resource usage. One of "slow", "medium", or "fast".',
-        GObject.ParamFlags.READWRITE,
-        '',
-      ),
-      'show-animation': GObject.ParamSpec.boolean(
-        'show-animation',
-        'Show animation',
-        'True if the meter should animate',
-        GObject.ParamFlags.READWRITE,
-        false,
-      ),
-      visualization: GObject.ParamSpec.string(
-        'visualization',
-        'How to visualize the monitor',
-        'How to visualize the monitor. One of "chart", "numeric", or "both".',
-        GObject.ParamFlags.READWRITE,
-        '',
-      ),
-    },
+    
     Signals: { 'menu-set': {} },
   },
   class TopHatMonitorBase extends St.Widget {
