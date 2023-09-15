@@ -14,6 +14,8 @@ const PanelMenu = imports.ui.panelMenu;
 
 const ShellConfig = imports.misc.config;
 const Util = imports.misc.util;
+const Config = Me.imports.lib.config;
+const _ = Config.Domain.gettext;
 
 
 let Cpu = null;
@@ -25,9 +27,6 @@ let Container = null;
 const MENU_COLUMNS = 12;
 const ANIMATION_DURATION = 500;
 
-const Config = Me.imports.lib.config;
-
-const _ = Config.Domain.gettext;
 
 const MenuPosition = {
   LEFT_EDGE: 0,
@@ -638,33 +637,6 @@ class TopHat {
     Main.panel.addToStatusArea('TopHat', this.container);
   }
 
-  _getPreferredPanelBoxAndPosition() {
-    let box = 'right';
-    let position = 0;
-    switch (this.configHandler.positionInPanel) {
-      case MenuPosition.LEFT_EDGE:
-        box = 'left';
-        position = 0;
-        break;
-      case MenuPosition.LEFT:
-        box = 'left';
-        position = -1;
-        break;
-      case MenuPosition.CENTER:
-        box = 'center';
-        position = 1;
-        break;
-      case MenuPosition.RIGHT:
-        box = 'right';
-        position = 0;
-        break;
-      case MenuPosition.RIGHT_EDGE:
-        box = 'right';
-        position = -1;
-        break;
-    }
-    return { box, position };
-  }
 
   destroy() {
     this.container.destroy();
