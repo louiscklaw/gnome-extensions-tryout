@@ -37,6 +37,10 @@ var HkoWeatherWidget = GObject.registerClass(
       this.temperature_value.set_text(temperature);
     }
 
+    updateSpecialWeatherTips(weather_tips) {
+      this.special_weather_tips.set_text(weather_tips);
+    }
+
     _buildMenu() {
       this.historyChart = new St.DrawingArea();
 
@@ -47,11 +51,11 @@ var HkoWeatherWidget = GObject.registerClass(
       });
       this.addMenuRow(label, 0, 12, 1);
 
-      label = new St.Label({
+      this._last_update = new St.Label({
         text: _('最後更新: 08:02'),
         style_class: 'last-update',
       });
-      this.addMenuRow(label, 0, 12, 1);
+      this.addMenuRow(this._last_update, 0, 12, 1);
 
       let svg_box = new St.BoxLayout({
         x_expand: true,
@@ -219,6 +223,7 @@ var HkoWeatherWidget = GObject.registerClass(
 
       // special_weather_notice_row
 
+      // Special Weather Tips
       label = new St.Label({
         text: _('特別天氣提示'),
         style_class: 'menu-header row-padding',
@@ -226,13 +231,11 @@ var HkoWeatherWidget = GObject.registerClass(
       });
       this.addMenuRow(label, 0, 12, 1);
 
-      label = new St.Label({
-        text: _(
-          '雷雨區正影響香港東部地區，\n預料西貢及大埔區雨勢較大。\n市民應提高警惕。\n(12-09-2023 14:10) ',
-        ),
-        style_class: 'content-padding special-weather-note',
+      this.special_weather_tips = new St.Label({
+        text: _('-'),
+        style_class: 'content-padding special-weather-tips',
       });
-      this.addMenuRow(label, 0, 12, 1);
+      this.addMenuRow(this.special_weather_tips, 0, 12, 1);
 
       // special_weather_notice_row
 

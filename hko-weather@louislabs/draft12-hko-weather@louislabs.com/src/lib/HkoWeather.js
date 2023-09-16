@@ -15,12 +15,14 @@ const { helloworld, helloworld_var, helloworld_const, helloworld_constructor } =
 
 const { fetchHkoRhrread } = Me.imports.lib.api.fetchHkoRhrread;
 const { fetchHkoFlw } = Me.imports.lib.api.fetchHkoFlw;
+const { fetchHkoSwt } = Me.imports.lib.api.fetchHkoSwt;
 
 const weatherIconMapping = Me.imports.lib.weatherIconMapping;
 
 const { getRandomInt } = Me.imports.lib.getRandomInt;
 const { bloatForStatusPanel } = Me.imports.lib.bloatForStatusPanel;
 const { bloatForMainPanel } = Me.imports.lib.bloatForMainPanel;
+const { bloatSwtJson } = Me.imports.lib.bloatSwtJson;
 
 const { HkoWeatherContainer } = Me.imports.lib.HkoWeatherContainer;
 
@@ -47,6 +49,12 @@ var HkoWeather = class HkoWeather {
     this.container._main_panel.temperature_value.set_text('33');
 
     this._refresh();
+  }
+
+  _updateMainPanelSpecialWeatherTips(special_weather_tips) {
+    this.container._main_widget.special_weather_tips.set_text(
+      special_weather_tips,
+    );
   }
 
   _updateStatusText(status_text) {
@@ -114,16 +122,33 @@ var HkoWeather = class HkoWeather {
   _updatePanelFlw(flw_data_json) {
     log('calling _updatePanelFlw');
     try {
+      log(JSON.stringify(flw_data_json));
     } catch (error) {
       log(error);
     }
   }
 
-  _updatePanelRhrread(data_json) {
+  _updatePanelSwt(swt_data_json) {
+    log('calling _updatePanelSwt');
+    try {
+      // let { temperature, humidity, weather_icon } = bloatForMainPanel(swt_data_json);
+      let { special_weather_tips } = bloatSwtJson(swt_data_json);
+
+      // this.container._main_panel.temperature_value.set_text(temperature);
+      // this._updateMainPanelTemperature(temperature);
+      // this._updateMainPanelHumidity(humidity);
+      // this._updateMainPanelWeatherSvg(weather_icon);
+      this._updateMainPanelSpecialWeatherTips(special_weather_tips);
+    } catch (error) {
+      log(error);
+    }
+  }
+
+  _updatePanelRhrread(rhrread_data_json) {
     log('calling _updatePanel');
     try {
       let { temperature, humidity, weather_icon } =
-        bloatForMainPanel(data_json);
+        bloatForMainPanel(rhrread_data_json);
 
       // this.container._main_panel.temperature_value.set_text(temperature);
       this._updateMainPanelTemperature(temperature);
@@ -163,6 +188,10 @@ var HkoWeather = class HkoWeather {
 
       fetchHkoFlw(flw_data_json => {
         this._updatePanelFlw(flw_data_json);
+      });
+
+      fetchHkoSwt(swt_data_json => {
+        this._updatePanelSwt(swt_data_json);
       });
     } catch (error) {
       log(error);

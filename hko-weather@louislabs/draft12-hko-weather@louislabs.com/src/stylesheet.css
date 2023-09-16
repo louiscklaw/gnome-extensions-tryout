@@ -65,9 +65,11 @@
   font-weight: bold;
 }
 
-.special-weather-note {
+.special-weather-tips {
   max-width: 260px;
   line-break: anywhere;
+  word-break: normal;
+  width: 260px;
   height: 100px;
 }
 
