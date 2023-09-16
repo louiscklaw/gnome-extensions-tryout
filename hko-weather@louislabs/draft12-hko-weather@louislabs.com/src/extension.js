@@ -12,6 +12,7 @@ const Me = ExtensionUtils.getCurrentExtension();
 
 const Helloworld = Me.imports.lib.Helloworld;
 const fetchFromHkoRhrread = Me.imports.lib.fetchFromHkoRhrread;
+const weatherIconMapping = Me.imports.lib.weatherIconMapping;
 
 const MENU_COLUMNS = 12;
 const UPDATE_INTERVAL = 1.0;
@@ -29,6 +30,7 @@ function bloatForStatusPanel(rhrread_data_json) {
     return {
       temperature: rhrread_data_json.temperature.data[1].value.toString(),
       humidity: rhrread_data_json.humidity.data[0].value.toString(),
+      weather_icon: 63,
     };
   } catch (error) {
     log(error);
@@ -311,27 +313,19 @@ const HkoWeatherContainer = GObject.registerClass(
   class HkoWeatherContainer extends PanelMenu.Button {
     _init() {
       super._init(0.5);
-
       this._current_temperature = 'Loading';
-      this._weather_info = {
-        current_temperature: 19,
-      };
 
       // control status bar icon
-      this._hkoLogo = new St.Icon({
-        //icon_name : 'security-low-symbolic',
-        gicon: Gio.icon_new_for_string(
-          Me.dir.get_path() + '/svgs/weather/clear-day.svg',
-        ),
+
+      this._loading_icon = new St.Icon({
+        icon_name: 'view-refresh-symbolic',
         style_class: 'system-status-icon',
       });
-      this._weatherIcon = new St.Icon({
-        icon_name: 'view-refresh-symbolic',
-        style_class: 'system-status-icon openweather-icon',
-      });
+      this._status_weather_icon = this._loading_icon;
+
       this._weatherInfo = new St.Label({
         style_class: 'openweather-label',
-        text: '晴天' + this._current_temperature,
+        text: '-',
         y_align: Clutter.ActorAlign.CENTER,
         y_expand: true,
       });
@@ -340,8 +334,7 @@ const HkoWeatherContainer = GObject.registerClass(
         // style_class: 'panel-status-menu-box',
       });
 
-      topBox.add_child(this._hkoLogo);
-      topBox.add_child(this._weatherIcon);
+      topBox.add_child(this._status_weather_icon);
       topBox.add_child(this._weatherInfo);
       this.add_child(topBox);
       // control status bar icon
@@ -392,6 +385,19 @@ class HkoWeather {
     this.container._weatherInfo.set_text(status_text);
   }
 
+  _updateStatusIcon(weather_icon) {
+    log('calling _updateStatusIcon');
+    try {
+      this.container._status_weather_icon.set_gicon(
+        Gio.icon_new_for_string(
+          Me.dir.get_path() + '/svgs/weather/clear-day.svg',
+        ),
+      );
+    } catch (error) {
+      log(error);
+    }
+  }
+
   _updateMainPanelTemperature(temperature) {
     let temp = this._formatTemperature(temperature);
     this.container._main_panel.temperature_value.set_text(temp);
@@ -413,10 +419,12 @@ class HkoWeather {
   _updateStatus(data_json) {
     log('calling _updateStatus');
     try {
-      let { temperature, humidity } = bloatForStatusPanel(data_json);
-      let status_text = temperature + '°' + ' ' + humidity + '%';
+      let { temperature, humidity, weather_icon } =
+        bloatForStatusPanel(data_json);
+      let status_text = ['晴天', temperature + '°', humidity + '%'].join(' ');
 
       this._updateStatusText(status_text);
+      this._updateStatusIcon(weather_icon);
     } catch (error) {
       log(error);
     }

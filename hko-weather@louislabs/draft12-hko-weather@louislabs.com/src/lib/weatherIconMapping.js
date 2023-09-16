@@ -1,0 +1,3 @@
+var helloworld = () => {
+  log('helloworld');
+};

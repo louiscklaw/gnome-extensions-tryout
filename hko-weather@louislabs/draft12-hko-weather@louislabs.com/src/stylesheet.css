@@ -1,3 +1,8 @@
+.system-status-icon {
+  width: 80%;
+  height: 80%;
+}
+
 .panel-title {
   font-weight: bold;
 }
