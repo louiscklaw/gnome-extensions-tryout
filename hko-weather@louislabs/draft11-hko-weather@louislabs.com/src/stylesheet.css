@@ -1,0 +1,64 @@
+.panel-title {
+  font-weight: bold;
+}
+
+.weather-svg {
+  margin: 10px;
+}
+
+.current-weather-title {
+  font-weight: bold;
+  text-align: center;
+  font-family: Arial;
+}
+
+.current-weather-value {
+  font-size: 50px;
+  font-family: Arial;
+}
+
+.forecast-row {
+  padding-top: 15px;
+}
+
+.forecast-title {
+  font-weight: bold;
+  text-align: center;
+}
+
+.forecast-svg {
+  width: 60px;
+  height: 60px;
+}
+
+.forecast-value {
+  font-weight: bold;
+  text-align: center;
+}
+
+.row-padding {
+  padding-top: 15px;
+}
+
+.content-padding {
+  padding-top: 5px;
+}
+
+.menu-header {
+  font-weight: bold;
+}
+
+.special-weather-note {
+  max-width: 260px;
+  line-break: anywhere;
+  height: 100px;
+}
+
+.hko-text {
+  font-size: 10px;
+  text-align: center;
+}
+.source-text {
+  font-size: 10px;
+  text-align: center;
+}
