@@ -25,12 +25,13 @@ function getRandomInt(min, max) {
 
 function bloatForStatusPanel(rhrread_data_json) {
   log('calling bloatForStatusPanel');
+  log(rhrread_data_json.icon);
 
   try {
     return {
       temperature: rhrread_data_json.temperature.data[1].value.toString(),
       humidity: rhrread_data_json.humidity.data[0].value.toString(),
-      weather_icon: 63,
+      weather_icon: rhrread_data_json.icon[0],
     };
   } catch (error) {
     log(error);
@@ -68,6 +69,12 @@ const HkoWeatherWidget = GObject.registerClass(
       label = new St.Label({
         text: _('香港天氣'),
         style_class: 'panel-title',
+      });
+      this.addMenuRow(label, 0, 12, 1);
+
+      label = new St.Label({
+        text: _('最後更新: 08:02'),
+        style_class: 'last-update',
       });
       this.addMenuRow(label, 0, 12, 1);
 
@@ -325,9 +332,10 @@ const HkoWeatherContainer = GObject.registerClass(
 
       this._weatherInfo = new St.Label({
         style_class: 'openweather-label',
-        text: '-',
+        text: ' fetching ',
         y_align: Clutter.ActorAlign.CENTER,
         y_expand: true,
+        style_class: 'hko-weather-system-status-text',
       });
 
       let topBox = new St.BoxLayout({
@@ -388,10 +396,10 @@ class HkoWeather {
   _updateStatusIcon(weather_icon) {
     log('calling _updateStatusIcon');
     try {
+      let weather_icon_path = weatherIconMapping.map(weather_icon);
+      let icon_path = Me.dir.get_path() + `/svgs/weather/${weather_icon_path}`;
       this.container._status_weather_icon.set_gicon(
-        Gio.icon_new_for_string(
-          Me.dir.get_path() + '/svgs/weather/clear-day.svg',
-        ),
+        Gio.icon_new_for_string(icon_path),
       );
     } catch (error) {
       log(error);

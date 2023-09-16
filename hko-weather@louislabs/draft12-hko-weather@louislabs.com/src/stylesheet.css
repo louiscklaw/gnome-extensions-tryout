@@ -1,3 +1,8 @@
+.hko-weather-system-status-text {
+  min-width: 100px;
+  max-width: 150px;
+}
+
 .system-status-icon {
   width: 80%;
   height: 80%;
@@ -5,6 +10,12 @@
 
 .panel-title {
   font-weight: bold;
+  text-align: center;
+}
+
+.last-update {
+  font-size: 10px;
+  text-align: center;
 }
 
 .weather-svg {
@@ -20,6 +31,7 @@
 .current-weather-value {
   font-size: 50px;
   font-family: Arial;
+  width: calc(260px / 2);
 }
 
 .forecast-row {
@@ -32,8 +44,8 @@
 }
 
 .forecast-svg {
-  width: 60px;
-  height: 60px;
+  width: calc(260px / 3);
+  height: calc(260px / 3);
 }
 
 .forecast-value {
@@ -63,6 +75,7 @@
   font-size: 10px;
   text-align: center;
 }
+
 .source-text {
   font-size: 10px;
   text-align: center;
