@@ -7,6 +7,7 @@ var bloatForMainPanel = rhrread_data_json => {
     return {
       temperature: rhrread_data_json.temperature.data[1].value.toString(),
       humidity: rhrread_data_json.humidity.data[0].value.toString(),
+      weather_icon: rhrread_data_json.icon[0],
       weather_note: 'hello weather note',
     };
   } catch (error) {
