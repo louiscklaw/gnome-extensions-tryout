@@ -1,3 +1,5 @@
+'use strict';
+
 const { Soup, Atk, Clutter, GLib, GObject, Shell, St, Gio } = imports.gi;
 
 const ByteArray = imports.byteArray;
@@ -10,58 +12,24 @@ const Main = imports.ui.main;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-const Helloworld = Me.imports.lib.Helloworld;
+const { helloworld } = Me.imports.lib.Helloworld;
 const fetchFromHkoRhrread = Me.imports.lib.fetchFromHkoRhrread;
 const weatherIconMapping = Me.imports.lib.weatherIconMapping;
+const { getRandomInt } = Me.imports.lib.getRandomInt;
+const { bloatForStatusPanel } = Me.imports.lib.bloatForStatusPanel;
+const { bloatForMainPanel } = Me.imports.lib.bloatForMainPanel;
 
 const MENU_COLUMNS = 12;
 const UPDATE_INTERVAL = 1.0;
 
 let hko_weather_panel;
 
-function getRandomInt(min, max) {
-  return Math.round((max - min) * Math.random());
-}
-
-function bloatForStatusPanel(rhrread_data_json) {
-  log('calling bloatForStatusPanel');
-  log(rhrread_data_json.icon);
-
-  try {
-    return {
-      temperature: rhrread_data_json.temperature.data[1].value.toString(),
-      humidity: rhrread_data_json.humidity.data[0].value.toString(),
-      weather_icon: rhrread_data_json.icon[0],
-    };
-  } catch (error) {
-    log(error);
-    return {
-      temperature: 'error',
-      humidity: 'error',
-    };
-  }
-}
-
-function bloatForMainPanel(rhrread_data_json, flw_data_json) {
-  log('calling bloatForMainPanel');
-
-  try {
-    return {
-      temperature: rhrread_data_json.temperature.data[1].value.toString(),
-      humidity: rhrread_data_json.humidity.data[0].value.toString(),
-      weather_note: 'hello weather note',
-    };
-  } catch (error) {
-    log(error);
-    return {
-      temperature: 'error',
-      humidity: 'error',
-    };
-  }
-}
-
 const HkoWeatherWidget = GObject.registerClass(
   class HkoWeatherWidget extends St.Widget {
+    _updateWeatherSvg(weather_icon) {
+      let icon_path = weatherIconMapping.mapLocalIcon(weather_icon);
+    }
+
     _buildMenu() {
       this.historyChart = new St.DrawingArea();
 
@@ -87,7 +55,7 @@ const HkoWeatherWidget = GObject.registerClass(
         style_class: 'weather-svg',
       });
 
-      let weather_svg = new St.Icon({
+      this._weather_svg = new St.Icon({
         gicon: Gio.icon_new_for_string(
           Me.dir.get_path() + '/svgs/weather/clear-day.svg',
         ),
@@ -95,7 +63,7 @@ const HkoWeatherWidget = GObject.registerClass(
         y_expand: true,
         icon_size: 120,
       });
-      svg_box.add(weather_svg);
+      svg_box.add(this._weather_svg);
       this.addMenuRow(svg_box, 0, 12, 1);
 
       // let weather_svg = new St.Icon({
@@ -116,13 +84,13 @@ const HkoWeatherWidget = GObject.registerClass(
       });
 
       let temperature_title = new St.Label({
-        text: _('温度'),
+        text: _('温度(°)'),
         style_class: 'current-weather-title',
       });
       temperature_box.add(temperature_title);
 
       this.temperature_value = new St.Label({
-        text: _('--°'),
+        text: _('--'),
         style_class: 'current-weather-value',
       });
       temperature_box.add(this.temperature_value);
@@ -142,13 +110,13 @@ const HkoWeatherWidget = GObject.registerClass(
       });
 
       let humidity_title = new St.Label({
-        text: _('濕度'),
+        text: _('濕度(%)'),
         style_class: 'current-weather-title',
       });
       humidity_box.add(humidity_title);
 
       this.humidity_value = new St.Label({
-        text: _('--%'),
+        text: _('--'),
         style_class: 'current-weather-value',
       });
       humidity_box.add(this.humidity_value);
@@ -396,8 +364,9 @@ class HkoWeather {
   _updateStatusIcon(weather_icon) {
     log('calling _updateStatusIcon');
     try {
-      let weather_icon_path = weatherIconMapping.map(weather_icon);
-      let icon_path = Me.dir.get_path() + `/svgs/weather/${weather_icon_path}`;
+      // let weather_icon_path = weatherIconMapping.map(weather_icon);
+      let icon_path = weatherIconMapping.mapLocalIcon(weather_icon);
+
       this.container._status_weather_icon.set_gicon(
         Gio.icon_new_for_string(icon_path),
       );
@@ -411,12 +380,23 @@ class HkoWeather {
     this.container._main_panel.temperature_value.set_text(temp);
   }
 
+  _updateMainPanelWeatherSvg(weather_icon) {
+    try {
+      log(weather_icon);
+      let icon_path = weatherIconMapping.mapLocalIcon(weather_icon);
+
+      log(icon_path);
+    } catch (error) {
+      log(error);
+    }
+  }
+
   _formatTemperature(temperature) {
-    return temperature + '°';
+    return temperature;
   }
 
   _formatHumidity(humidity) {
-    return humidity + '%';
+    return humidity;
   }
 
   _updateMainPanelHumidity(humidity) {
@@ -441,11 +421,13 @@ class HkoWeather {
   _updatePanel(data_json) {
     log('calling _updatePanel');
     try {
-      let { temperature, humidity } = bloatForMainPanel(data_json);
+      let { temperature, humidity, weather_icon } =
+        bloatForMainPanel(data_json);
 
       // this.container._main_panel.temperature_value.set_text(temperature);
       this._updateMainPanelTemperature(temperature);
       this._updateMainPanelHumidity(humidity);
+      this._updateMainPanelWeatherSvg(weather_icon);
     } catch (error) {
       log(error);
     }
@@ -495,37 +477,7 @@ class HkoWeather {
 function init() {}
 
 function enable() {
-  // let httpSession = new Soup.Session();
-  // httpSession.user_agent =
-  //   'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0';
-
-  // log(JSON.stringify({ MAJOR_VERSION: Soup.MAJOR_VERSION }));
-
-  // let request = Soup.Message.new(
-  //   'GET',
-  //   // 'https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=flw',
-  //   'http://localhost:8080/helloworld_rhrread',
-  // );
-  // request.request_headers.append('Accept', 'application/json');
-
-  // try {
-  //   httpSession.send_and_read_async(
-  //     request,
-  //     GLib.PRIORITY_DEFAULT,
-  //     null,
-  //     (httpSession, message) => {
-  //       let data = ByteArray.toString(
-  //         httpSession.send_and_read_finish(message).get_data(),
-  //       );
-  //       log('Recieved ' + data.length + ' bytes');
-  //       let data_json = JSON.parse(data);
-  //       log(JSON.stringify(data_json, null, 2));
-  //     },
-  //   );
-  // } catch (error) {
-  //   log('unable to send libsoup json message ' + error);
-  // }
-
+  helloworld();
   hko_weather_panel = new HkoWeather();
   hko_weather_panel.addToPanel();
 }

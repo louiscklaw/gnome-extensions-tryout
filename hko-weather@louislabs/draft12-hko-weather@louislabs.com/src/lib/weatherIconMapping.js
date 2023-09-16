@@ -1,5 +1,18 @@
+'use strict';
+
+const { Soup, Atk, Clutter, GLib, GObject, Shell, St, Gio } = imports.gi;
+
+const ByteArray = imports.byteArray;
+
+const PanelMenu = imports.ui.panelMenu;
+const PopupMenu = imports.ui.popupMenu;
+const Mainloop = imports.mainloop;
+
+const Main = imports.ui.main;
+const ExtensionUtils = imports.misc.extensionUtils;
+const Me = ExtensionUtils.getCurrentExtension();
+
 var map = icon_num => {
-  log('helloworld');
   try {
     let map_table = {
       50: 'clear-day.svg',
@@ -10,6 +23,23 @@ var map = icon_num => {
     };
 
     return map_table[icon_num];
+  } catch (error) {
+    log(error);
+  }
+};
+
+var findPath = weather_icon_path => {
+  try {
+    return Me.dir.get_path() + `/svgs/weather/${weather_icon_path}`;
+  } catch (error) {
+    log(error);
+  }
+};
+
+var mapLocalIcon = icon_num => {
+  try {
+    let icon = map(icon_num);
+    return findPath(icon);
   } catch (error) {
     log(error);
   }
