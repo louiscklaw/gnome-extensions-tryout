@@ -4,8 +4,6 @@ const { Soup, Atk, Clutter, GLib, GObject, Shell, St, Gio } = imports.gi;
 
 const ByteArray = imports.byteArray;
 
-// const PanelMenu = imports.ui.panelMenu;
-// const PopupMenu = imports.ui.popupMenu;
 const Mainloop = imports.mainloop;
 
 const Main = imports.ui.main;
@@ -15,8 +13,8 @@ const Me = ExtensionUtils.getCurrentExtension();
 const { helloworld, helloworld_var, helloworld_const, helloworld_constructor } =
   Me.imports.lib.Helloworld;
 
-// const fetchFromHkoRhrread = Me.imports.lib.fetchFromHkoRhrread;
 const { fetchHkoRhrread } = Me.imports.lib.api.fetchHkoRhrread;
+const { fetchHkoFlw } = Me.imports.lib.api.fetchHkoFlw;
 
 const weatherIconMapping = Me.imports.lib.weatherIconMapping;
 
@@ -99,11 +97,11 @@ var HkoWeather = class HkoWeather {
     this.container._main_widget.updateTemperature(temp);
   }
 
-  _updateStatus(data_json) {
-    log('calling _updateStatus');
+  _updateStatusRhrread(rhrread_data_json) {
+    log('calling _updateStatusRhrread');
     try {
       let { temperature, humidity, weather_icon } =
-        bloatForStatusPanel(data_json);
+        bloatForStatusPanel(rhrread_data_json);
       let status_text = ['晴天', temperature + '°', humidity + '%'].join(' ');
 
       this._updateStatusText(status_text);
@@ -113,7 +111,15 @@ var HkoWeather = class HkoWeather {
     }
   }
 
-  _updatePanel(data_json) {
+  _updatePanelFlw(flw_data_json) {
+    log('calling _updatePanelFlw');
+    try {
+    } catch (error) {
+      log(error);
+    }
+  }
+
+  _updatePanelRhrread(data_json) {
     log('calling _updatePanel');
     try {
       let { temperature, humidity, weather_icon } =
@@ -128,10 +134,36 @@ var HkoWeather = class HkoWeather {
     }
   }
 
-  _updateWeatherInfo(cb) {
+  _updateWeatherInfoRhrread(cb) {
+    log('_updateWeatherInfoRhrread');
+
     try {
-      // fetchFromHkoRhrread.get(cb);
       fetchHkoRhrread(cb);
+    } catch (error) {
+      log(error);
+    }
+  }
+
+  _updateWeatherInfoFlw(cb) {
+    log('_updateWeatherInfoFlw');
+
+    try {
+      fetchHkoFlw(cb);
+    } catch (error) {
+      log(error);
+    }
+  }
+
+  _updateFetchHko() {
+    try {
+      fetchHkoRhrread(rhrread_data_json => {
+        this._updateStatusRhrread(rhrread_data_json);
+        this._updatePanelRhrread(rhrread_data_json);
+      });
+
+      fetchHkoFlw(flw_data_json => {
+        this._updatePanelFlw(flw_data_json);
+      });
     } catch (error) {
       log(error);
     }
@@ -144,21 +176,15 @@ var HkoWeather = class HkoWeather {
       this.container._weatherInfo.set_text('4');
       this.container._main_panel.temperature_value.set_text('44');
 
-      // kick off status update
-      this._updateWeatherInfo(data_json => {
-        this._updateStatus(data_json);
-        this._updatePanel(data_json);
-      });
+      // kick off status update, rhrread
+      this._updateFetchHko();
 
       this._timeout = Mainloop.timeout_add_seconds(UPDATE_INTERVAL, () => {
         log('_refresh called:' + getRandomInt(1, 999999).toString());
-        helloworld();
-        log(helloworld_var);
-        log(helloworld_const);
-        this._updateWeatherInfo(data_json => {
-          this._updateStatus(data_json);
-          this._updatePanel(data_json);
-        });
+
+        // NOTE: regular update by interval
+        this._updateFetchHko();
+
         return true;
       });
     } catch (error) {

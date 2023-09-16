@@ -10,8 +10,8 @@ const Main = imports.ui.main;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-var get = cb_to_update_main_data => {
-  log('calling fetchFromHko');
+var fetchHkoFlw = cb_to_update_main_data => {
+  log('calling fetchHkoFlw');
 
   try {
     let cb = cb_to_update_main_data;
@@ -22,8 +22,8 @@ var get = cb_to_update_main_data => {
 
     let request = Soup.Message.new(
       'GET',
-      // 'https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread',
-      'http://localhost:8080/helloworld_rhrread',
+      // 'https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=flw',
+      'http://localhost:8080/helloworld_flw',
     );
 
     request.request_headers.append('Accept', 'application/json');
