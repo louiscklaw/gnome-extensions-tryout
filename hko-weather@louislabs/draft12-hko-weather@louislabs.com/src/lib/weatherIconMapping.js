@@ -1,14 +1,15 @@
 'use strict';
 
-const { Soup, Atk, Clutter, GLib, GObject, Shell, St, Gio } = imports.gi;
+// const { Soup, Atk, Clutter, GLib, GObject, Shell, St, Gio } = imports.gi;
 
 const ByteArray = imports.byteArray;
 
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
 const Mainloop = imports.mainloop;
 
+const PanelMenu = imports.ui.panelMenu;
+const PopupMenu = imports.ui.popupMenu;
 const Main = imports.ui.main;
+
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 

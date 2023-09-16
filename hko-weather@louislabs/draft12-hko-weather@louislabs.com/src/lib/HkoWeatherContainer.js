@@ -5,26 +5,25 @@ const { Soup, Atk, Clutter, GLib, GObject, Shell, St, Gio } = imports.gi;
 const ByteArray = imports.byteArray;
 
 const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
-const Mainloop = imports.mainloop;
+// const PopupMenu = imports.ui.popupMenu;
+// const Mainloop = imports.mainloop;
 
 const Main = imports.ui.main;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-const { helloworld } = Me.imports.lib.Helloworld;
-const fetchFromHkoRhrread = Me.imports.lib.fetchFromHkoRhrread;
-const weatherIconMapping = Me.imports.lib.weatherIconMapping;
-const { getRandomInt } = Me.imports.lib.getRandomInt;
-const { bloatForStatusPanel } = Me.imports.lib.bloatForStatusPanel;
-const { bloatForMainPanel } = Me.imports.lib.bloatForMainPanel;
+// const { helloworld } = Me.imports.lib.Helloworld;
+// const weatherIconMapping = Me.imports.lib.weatherIconMapping;
+// const { getRandomInt } = Me.imports.lib.getRandomInt;
+// const { bloatForStatusPanel } = Me.imports.lib.bloatForStatusPanel;
+// const { bloatForMainPanel } = Me.imports.lib.bloatForMainPanel;
 
 const { HkoWeatherWidget } = Me.imports.lib.HkoWeatherWidget;
 
 const MENU_COLUMNS = 12;
 const UPDATE_INTERVAL = 1.0;
 
-let hko_weather_panel;
+// let hko_weather_panel;
 
 var HkoWeatherContainer = GObject.registerClass(
   class HkoWeatherContainer extends PanelMenu.Button {

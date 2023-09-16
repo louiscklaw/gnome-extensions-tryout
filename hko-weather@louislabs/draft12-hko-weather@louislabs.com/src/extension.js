@@ -15,12 +15,7 @@ const Me = ExtensionUtils.getCurrentExtension();
 const { helloworld, helloworld_var, helloworld_const, helloworld_constructor } =
   Me.imports.lib.Helloworld;
 
-const fetchFromHkoRhrread = Me.imports.lib.fetchFromHkoRhrread;
-const weatherIconMapping = Me.imports.lib.weatherIconMapping;
-const { getRandomInt } = Me.imports.lib.getRandomInt;
-const { bloatForStatusPanel } = Me.imports.lib.bloatForStatusPanel;
-const { bloatForMainPanel } = Me.imports.lib.bloatForMainPanel;
-const { HkoWeatherContainer } = Me.imports.lib.HkoWeatherContainer;
+const { fetchHkoRhrread } = Me.imports.lib.api.fetchHkoRhrread;
 const { HkoWeather } = Me.imports.lib.HkoWeather;
 
 const MENU_COLUMNS = 12;

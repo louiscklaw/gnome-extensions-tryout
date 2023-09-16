@@ -4,8 +4,8 @@ const { Soup, Atk, Clutter, GLib, GObject, Shell, St, Gio } = imports.gi;
 
 const ByteArray = imports.byteArray;
 
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
+// const PanelMenu = imports.ui.panelMenu;
+// const PopupMenu = imports.ui.popupMenu;
 const Mainloop = imports.mainloop;
 
 const Main = imports.ui.main;
@@ -15,7 +15,9 @@ const Me = ExtensionUtils.getCurrentExtension();
 const { helloworld, helloworld_var, helloworld_const, helloworld_constructor } =
   Me.imports.lib.Helloworld;
 
-const fetchFromHkoRhrread = Me.imports.lib.fetchFromHkoRhrread;
+// const fetchFromHkoRhrread = Me.imports.lib.fetchFromHkoRhrread;
+const { fetchHkoRhrread } = Me.imports.lib.api.fetchHkoRhrread;
+
 const weatherIconMapping = Me.imports.lib.weatherIconMapping;
 
 const { getRandomInt } = Me.imports.lib.getRandomInt;
@@ -27,7 +29,7 @@ const { HkoWeatherContainer } = Me.imports.lib.HkoWeatherContainer;
 const MENU_COLUMNS = 12;
 const UPDATE_INTERVAL = 1.0;
 
-let hko_weather_panel;
+// let hko_weather_panel;
 
 var HkoWeather = class HkoWeather {
   constructor() {
@@ -128,7 +130,8 @@ var HkoWeather = class HkoWeather {
 
   _updateWeatherInfo(cb) {
     try {
-      fetchFromHkoRhrread.get(cb);
+      // fetchFromHkoRhrread.get(cb);
+      fetchHkoRhrread(cb);
     } catch (error) {
       log(error);
     }
