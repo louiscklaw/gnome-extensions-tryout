@@ -10,7 +10,8 @@ const Main = imports.ui.main;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-// const Helloworld = Me.imports.lib.helloworld;
+const Helloworld = Me.imports.lib.Helloworld;
+const fetchFromHkoRhrread = Me.imports.lib.fetchFromHkoRhrread;
 
 const MENU_COLUMNS = 12;
 const UPDATE_INTERVAL = 1.0;
@@ -38,13 +39,14 @@ function bloatForStatusPanel(rhrread_data_json) {
   }
 }
 
-function bloatForMainPanel(rhrread_data_json) {
+function bloatForMainPanel(rhrread_data_json, flw_data_json) {
   log('calling bloatForMainPanel');
 
   try {
     return {
       temperature: rhrread_data_json.temperature.data[1].value.toString(),
       humidity: rhrread_data_json.humidity.data[0].value.toString(),
+      weather_note: 'hello weather note',
     };
   } catch (error) {
     log(error);
@@ -52,48 +54,6 @@ function bloatForMainPanel(rhrread_data_json) {
       temperature: 'error',
       humidity: 'error',
     };
-  }
-}
-
-function fetchFromHkoRhrread(cb) {
-  log('calling fetchFromHko');
-  log(JSON.stringify({ MAJOR_VERSION: Soup.MAJOR_VERSION }));
-
-  try {
-    let httpSession = new Soup.Session();
-
-    httpSession.user_agent =
-      'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0';
-
-    let request = Soup.Message.new(
-      'GET',
-      // 'https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread',
-      'http://localhost:8080/helloworld_rhrread',
-    );
-    request.request_headers.append('Accept', 'application/json');
-
-    httpSession.send_and_read_async(
-      request,
-      GLib.PRIORITY_DEFAULT,
-      null,
-      (httpSession, message) => {
-        try {
-          let rhrread_data = ByteArray.toString(
-            httpSession.send_and_read_finish(message).get_data(),
-          );
-          log('Recieved ' + rhrread_data.length + ' bytes');
-          let rhrread_data_json = JSON.parse(rhrread_data);
-
-          cb(rhrread_data_json);
-        } catch (error) {
-          log(error);
-        }
-      },
-    );
-
-    httpSession = null;
-  } catch (error) {
-    log(error);
   }
 }
 
@@ -153,7 +113,7 @@ const HkoWeatherWidget = GObject.registerClass(
       temperature_box.add(temperature_title);
 
       this.temperature_value = new St.Label({
-        text: _('29°'),
+        text: _('--°'),
         style_class: 'current-weather-value',
       });
       temperature_box.add(this.temperature_value);
@@ -178,11 +138,11 @@ const HkoWeatherWidget = GObject.registerClass(
       });
       humidity_box.add(humidity_title);
 
-      let humidity_value = new St.Label({
-        text: _('98'),
+      this.humidity_value = new St.Label({
+        text: _('--%'),
         style_class: 'current-weather-value',
       });
-      humidity_box.add(humidity_value);
+      humidity_box.add(this.humidity_value);
 
       this.addMenuRow(humidity_box, 6, 6, 1);
 
@@ -433,14 +393,28 @@ class HkoWeather {
   }
 
   _updateMainPanelTemperature(temperature) {
-    this.container._main_panel.temperature_value.set_text(temperature);
+    let temp = this._formatTemperature(temperature);
+    this.container._main_panel.temperature_value.set_text(temp);
+  }
+
+  _formatTemperature(temperature) {
+    return temperature + '°';
+  }
+
+  _formatHumidity(humidity) {
+    return humidity + '%';
+  }
+
+  _updateMainPanelHumidity(humidity) {
+    let temp = this._formatHumidity(humidity);
+    this.container._main_panel.humidity_value.set_text(temp);
   }
 
   _updateStatus(data_json) {
     log('calling _updateStatus');
     try {
       let { temperature, humidity } = bloatForStatusPanel(data_json);
-      let status_text = [temperature, humidity].join(' ');
+      let status_text = temperature + '°' + ' ' + humidity + '%';
 
       this._updateStatusText(status_text);
     } catch (error) {
@@ -455,6 +429,7 @@ class HkoWeather {
 
       // this.container._main_panel.temperature_value.set_text(temperature);
       this._updateMainPanelTemperature(temperature);
+      this._updateMainPanelHumidity(humidity);
     } catch (error) {
       log(error);
     }
@@ -462,7 +437,7 @@ class HkoWeather {
 
   _updateWeatherInfo(cb) {
     try {
-      fetchFromHkoRhrread(cb);
+      fetchFromHkoRhrread.get(cb);
     } catch (error) {
       log(error);
     }
