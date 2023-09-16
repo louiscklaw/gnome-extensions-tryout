@@ -1,0 +1,9 @@
+{
+  "uuid": "hko-weather@louislabs.com",
+  "description": "(draft11-hko-weather@louislabs.com) a weather app showing hong kong weather",
+  "name": "hko weather status",
+  "shell-version": ["44"],
+  "url": "",
+
+  "version": 1
+}
